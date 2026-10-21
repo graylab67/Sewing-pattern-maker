@@ -150,9 +150,9 @@ dialog .actions{display:flex;justify-content:flex-end;gap:8px}
 
 <dialog id="keyDialog">
   <form id="keyForm">
-    <h3>Anthropic API key</h3>
-    <label>API key <input type="password" id="keyInput" placeholder="sk-ant-..." autocomplete="off" required></label>
-    <p class="hint">Needed for AI-drafted styles. The key is stored only in this browser, and requests go straight from your browser to Anthropic. Anyone who can use this browser can read the key.</p>
+    <h3>Gemini API key</h3>
+    <label>API key <input type="password" id="keyInput" placeholder="AIza..." autocomplete="off" required></label>
+    <p class="hint">Needed for AI-drafted styles. The key is stored only in this browser, and requests go straight from your browser to Google. Anyone who can use this browser can read the key.</p>
     <p class="msg" id="keyMsg"></p>
     <div class="actions">
       <button type="button" class="ghost" id="keyClear">Remove key</button>
@@ -334,11 +334,11 @@ function aiPiece(p){
 
 /* ---------- Storage (this browser only) ---------- */
 
-const KEY_NAME = 'pattern-maker:anthropic-key';
+const KEY_NAME = 'pattern-maker:gemini-key';
 const STYLES_KEY = 'pattern-maker:styles';
 const SETS_KEY = 'pattern-maker:measurement-sets';
-const MODEL = 'claude-sonnet-5-5';
-const NO_KEY = 'Add your Anthropic API key first (the "Add AI key" button at the top).';
+const MODEL = 'gemini-2.5-flash';
+const NO_KEY = 'Add your Gemini API key first (the "Add AI key" button at the top).';
 
 function readStore(key, fallback){
   try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; }
@@ -358,7 +358,7 @@ let mySets = readStore(SETS_KEY, []);
 
 function saveStyles(){ writeStore(STYLES_KEY, myStyles); }
 
-/* ---------- AI drafting (calls Anthropic directly from the browser) ---------- */
+/* ---------- AI drafting (calls Google Gemini directly from the browser) ---------- */
 
 const LABELS = {
   bust: 'Bust', waist: 'Waist', hip: 'Hip', skirtLen: 'Skirt length', hemCirc: 'Hem circumference',
@@ -444,27 +444,49 @@ function sanitize(raw){
 const CHAT_SYSTEM = SYSTEM.replace(/Always respond by calling[^\n]*$/,
   'You are talking with the person who wants this garment. If something essential is missing or ambiguous (for example closure, length, waist shaping, ease, or fabric stretch), reply in plain text with at most three short questions and do not call the tool. Otherwise call save_pattern with the complete updated pattern: apply every change the person asked for and keep everything else as it was. State any assumptions you made in the summary. Keep text replies brief.');
 
+// Gemini uses the Google Gemini REST API. This function accepts the same message shape the rest of
+// the app uses (role 'user' or 'assistant') and returns the same content shape (text and tool_use
+// blocks), so the drafting and chat code does not need to change.
+const geminiSchema = s => Array.isArray(s) ? s.map(geminiSchema)
+  : (s && typeof s === 'object')
+    ? Object.fromEntries(Object.entries(s).map(([k, v]) => [k, k === 'type' && typeof v === 'string' ? v.toUpperCase() : geminiSchema(v)]))
+    : s;
+
 async function callClaude({system, messages, toolChoice}){
   const key = getKey();
   if (!key) throw new Error(NO_KEY);
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+  const body = {
+    systemInstruction: {parts: [{text: system}]},
+    contents: messages.map(m => ({role: m.role === 'assistant' ? 'model' : 'user', parts: [{text: m.content}]})),
+    tools: [{functionDeclarations: [{
+      name: TOOL.name,
+      description: TOOL.description,
+      parameters: geminiSchema(TOOL.input_schema),
+    }]}],
+    toolConfig: {functionCallingConfig: toolChoice.type === 'tool'
+      ? {mode: 'ANY', allowedFunctionNames: [toolChoice.name]}
+      : {mode: 'AUTO'}},
+    generationConfig: {maxOutputTokens: 6000},
+  };
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`, {
     method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-      'x-api-key': key,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true',
-    },
-    body: JSON.stringify({model: MODEL, max_tokens: 6000, system, tools: [TOOL], tool_choice: toolChoice, messages}),
+    headers: {'content-type': 'application/json', 'x-goog-api-key': key},
+    body: JSON.stringify(body),
     signal: AbortSignal.timeout(180000),
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok){
-    throw new Error(res.status === 401
-      ? 'Your Anthropic key was rejected. Check it in the "Add AI key" settings.'
-      : (data.error?.message || `Anthropic returned an error (${res.status}).`));
+    const msg = data.error?.message || '';
+    if (res.status === 401 || res.status === 403 || (res.status === 400 && /api key/i.test(msg)))
+      throw new Error('Your Gemini key was rejected. Check it in the "Add AI key" settings.');
+    throw new Error(msg || `Gemini returned an error (${res.status}).`);
   }
-  return data.content || [];
+  const out = [];
+  for (const p of data.candidates?.[0]?.content?.parts || []){
+    if (p.functionCall) out.push({type: 'tool_use', name: p.functionCall.name, input: p.functionCall.args || {}});
+    else if (p.text) out.push({type: 'text', text: p.text});
+  }
+  return out;
 }
 
 async function generatePattern(name, description, meas){
@@ -625,7 +647,7 @@ $('keyBtn').addEventListener('click', () => { $('keyMsg').textContent = ''; $('k
 $('keyForm').addEventListener('submit', e => {
   e.preventDefault();
   const v = $('keyInput').value.trim();
-  if (!v.startsWith('sk-')) { $('keyMsg').textContent = 'That does not look like an Anthropic key (keys start with sk-).'; return; }
+  if (!/^\S{20,}$/.test(v)) { $('keyMsg').textContent = 'That does not look like a Gemini API key. Paste the whole key with no spaces.'; return; }
   try { localStorage.setItem(KEY_NAME, v); }
   catch { $('keyMsg').textContent = 'This browser would not save the key.'; return; }
   $('keyDialog').close(); refreshKeyButton();
