@@ -1,0 +1,2332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pattern Maker Studio — Haute Couture Atelier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,400;1,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-gradient: radial-gradient(circle at 12% 0%, #fff4ec 0%, #fef3c7 24%, #fce7f3 60%, #fff7ed 100%);
+  --surface: #ffffff;
+  --panel-bg: rgba(255, 255, 255, 0.95);
+  --ink: #1f140e;
+  --muted: #7c685f;
+  --line: #fae2d4;
+  --primary: #f84f22;
+  --primary-hover: #e03b0f;
+  --primary-light: #fff0eb;
+  --primary-glow: rgba(248, 79, 34, 0.32);
+  --secondary: #ec4899;
+  --secondary-glow: rgba(236, 72, 153, 0.28);
+  --gold: #d97706;
+  --gold-light: #fef3c7;
+  --teal: #0d9488;
+  --claude: #d97757;
+  --claude-bg: rgba(217, 119, 87, 0.08);
+  --radius: 18px;
+  --radius-sm: 10px;
+  --shadow: 0 4px 24px -2px rgba(180, 83, 9, 0.08), 0 2px 8px -1px rgba(0,0,0,0.04);
+  --shadow-lg: 0 20px 48px -8px rgba(248, 79, 34, 0.18), 0 6px 16px rgba(0,0,0,0.06);
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg-gradient: radial-gradient(circle at 10% 0%, #1f120c 0%, #29150d 35%, #180f1a 100%);
+    --surface: #261914;
+    --panel-bg: rgba(38, 25, 20, 0.95);
+    --ink: #fef7f2;
+    --muted: #bda69b;
+    --line: #4a3024;
+    --primary: #ff683d;
+    --primary-light: rgba(255, 104, 61, 0.16);
+    --primary-glow: rgba(255, 104, 61, 0.38);
+    --gold: #f59e0b;
+    --gold-light: rgba(245, 158, 11, 0.16);
+    --shadow: 0 4px 24px rgba(0,0,0,0.45);
+    --shadow-lg: 0 20px 48px rgba(0,0,0,0.65);
+  }
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:var(--font-sans);
+  background: var(--bg-gradient);
+  background-attachment:fixed;color:var(--ink);
+  line-height:1.5;min-height:100vh;
+  position:relative;overflow-x:hidden;
+}
+
+/* Ambient Floating Haute-Couture Icons */
+.floating-elements{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.float-icon{
+  position:absolute;opacity:0.16;animation:floatSlow 20s infinite linear;
+  user-select:none;filter:drop-shadow(0 2px 6px rgba(248,79,34,0.25));
+}
+@keyframes floatSlow{
+  0%{transform:translateY(105vh) rotate(0deg) scale(0.95)}
+  50%{transform:translateY(50vh) rotate(180deg) scale(1.05)}
+  100%{transform:translateY(-15vh) rotate(360deg) scale(0.95)}
+}
+
+header{
+  padding:14px 28px;display:flex;justify-content:space-between;align-items:center;
+  gap:16px;border-bottom:1px solid var(--line);background:var(--panel-bg);
+  backdrop-filter:blur(18px);position:sticky;top:0;z-index:50;
+  box-shadow:0 2px 16px rgba(217,119,6,0.07);
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-icon{
+  width:46px;height:46px;border-radius:14px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  display:grid;place-items:center;color:#fff;font-weight:900;font-size:1.5rem;
+  box-shadow:0 6px 18px var(--primary-glow);
+}
+h1{margin:0;font-family:var(--font-serif);font-size:1.45rem;font-weight:900;letter-spacing:-0.01em}
+header p{margin:0;color:var(--muted);font-size:0.8rem;font-weight:500}
+.header-actions{display:flex;align-items:center;gap:10px}
+
+main{
+  max-width:1640px;margin:0 auto;padding:20px 24px;
+  display:grid;gap:22px;grid-template-columns:1fr;position:relative;z-index:1;
+}
+@media (min-width:1160px){main{grid-template-columns:450px 1fr;align-items:start}}
+
+.panel{
+  background:var(--panel-bg);border:1px solid var(--line);
+  border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);
+  backdrop-filter:blur(14px);
+}
+.panel-title{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;
+  font-weight:800;color:var(--gold);margin:0 0 12px;
+}
+.badge{
+  font-size:0.75rem;padding:3px 10px;border-radius:20px;
+  background:var(--primary-light);color:var(--primary);font-weight:700;
+}
+
+/* Category Scroller & Actions */
+.cats-scroller{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:10px;scrollbar-width:none}
+.cats-scroller::-webkit-scrollbar{display:none}
+.cat-pill{
+  border:1px solid var(--line);background:var(--surface);color:var(--muted);
+  border-radius:20px;padding:5px 13px;font-size:0.76rem;font-weight:700;
+  white-space:nowrap;cursor:pointer;transition:all .18s;display:inline-flex;align-items:center;gap:6px;
+}
+.cat-pill:hover{border-color:var(--primary);color:var(--primary)}
+.cat-pill.active{background:linear-gradient(135deg,var(--primary),var(--secondary));border-color:transparent;color:#fff;box-shadow:0 4px 12px var(--primary-glow)}
+.cat-del-btn{
+  background:rgba(0,0,0,0.18);border:none;border-radius:50%;width:15px;height:15px;
+  display:inline-grid;place-items:center;color:#fff;font-size:0.65rem;cursor:pointer;
+}
+.cat-add-btn{
+  border:1px dashed var(--gold);background:var(--gold-light);color:var(--gold);
+  border-radius:20px;padding:5px 12px;font-size:0.76rem;font-weight:800;cursor:pointer;white-space:nowrap;
+}
+
+.search-box{position:relative;margin-bottom:10px}
+.search-box input{
+  width:100%;padding:10px 12px 10px 36px;border-radius:var(--radius-sm);
+  border:1px solid var(--line);background:var(--surface);font-family:inherit;
+  color:var(--ink);font-size:0.88rem;transition:border-color .15s;
+}
+.search-box input:focus{border-color:var(--primary);outline:none}
+.search-box svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);fill:var(--muted)}
+
+.hint-press{
+  font-size:0.72rem;color:var(--muted);margin:-4px 0 8px;display:flex;align-items:center;gap:4px;
+}
+
+/* Garment Cards with Long-Press styling */
+.garment-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:7px;
+  max-height:240px;overflow-y:auto;padding:2px;margin-bottom:14px;
+}
+.garment-card{
+  padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--line);
+  background:var(--surface);cursor:pointer;text-align:left;transition:all .18s;
+  display:flex;flex-direction:column;gap:3px;position:relative;user-select:none;
+}
+.garment-card:hover{border-color:var(--primary);transform:translateY(-1px)}
+.garment-card.active{border-color:var(--primary);background:var(--primary-light);box-shadow:inset 0 0 0 1px var(--primary)}
+.garment-card.holding{
+  transform:scale(0.96);border-color:var(--gold);box-shadow:0 0 0 2px var(--gold-light);
+  background:var(--gold-light);transition:transform 0.5s ease-out, background 0.5s ease-out;
+}
+.garment-card strong{font-size:0.8rem;font-weight:700;color:var(--ink);line-height:1.25}
+.garment-card span{font-size:0.68rem;color:var(--muted)}
+
+.client-bar{
+  background:linear-gradient(135deg,var(--primary-light),rgba(252,231,243,0.7));
+  border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 14px;
+  margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;
+}
+.client-info{display:flex;align-items:center;gap:10px}
+.client-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--gold));color:#fff;display:grid;place-items:center;font-weight:800;font-size:0.85rem}
+
+.meas-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px}
+.meas-counter{font-size:0.75rem;color:var(--primary);font-weight:700}
+.meas-actions-row{display:flex;gap:6px;align-items:center}
+.meas-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:300px;overflow-y:auto;padding-right:2px}
+.meas-field{display:flex;flex-direction:column;gap:3px;position:relative}
+.meas-field label{font-size:0.72rem;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meas-field.active label{color:var(--primary);font-weight:700}
+.meas-field.custom label{color:var(--teal);font-weight:700}
+.remove-meas{position:absolute;right:2px;top:0;background:none;border:none;color:#ef4444;cursor:pointer;font-size:0.7rem;font-weight:bold}
+.input-wrap{position:relative}
+.input-wrap input{
+  width:100%;font-family:var(--font-mono);font-size:0.88rem;padding:6px 24px 6px 8px;
+  border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--surface);
+  color:var(--ink);
+}
+.input-wrap input:focus{border-color:var(--primary);outline:none;box-shadow:0 0 0 3px var(--primary-glow)}
+.input-wrap .unit{
+  position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  font-size:0.68rem;color:var(--muted);pointer-events:none;font-weight:700;
+}
+
+.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin-bottom:16px;overflow-x:auto}
+.tab{
+  padding:9px 16px;background:none;border:none;border-bottom:2px solid transparent;
+  color:var(--muted);font-weight:700;font-size:0.85rem;cursor:pointer;white-space:nowrap;
+  display:inline-flex;align-items:center;gap:6px;transition:all .18s;
+}
+.tab.active{color:var(--primary);border-bottom-color:var(--primary)}
+
+.dual-viewport{display:grid;grid-template-columns:1fr;gap:16px}
+@media (min-width:920px){.dual-viewport{grid-template-columns:270px 1fr}}
+.sketch-card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px;display:flex;flex-direction:column;align-items:center;position:relative;
+  box-shadow:var(--shadow);
+}
+.sketch-title{font-size:0.75rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.06em}
+#sketchSvg{width:100%;height:355px;background:radial-gradient(circle, rgba(248,79,34,0.03) 0%, transparent 70%);border-radius:var(--radius-sm)}
+
+.canvas-wrap{position:relative;flex:1}
+#out{
+  width:100%;min-height:435px;background-color:var(--surface);
+  background-image:radial-gradient(var(--line) 1.2px, transparent 1.2px);
+  background-size:16px 16px;border-radius:var(--radius);border:1px solid var(--line);
+  box-shadow:inset 0 2px 8px rgba(0,0,0,0.02);display:block;
+}
+.canvas-meta{position:absolute;top:10px;left:10px;display:flex;gap:6px;flex-wrap:wrap;pointer-events:none}
+.tag-badge{
+  background:rgba(255,255,255,0.95);backdrop-filter:blur(4px);
+  padding:4px 9px;border-radius:6px;font-size:0.72rem;font-weight:700;
+  border:1px solid var(--line);color:var(--ink);
+}
+
+/* Haute Couture AI & Inspiration Hub */
+.hub-bar{
+  display:flex;flex-direction:column;gap:9px;padding:14px 16px;
+  background:linear-gradient(135deg,rgba(248,79,34,0.05),rgba(245,158,11,0.05),rgba(236,72,153,0.05));
+  border:1px solid var(--line);border-radius:var(--radius);margin-bottom:16px;
+}
+.hub-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.hub-group-title{
+  font-size:0.72rem;font-weight:800;color:var(--gold);text-transform:uppercase;
+  min-width:145px;display:inline-flex;align-items:center;gap:4px;
+}
+.hub-links{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.hub-link{
+  display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:20px;
+  font-size:0.74rem;font-weight:700;text-decoration:none;transition:all .18s;
+  border:1px solid var(--line);background:var(--surface);color:var(--ink);
+}
+.hub-link:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(0,0,0,0.08)}
+
+/* Distinct Badges for Design Platforms */
+.hub-link.google{border-color:#4285f4;color:#4285f4;background:rgba(66,133,244,0.06)}
+.hub-link.pinterest{border-color:#e60023;color:#e60023;background:rgba(230,0,35,0.06)}
+.hub-link.youtube{border-color:#ff0000;color:#ff0000;background:rgba(255,0,0,0.06)}
+.hub-link.reddit{border-color:#ff4500;color:#ff4500;background:rgba(255,69,0,0.06)}
+.hub-link.claude{border-color:var(--claude);color:var(--claude);background:var(--claude-bg)}
+.hub-link.ms-copilot{border-color:#0078d4;color:#0078d4;background:rgba(0,120,212,0.06)}
+.hub-link.canva{border-color:#7d2ae8;color:#7d2ae8;background:rgba(125,42,232,0.06)}
+.hub-link.firefly{border-color:#fa0f00;color:#fa0f00;background:rgba(250,15,0,0.06)}
+.hub-link.chatgpt{border-color:#10a37f;color:#10a37f;background:rgba(16,163,127,0.06)}
+.hub-link.gemini-ai{border-color:#1a73e8;color:#1a73e8;background:rgba(26,115,232,0.06)}
+.hub-link.ideogram{border-color:#e11d48;color:#e11d48;background:rgba(225,29,72,0.06)}
+.hub-link.krea{border-color:#3b82f6;color:#3b82f6;background:rgba(59,130,246,0.06)}
+.hub-link.patterned{border-color:#0d9488;color:#0d9488;background:rgba(13,148,136,0.06)}
+.hub-link.leonardo{border-color:#9333ea;color:#9333ea;background:rgba(147,51,234,0.06)}
+.hub-link.midjourney{border-color:#475569;color:#334155;background:rgba(71,85,105,0.06)}
+.hub-link.recraft{border-color:#ea580c;color:#ea580c;background:rgba(234,88,12,0.06)}
+
+.copy-prompt-btn{
+  background:linear-gradient(135deg,var(--gold),#ea580c);color:#fff;border:none;
+  font-size:0.72rem;padding:4px 12px;border-radius:20px;cursor:pointer;
+  font-weight:700;display:inline-flex;align-items:center;gap:4px;transition:all .18s;
+  box-shadow:0 2px 8px rgba(217,119,6,0.25);
+}
+.copy-prompt-btn:hover{opacity:.92;transform:scale(1.02)}
+
+/* Client Dossier & File Import Tab */
+.client-dossier-grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media (min-width:720px){.client-dossier-grid{grid-template-columns:290px 1fr}}
+.drop-zone{
+  border:2px dashed var(--primary);border-radius:var(--radius);padding:26px 18px;
+  text-align:center;background:var(--primary-light);cursor:pointer;transition:all .2s;
+}
+.drop-zone:hover{background:rgba(248,79,34,0.12)}
+.media-gallery{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-top:12px;
+}
+.media-card{
+  border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;
+  background:var(--surface);position:relative;display:flex;flex-direction:column;
+}
+.media-card img, .media-card video{width:100%;height:100px;object-fit:cover;background:#000}
+.media-card .file-icon{height:100px;display:grid;place-items:center;font-size:2rem;background:#fef3c7}
+.media-meta{padding:6px;font-size:0.7rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.media-card .del-media{
+  position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.65);color:#fff;
+  border:none;border-radius:50%;width:20px;height:20px;font-size:0.7rem;cursor:pointer;
+}
+
+/* Fabric & Yardage */
+.fabric-card{
+  background:linear-gradient(135deg,rgba(248,79,34,0.05),rgba(245,158,11,0.05));
+  border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:14px;
+}
+.fabric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:10px}
+.fabric-metric{padding:10px 12px;background:var(--surface);border-radius:var(--radius-sm);border:1px solid var(--line)}
+.fabric-metric label{font-size:0.7rem;color:var(--muted);display:block}
+.fabric-metric strong{font-size:1.15rem;color:var(--primary);font-family:var(--font-mono)}
+
+/* Color Wheel Studio */
+.palette-studio{display:grid;grid-template-columns:1fr;gap:20px}
+@media(min-width:640px){.palette-studio{grid-template-columns:210px 1fr}}
+.wheel-wrap{display:flex;flex-direction:column;align-items:center;gap:6px}
+#wheelCanvas{border-radius:50%;cursor:crosshair;box-shadow:0 4px 16px rgba(0,0,0,0.08)}
+.swatches-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:8px}
+.swatch-box{
+  border-radius:var(--radius-sm);border:1px solid var(--line);overflow:hidden;
+  background:var(--surface);text-align:center;box-shadow:var(--shadow);
+}
+.swatch-color{height:55px;width:100%}
+.swatch-meta{padding:5px;font-size:0.72rem;font-weight:700;font-family:var(--font-mono)}
+.swatch-label{font-size:0.68rem;color:var(--muted);display:block}
+
+/* Specs & Instructions */
+#dims{list-style:none;padding:0;margin:12px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px}
+#dims li{padding:8px 10px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);font-size:0.8rem}
+#dims li span{color:var(--muted);display:block;font-size:0.7rem}
+#steps{padding-left:20px;font-size:0.86rem;line-height:1.55}
+
+/* Buttons */
+button.btn{
+  font-family:inherit;font-weight:700;font-size:0.82rem;padding:8px 14px;
+  border-radius:var(--radius-sm);cursor:pointer;transition:all .18s;
+  display:inline-flex;align-items:center;gap:5px;justify-content:center;
+}
+button.primary{
+  background:linear-gradient(135deg,var(--primary),#f59e0b);color:#fff;
+  border:none;box-shadow:0 3px 12px var(--primary-glow);
+}
+button.primary:hover{opacity:.94;transform:translateY(-1px)}
+button.secondary{background:linear-gradient(135deg,var(--secondary),#f43f5e);color:#fff;border:none}
+button.ghost{background:var(--surface);border:1px solid var(--line);color:var(--ink)}
+button.ghost:hover{border-color:var(--primary);color:var(--primary)}
+button.danger{color:#ef4444}
+.row-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px;flex-wrap:wrap}
+
+/* Chat */
+#chatLog{display:flex;flex-direction:column;gap:8px;max-height:280px;overflow-y:auto;padding:6px;margin-bottom:10px}
+.bubble{padding:8px 12px;border-radius:10px;max-width:85%;font-size:0.86rem;line-height:1.4}
+.bubble.user{align-self:flex-end;background:var(--primary);color:#fff}
+.bubble.assistant{align-self:flex-start;background:var(--surface);border:1px solid var(--line)}
+#chatForm{display:flex;gap:8px}
+#chatForm input{flex:1;padding:8px 10px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);color:var(--ink)}
+
+dialog{
+  border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);
+  color:var(--ink);padding:24px;width:min(480px,94vw);box-shadow:0 20px 48px rgba(0,0,0,0.25);
+}
+dialog::backdrop{background:rgba(23,17,14,0.68);backdrop-filter:blur(6px)}
+dialog form{display:flex;flex-direction:column;gap:12px}
+select,input[type=text],input[type=password],input[type=email],textarea{
+  padding:9px 12px;border-radius:var(--radius-sm);border:1px solid var(--line);
+  background:var(--surface);color:var(--ink);font-family:inherit;
+}
+
+@media print{
+  header,.controls,.tabs,.palette-studio,.fabric-card,#chatTab,.row-actions,.hub-bar,dialog,.floating-elements{display:none!important}
+  body,main{background:#fff!important;padding:0;margin:0}
+  .panel{border:none;padding:0;box-shadow:none}
+  .dual-viewport{grid-template-columns:1fr}
+  #out{border:none;box-shadow:none;background:#fff;width:100%!important}
+}
+</style>
+</head>
+<body>
+
+<!-- Ambient Floating Atelier Icons -->
+<div class="floating-elements">
+  <div class="float-icon" style="left:8%;font-size:2.4rem;animation-duration:22s;animation-delay:0s;">✂️</div>
+  <div class="float-icon" style="left:22%;font-size:1.8rem;animation-duration:28s;animation-delay:4s;">🪡</div>
+  <div class="float-icon" style="left:45%;font-size:2.2rem;animation-duration:25s;animation-delay:2s;">🧵</div>
+  <div class="float-icon" style="left:68%;font-size:2.6rem;animation-duration:20s;animation-delay:7s;">👗</div>
+  <div class="float-icon" style="left:85%;font-size:2.0rem;animation-duration:26s;animation-delay:3s;">📏</div>
+  <div class="float-icon" style="left:92%;font-size:1.6rem;animation-duration:30s;animation-delay:9s;">✨</div>
+</div>
+
+<header>
+  <div class="brand">
+    <div class="brand-icon">✦</div>
+    <div>
+      <h1>Pattern Maker Studio</h1>
+      <p>Haute Couture Atelier • 500 Designs • Custom Garments & AI Fashion Engine</p>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="btn ghost" id="switchClientBtn">👤 Client: <strong id="currentClientLabel" style="margin-left:4px;">Default Client</strong></button>
+    <button class="btn ghost" id="keyBtn">🔑 AI Key</button>
+  </div>
+</header>
+
+<main>
+  <!-- LEFT: 500 Garments + Category Manager + Custom Garment Creator -->
+  <section class="panel controls">
+    <div class="client-bar">
+      <div class="client-info">
+        <div class="client-avatar" id="clientAvatarInitials">DC</div>
+        <div>
+          <strong id="clientBarName" style="font-size:0.85rem;display:block;">Default Client Profile</strong>
+          <span id="clientBarFilesCount" style="font-size:0.7rem;color:var(--muted);">0 attachments • Custom measurements</span>
+        </div>
+      </div>
+      <button class="btn ghost" id="openClientDossierBtn" style="padding:4px 8px;font-size:0.75rem;">📁 Manage Files</button>
+    </div>
+
+    <div class="panel-title">
+      <span>1. Garment Catalog</span>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <button class="btn ghost" id="openAddGarmentBtn" style="padding:2px 8px;font-size:0.7rem;color:var(--primary);">➕ Add Garment</button>
+        <span class="badge" id="libraryCount">500 Designs</span>
+      </div>
+    </div>
+
+    <div class="search-box">
+      <svg width="14" height="14" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input type="text" id="garmentSearch" placeholder="Search 500 distinct designs across the world...">
+    </div>
+
+    <div class="hint-press">
+      <span>💡</span> <em>Press & hold (or right-click) any garment to edit name or delete</em>
+    </div>
+
+    <div class="cats-scroller" id="catFilter"></div>
+
+    <div class="garment-grid" id="garmentList"></div>
+
+    <div class="panel-title" style="margin-top:14px;">
+      <span>2. Body Measurements (cm)</span>
+      <span class="badge" id="activeMeasBadge">Active: 4</span>
+    </div>
+
+    <div class="meas-header">
+      <span class="meas-counter" id="measNotice">Showing required measurements</span>
+      <div class="meas-actions-row">
+        <button class="btn ghost" id="addMeasBtn" style="padding:3px 8px;font-size:0.72rem;color:var(--teal);">+ Add Measurement</button>
+        <button class="btn ghost" id="toggleAllMeas" style="padding:3px 8px;font-size:0.72rem;">Show All 49</button>
+      </div>
+    </div>
+
+    <div class="meas-grid" id="measContainer"></div>
+
+    <button class="btn secondary" id="newAiStyleBtn" style="width:100%;margin-top:12px;">
+      ✨ Prompt Gemini to Draft Custom Style
+    </button>
+  </section>
+
+  <!-- RIGHT: Visual Croquis + Measured Pattern + High-Fashion Hub -->
+  <section class="panel">
+    <!-- Comprehensive Design, AI Generation & Claude Research Hub -->
+    <div class="hub-bar">
+      <!-- Search & Video -->
+      <div class="hub-row">
+        <span class="hub-group-title">🔍 Search & Video:</span>
+        <div class="hub-links">
+          <a href="#" target="_blank" rel="noopener noreferrer" class="hub-link google" id="hubGoogle">Google Images</a>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="hub-link pinterest" id="hubPinterest">Pinterest</a>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="hub-link youtube" id="hubYoutube">YouTube</a>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="hub-link reddit" id="hubReddit">Reddit r/sewing</a>
+        </div>
+      </div>
+
+      <!-- AI Fashion Image Generation (Featuring Claude!) -->
+      <div class="hub-row">
+        <span class="hub-group-title">🎨 AI Fashion Images:</span>
+        <div class="hub-links">
+          <a href="#" target="_blank" rel="noopener noreferrer" class="hub-link claude" id="hubClaude">Claude (Anthropic)</a>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="hub-link ms-copilot" id="hubCopilot">MS Designer / Copilot</a>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="hub-link canva" id="hubCanva">Canva Magic Media</a>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="hub-link firefly" id="hubFirefly">Adobe Firefly</a>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="hub-link chatgpt" id="hubChatgpt">ChatGPT</a>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="hub-link gemini-ai" id="hubGeminiAi">Google Gemini</a>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="hub-link ideogram" id="hubIdeogram">Ideogram</a>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="hub-link krea" id="hubKrea">Krea AI</a>
+          <button class="copy-prompt-btn" id="copyPromptBtn" title="Copy fashion prompt for active design to clipboard">📋 Copy AI Prompt</button>
+        </div>
+      </div>
+
+      <!-- AI Seamless & Textile Pattern Creators -->
+      <div class="hub-row">
+        <span class="hub-group-title">🧵 AI Pattern Creators:</span>
+        <div class="hub-links">
+          <a href="#" target="_blank" rel="noopener noreferrer" class="hub-link patterned" id="hubPatterned">Patterned.ai</a>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="hub-link leonardo" id="hubLeonardo">Leonardo.ai</a>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="hub-link midjourney" id="hubMidjourney">Midjourney</a>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="hub-link recraft" id="hubRecraft">Recraft.ai</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="patternTab">📐 Garment & Pattern Canvas</button>
+      <button class="tab" data-tab="clientTab">👤 Client Dossier & Files</button>
+      <button class="tab" data-tab="fabricTab">🧵 Fabric & Yardage</button>
+      <button class="tab" data-tab="colorTab">🎨 Color Wheel Studio</button>
+      <button class="tab" data-tab="chatTab">💬 AI Assistant</button>
+    </div>
+
+    <!-- TAB 1: Visual Croquis + Measured Pattern -->
+    <div class="tab-pane" id="patternTab">
+      <div class="dual-viewport">
+        <div class="sketch-card">
+          <div style="display:flex;justify-content:space-between;width:100%;align-items:center;margin-bottom:4px;">
+            <span class="sketch-title" id="sketchLabel">Finished Garment</span>
+            <div style="display:flex;gap:4px;">
+              <button class="btn ghost" id="renameGarmentBtn" style="padding:2px 7px;font-size:0.7rem;color:var(--primary);">✏️ Rename</button>
+              <button class="btn ghost danger" id="deleteCurrentGarmentBtn" style="padding:2px 7px;font-size:0.7rem;">🗑️ Delete</button>
+            </div>
+          </div>
+          <svg id="sketchSvg" viewBox="0 0 200 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Garment visualization"></svg>
+          <span style="font-size:0.7rem;color:var(--muted);margin-top:4px;text-align:center;">Colors reflect current atelier palette</span>
+        </div>
+
+        <div class="canvas-wrap">
+          <div class="canvas-meta">
+            <span class="tag-badge" id="metaGarment">Garment Pattern</span>
+            <span class="tag-badge" id="metaPieces">2 Pieces</span>
+            <span class="tag-badge">Metric Scale: 1:1 cm</span>
+          </div>
+          <svg id="out" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Drafted pattern pieces with measurements"></svg>
+        </div>
+      </div>
+
+      <p id="summary" style="margin:10px 0 4px;font-style:italic;color:var(--muted);font-size:0.86rem;"></p>
+      <ul id="dims"></ul>
+      <h3 style="font-size:0.92rem;margin:14px 0 6px;">Sewing Instructions</h3>
+      <ol id="steps"></ol>
+    </div>
+
+    <!-- TAB 2: Client Dossier & File Import -->
+    <div class="tab-pane" id="clientTab" hidden>
+      <div class="client-dossier-grid">
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px;">
+          <h3 style="margin:0 0 8px;font-size:1.1rem;font-family:var(--font-serif);" id="dossierClientName">Client Profile</h3>
+          <label style="font-size:0.75rem;font-weight:700;">Client Name:
+            <input type="text" id="editClientName" style="width:100%;margin-top:2px;margin-bottom:8px;">
+          </label>
+          <label style="font-size:0.75rem;font-weight:700;">Fitting Notes / Event Date:
+            <textarea id="editClientNotes" rows="4" style="width:100%;margin-top:2px;font-family:inherit;font-size:0.82rem;" placeholder="e.g. Prefers French seams and extra ease in waist."></textarea>
+          </label>
+          <button class="btn primary" id="saveClientProfileBtn" style="width:100%;margin-top:10px;">Save Profile</button>
+        </div>
+
+        <div>
+          <div class="drop-zone" id="dropZone">
+            <div style="font-size:2rem;margin-bottom:4px;">📥</div>
+            <strong>Import Photos, Fitting Videos, Sketches or PDF Spec Sheets</strong>
+            <p style="margin:4px 0 10px;font-size:0.78rem;color:var(--muted);">Click to browse or drag & drop files here for this client</p>
+            <input type="file" id="fileInput" multiple accept="image/*,video/*,.pdf,.doc,.docx" style="display:none;">
+            <button type="button" class="btn ghost" onclick="$('fileInput').click()">Select Files from Device</button>
+          </div>
+
+          <div style="margin-top:14px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:0.8rem;font-weight:700;text-transform:uppercase;color:var(--gold);">Imported Files & Fitting Media</span>
+              <span class="badge" id="mediaBadge">0 files</span>
+            </div>
+            <div class="media-gallery" id="mediaGallery"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Fabric & Yardage -->
+    <div class="tab-pane" id="fabricTab" hidden>
+      <div class="fabric-card">
+        <h3 style="margin:0 0 6px;font-family:var(--font-serif);font-size:1.15rem;" id="fabricTitle">Recommended Textiles</h3>
+        <p id="fabricNotes" style="font-size:0.86rem;color:var(--muted);margin:0 0 10px;"></p>
+        
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
+          <label style="font-size:0.82rem;font-weight:700;">Fabric Bolt Width:
+            <select id="boltWidthSelect" style="margin-left:6px;">
+              <option value="115">115 cm (45 in) Standard</option>
+              <option value="140" selected>140 cm (55 in) Wide</option>
+              <option value="150">150 cm (60 in) Extra Wide</option>
+              <option value="90">90 cm (35 in) Narrow / Traditional</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="fabric-grid">
+          <div class="fabric-metric">
+            <label>Estimated Yardage (Meters)</label>
+            <strong id="yardageMeters">1.8 m</strong>
+          </div>
+          <div class="fabric-metric">
+            <label>Estimated Yardage (Yards)</label>
+            <strong id="yardageYards">2.0 yd</strong>
+          </div>
+          <div class="fabric-metric">
+            <label>Recommended Stretch</label>
+            <strong id="fabricStretch">0% – 5%</strong>
+          </div>
+          <div class="fabric-metric">
+            <label>Notions & Interfacing</label>
+            <strong id="fabricNotions">Waist interfacing, 20cm zip</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: Color Wheel Studio -->
+    <div class="tab-pane" id="colorTab" hidden>
+      <div class="palette-studio">
+        <div class="wheel-wrap">
+          <canvas id="wheelCanvas" width="200" height="200"></canvas>
+          <span style="font-size:0.75rem;color:var(--muted);">Click wheel to select base hue</span>
+        </div>
+        <div>
+          <label style="font-size:0.82rem;font-weight:700;display:block;margin-bottom:6px;">Color Harmony Mode:
+            <select id="harmonyType" style="width:100%;margin-bottom:10px;">
+              <option value="analogous" selected>Analogous (Soft, natural flow)</option>
+              <option value="complementary">Complementary (Striking contrast)</option>
+              <option value="triadic">Triadic (Vibrant & balanced)</option>
+              <option value="split">Split-Complementary (Sophisticated)</option>
+              <option value="monochromatic">Monochromatic (Tone-on-tone)</option>
+            </select>
+          </label>
+          <div class="swatches-grid" id="swatchesContainer"></div>
+          <p style="font-size:0.75rem;color:var(--muted);margin-top:12px;">
+            ✦ The primary and accent colors update the finished garment preview illustration in real-time.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: Gemini AI Design Assistant -->
+    <div class="tab-pane" id="chatTab" hidden>
+      <div id="chatLog"></div>
+      <form id="chatForm">
+        <input type="text" id="chatInput" placeholder="e.g. Add 6 cm flare to hem and convert waistband to elastic..." autocomplete="off">
+        <button type="submit" class="btn primary" id="chatSend">Send</button>
+      </form>
+    </div>
+
+    <div class="row-actions">
+      <button class="btn ghost" id="redraftCurrent">🔄 Redraft with Current Measurements</button>
+      <button class="btn primary" id="printBtn">🖨️ Print Scale Pattern</button>
+    </div>
+  </section>
+</main>
+
+<!-- Long-Press Action Modal for Garments -->
+<dialog id="garmentActionDialog">
+  <div style="text-align:center;margin-bottom:14px;">
+    <span class="badge" id="actionGarmentCat" style="margin-bottom:6px;display:inline-block;">Category</span>
+    <h3 style="margin:4px 0 2px;font-size:1.2rem;font-family:var(--font-serif);" id="actionGarmentTitle">Garment Name</h3>
+    <p style="font-size:0.75rem;color:var(--muted);margin:0;">Select an action for this garment</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <button type="button" class="btn primary" id="actionEditBtn" style="width:100%;">✏️ Edit Name</button>
+    <button type="button" class="btn ghost danger" id="actionDeleteBtn" style="width:100%;">🗑️ Delete Garment</button>
+    <button type="button" class="btn ghost" data-close style="width:100%;margin-top:4px;">Cancel</button>
+  </div>
+</dialog>
+
+<!-- Measurement Picker Modal -->
+<dialog id="measPickerDialog">
+  <h3>Add Anatomical Measurement Point</h3>
+  <input type="text" id="measPickerSearch" placeholder="Filter from 49 anatomical points (e.g. bicep, rise, nape)..." style="width:100%;margin-bottom:10px;">
+  <div id="measPickerList" style="max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;"></div>
+  <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px;">
+    <button type="button" class="btn ghost" data-close>Close</button>
+  </div>
+</dialog>
+
+<!-- Client Switcher / Creator Dialog -->
+<dialog id="clientDialog">
+  <form id="newClientForm">
+    <h3>Client Management</h3>
+    <label style="font-size:0.8rem;font-weight:700;">Select Existing Client Profile:
+      <select id="clientDropdown" style="width:100%;margin-top:4px;"></select>
+    </label>
+    <div style="border-top:1px solid var(--line);margin:10px 0;"></div>
+    <label style="font-size:0.8rem;font-weight:700;">Or Create New Client:
+      <input type="text" id="newClientInputName" placeholder="Client Full Name (e.g. Amina Bello)" style="width:100%;margin-top:4px;">
+    </label>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px;">
+      <button type="button" class="btn ghost danger" id="deleteClientBtn">Delete Selected</button>
+      <button type="button" class="btn ghost" data-close>Cancel</button>
+      <button type="submit" class="btn primary">Activate / Create</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Rename Garment Dialog -->
+<dialog id="renameDialog">
+  <form id="renameForm">
+    <h3>Rename Garment</h3>
+    <label style="font-size:0.8rem;font-weight:700;">Garment Title:
+      <input type="text" id="renameInput" style="width:100%;margin-top:4px;" required>
+    </label>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px;">
+      <button type="button" class="btn ghost" data-close>Cancel</button>
+      <button type="submit" class="btn primary">Save Name</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Add New Garment to ANY Category Dialog -->
+<dialog id="addGarmentDialog">
+  <form id="addGarmentForm">
+    <h3>Create & Add New Garment</h3>
+    <label style="font-size:0.8rem;font-weight:700;">Garment Name:
+      <input type="text" id="newGarmentName" placeholder="e.g. Silk Organza Cape Dress" required style="width:100%;margin-top:4px;">
+    </label>
+    <label style="font-size:0.8rem;font-weight:700;">Assign to Category:
+      <select id="newGarmentCategory" style="width:100%;margin-top:4px;" required></select>
+    </label>
+    <label style="font-size:0.8rem;font-weight:700;">Pattern Silhouette Architecture:
+      <select id="newGarmentEngine" style="width:100%;margin-top:4px;">
+        <option value="dress">Dress / Gown Architecture</option>
+        <option value="shirt">Jacket / Shirt / Coat Architecture</option>
+        <option value="skirt">Skirt / Wrap Architecture</option>
+        <option value="trouser">Trouser / Shorts Architecture</option>
+        <option value="corset">Corset / Bustier Architecture</option>
+        <option value="robe">Robe / Kaftan / Cape Architecture</option>
+      </select>
+    </label>
+    <label style="font-size:0.8rem;font-weight:700;">Recommended Textile & Drape:
+      <input type="text" id="newGarmentFabric" placeholder="e.g. Silk faille, wool crepe" value="Fine natural tailoring textile" style="width:100%;margin-top:4px;">
+    </label>
+    <label style="font-size:0.8rem;font-weight:700;">Notions & Closures:
+      <input type="text" id="newGarmentNotions" placeholder="e.g. 50cm zip, fusible interfacing" value="Concealed zipper, matching thread" style="width:100%;margin-top:4px;">
+    </label>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px;">
+      <button type="button" class="btn ghost" data-close>Cancel</button>
+      <button type="submit" class="btn primary">Add to Atelier</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Create Category Dialog -->
+<dialog id="newCatDialog">
+  <form id="newCatForm">
+    <h3>Create New Category</h3>
+    <label style="font-size:0.8rem;font-weight:700;">Category Title:
+      <input type="text" id="newCatTitle" placeholder="e.g. Bridal & Haute Couture" style="width:100%;margin-top:4px;" required>
+    </label>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px;">
+      <button type="button" class="btn ghost" data-close>Cancel</button>
+      <button type="submit" class="btn primary">Add Category</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Gemini Key Settings Modal -->
+<dialog id="keyDialog">
+  <form id="keyForm">
+    <h3>Gemini API Settings</h3>
+    <label style="font-size:0.82rem;">Google AI Studio API Key:
+      <input type="password" id="keyInput" placeholder="AIzaSy..." autocomplete="off" required style="width:100%;margin-top:4px;">
+    </label>
+    <label style="font-size:0.82rem;">Drafting Model:
+      <select id="modelSelect" style="width:100%;margin-top:4px;">
+        <option value="gemini-2.5-flash">gemini-2.5-flash (Recommended)</option>
+        <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+        <option value="gemini-2.0-flash">gemini-2.0-flash</option>
+        <option value="gemini-3.8-flash">gemini-3.8-flash</option>
+      </select>
+    </label>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:8px;">
+      <button type="button" class="btn ghost danger" id="keyClear">Clear Key</button>
+      <button type="button" class="btn ghost" data-close>Cancel</button>
+      <button type="submit" class="btn primary">Save Settings</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- New Style Prompt Dialog -->
+<dialog id="styleDialog">
+  <form id="styleForm">
+    <h3>Design Custom Garment with Gemini</h3>
+    <label style="font-size:0.82rem;">Style Name:
+      <input type="text" id="styleName" placeholder="e.g. Asymmetrical Bias Evening Gown" required style="width:100%;margin-top:4px;">
+    </label>
+    <label style="font-size:0.82rem;">Assign Category:
+      <select id="styleCategorySelect" style="width:100%;margin-top:4px;"></select>
+    </label>
+    <label style="font-size:0.82rem;">Description & Style Details:
+      <textarea id="styleDesc" rows="4" placeholder="e.g. Bias-cut silk midi dress with cowl neckline and cross back." required style="width:100%;margin-top:4px;font-family:inherit;padding:8px;border-radius:8px;border:1px solid var(--line);"></textarea>
+    </label>
+    <div style="display:flex;justify-content:flex-end;gap:8px;">
+      <button type="button" class="btn ghost" data-close>Cancel</button>
+      <button type="submit" class="btn primary" id="generateSubmit">Draft with AI</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+/* =====================================================================
+   1. 49 ANATOMICAL MEASUREMENTS
+   ===================================================================== */
+const MEAS_49 = [
+  {id:'neckCirc', label:'Neck Circumference', group:'Neck', def:36, step:0.5, min:25},
+  {id:'neckBase', label:'Neck Base Girth', group:'Neck', def:39, step:0.5, min:28},
+  {id:'napeToFrontNeck', label:'Nape to Front Neck', group:'Neck', def:18, step:0.5, min:10},
+  {id:'highBust', label:'High Bust', group:'Bust', def:85, step:0.5, min:40},
+  {id:'bust', label:'Full Bust', group:'Bust', def:90, step:0.5, min:40},
+  {id:'underbust', label:'Underbust', group:'Bust', def:76, step:0.5, min:40},
+  {id:'bustSpan', label:'Bust Apex to Apex', group:'Bust', def:19, step:0.5, min:12},
+  {id:'shoulderToApex', label:'Shoulder to Apex', group:'Bust', def:25, step:0.5, min:15},
+  {id:'acrossFrontChest', label:'Across Front Chest', group:'Bust', def:34, step:0.5, min:20},
+  {id:'naturalWaist', label:'Natural Waist', group:'Waist', def:70, step:0.5, min:40},
+  {id:'highWaist', label:'High Waist', group:'Waist', def:73, step:0.5, min:40},
+  {id:'lowWaist', label:'Low Waist', group:'Waist', def:78, step:0.5, min:40},
+  {id:'frontWaistLength', label:'Front Waist Length', group:'Waist', def:43, step:0.5, min:25},
+  {id:'backWaistLength', label:'Back Waist Length', group:'Waist', def:41, step:0.5, min:25},
+  {id:'bodiceLen', label:'Center Front Bodice Length', group:'Waist', def:38, step:0.5, min:20},
+  {id:'sideSeamWaist', label:'Underarm to Waist', group:'Waist', def:20, step:0.5, min:10},
+  {id:'fullTorsoGirth', label:'Full Torso Girth', group:'Waist', def:148, step:1, min:100},
+  {id:'highHip', label:'High Hip (Abdomen)', group:'Hip', def:88, step:0.5, min:50},
+  {id:'hip', label:'Full Hip / Seat', group:'Hip', def:98, step:0.5, min:50},
+  {id:'hipDepth', label:'Waist to Hip Depth', group:'Hip', def:20, step:0.5, min:10},
+  {id:'crotchDepth', label:'Crotch Depth (Rise)', group:'Hip', def:27, step:0.5, min:15},
+  {id:'totalCrotchLen', label:'Total Crotch Length', group:'Hip', def:68, step:0.5, min:40},
+  {id:'acrossBack', label:'Across Back Blades', group:'Shoulder/Arm', def:36, step:0.5, min:20},
+  {id:'shoulderSlope', label:'Shoulder Length', group:'Shoulder/Arm', def:12.5, step:0.5, min:7},
+  {id:'totalShoulderWidth', label:'Total Shoulder Width', group:'Shoulder/Arm', def:40, step:0.5, min:25},
+  {id:'armholeCirc', label:'Armhole Circumference', group:'Shoulder/Arm', def:42, step:0.5, min:25},
+  {id:'bicepCirc', label:'Bicep Circumference', group:'Shoulder/Arm', def:28, step:0.5, min:18},
+  {id:'elbowCirc', label:'Elbow Circumference', group:'Shoulder/Arm', def:25, step:0.5, min:15},
+  {id:'forearmCirc', label:'Forearm Circumference', group:'Shoulder/Arm', def:23, step:0.5, min:14},
+  {id:'wristCirc', label:'Wrist Circumference', group:'Shoulder/Arm', def:16, step:0.5, min:10},
+  {id:'sleeveLen', label:'Full Sleeve Length', group:'Shoulder/Arm', def:60, step:0.5, min:20},
+  {id:'shortSleeveLen', label:'Short Sleeve Length', group:'Shoulder/Arm', def:22, step:0.5, min:10},
+  {id:'thighCirc', label:'Full Thigh', group:'Leg', def:56, step:0.5, min:30},
+  {id:'midThighCirc', label:'Mid-Thigh', group:'Leg', def:50, step:0.5, min:25},
+  {id:'kneeCirc', label:'Knee Circumference', group:'Leg', def:37, step:0.5, min:20},
+  {id:'calfCirc', label:'Calf Circumference', group:'Leg', def:35, step:0.5, min:20},
+  {id:'ankleCirc', label:'Ankle Circumference', group:'Leg', def:23, step:0.5, min:15},
+  {id:'outseam', label:'Outseam (Waist-Floor)', group:'Leg', def:104, step:0.5, min:60},
+  {id:'inseam', label:'Inseam (Crotch-Floor)', group:'Leg', def:77, step:0.5, min:50},
+  {id:'waistToKnee', label:'Waist to Knee', group:'Leg', def:58, step:0.5, min:35},
+  {id:'kneeToFloor', label:'Knee to Floor', group:'Leg', def:46, step:0.5, min:25},
+  {id:'skirtLen', label:'Skirt Finished Length', group:'Garment Specs', def:60, step:0.5, min:15},
+  {id:'hemCirc', label:'Hem Circumference', group:'Garment Specs', def:130, step:1, min:50},
+  {id:'shirtLen', label:'Top / Shirt Length', group:'Garment Specs', def:68, step:0.5, min:25},
+  {id:'corsetLen', label:'Corset Finished Length', group:'Garment Specs', def:28, step:0.5, min:12},
+  {id:'dressLen', label:'Dress Total Length', group:'Garment Specs', def:105, step:1, min:50},
+  {id:'legOpening', label:'Leg Opening (Hem)', group:'Garment Specs', def:48, step:1, min:20},
+  {id:'cuffWidth', label:'Cuff Width (Flat)', group:'Garment Specs', def:22, step:0.5, min:10},
+  {id:'seam', label:'Seam Allowance (All)', group:'Garment Specs', def:1.5, step:0.1, min:0.5}
+];
+
+/* =====================================================================
+   2. 500 GLOBAL GARMENTS (10 SPECIALIZED CATEGORIES)
+   ===================================================================== */
+const DEFAULT_CATEGORIES = {
+  all: 'All',
+  outerwear: 'Outerwear (50)',
+  dresses: 'Dresses & Gowns (60)',
+  african: 'African Heritage (50)',
+  asian: 'Asian & Mid-East (60)',
+  european: 'European Folk (50)',
+  latin: 'Latin American (40)',
+  skirts: 'Skirts (50)',
+  tops: 'Tops & Shirts (50)',
+  trousers: 'Trousers (50)',
+  corsetry: 'Corsets & Intimates (45)'
+};
+
+function getStoredCategories() {
+  try {
+    const raw = localStorage.getItem('pattern-maker:categories-v2');
+    return raw ? JSON.parse(raw) : {...DEFAULT_CATEGORIES};
+  } catch (e) {
+    return {...DEFAULT_CATEGORIES};
+  }
+}
+let activeCategories = getStoredCategories();
+
+const RAW_500 = [];
+
+const outerwearList = [
+  'Single-Breasted Wool Blazer','Double-Breasted Peak Lapel Blazer','Heritage Trench Coat','Asymmetric Moto Biker Jacket','MA-1 Aviator Bomber Jacket',
+  'Chesterfield Velvet Collar Overcoat','Naval Melton Double Peacoat','Fishtail Arctic Expedition Parka','Hooded Circular Wool Capelet','Victorian Velvet Opera Cloak',
+  'Type III Trucker Denim Jacket','Floor-Length Kimono Duster Coat','British Royal Navy Duffle Coat','4-Pocket Belted Safari Bush Jacket','G9 Harrington Baracuta Jacket',
+  'French Bleu de Travail Chore Coat','Cropped Silk Shrug Bolero','Quilted Silk Velvet Smoking Jacket','Snap-Front Streetwear Coach Jacket','Southwestern Blanket Poncho Coat',
+  'Letterman Wool & Leather Varsity','Boxy Down Quilted Puffer Jacket','Minimalist Wool Walking Car Coat','Sherlock Inverness Cape Overcoat','M-65 Tactical Military Field Jacket',
+  'Retro Colorblocked Windbreaker','Single-Breasted Rubberized Rain Mac','Victorian Double-Breasted Frock Coat','Evening Dress Tailcoat White Tie','Regency Cropped Spencer Jacket',
+  'Edwardian Belted Norfolk Tweed Jacket','B-3 Aviator Shearling Bomber Coat','Red Riding Hood Velvet Cape','Formal Haori Silk Jacket','British Country Waxed Cotton Jacket',
+  'French Suede Minimalist Blouson','Heritage Tricot Zip Track Jacket','Ultra-Light Ripstop Rain Poncho','Brushed Flannel Oversized Shacket','Matrix Longline Leather Duster Coat',
+  'Balenciaga Oversized Cocoon Coat','Slit-Arm Wool Tailored Cape Coat','American Heritage Cotton Barn Coat','Cropped Spencer Tuxedo Bolero','Christian Dior Bar Peplum Jacket',
+  'Longline Ribbed Knit Duster','Equestrian Diamond Quilted Vest','Sherpa Shearling Flight Vest','Belted Storm Flap Trench Cape','Max Mara Style Belted Camel Coat'
+];
+
+const dressesList = [
+  'Audrey Sheath Dress','60s Mod Colorblock Shift Dress','DVF Silk Jersey Wrap Dress','Regency Empire Line Gown','90s Bias Cut Slip Dress',
+  '50s New Look Fit & Flare Gown','Pleated Belted Shirtwaist Dress','Tiered Prairie Bohemian Maxi','Red Carpet Mermaid Tail Gown','Haute Couture Princess Ballgown',
+  'Grecian Halter Neck Evening Gown','Sculptural Bandage Bodycon Dress','Oversized Gathering Smock Dress','1920s Flapper Drop-Waist Dress','Resort Silk Caftan Maxi',
+  'Roman Column Evening Gown','80s Balloon Hem Cocktail Dress','Empire Babydoll Tiered Mini','Goddess One-Shoulder Asymmetric Dress','30s Liquid Silk Godet Gown',
+  'Tailored Denim Apron Pinafore','Double-Breasted Tuxedo Blazer Dress','1940s Floral Vintage Tea Dress','Contemporary Cutout Crepe Gown','Balenciaga Trapeze Tent Dress',
+  'Sweetheart Neckline Bustier Gown','High-Slit Slinky Jersey Gown','Peplum Waist Pencil Dress','High-Low Waterfall Taffeta Dress','Plunge V-Neck Chiffon Maxi',
+  'Victorian Bustle Reception Dress','Edwardian Lawn Tiered Gown','Crinoline Bell Ballroom Gown','Drop-Waist Pleated Tennis Dress','Cowl Backless Satin Slip Dress',
+  'Corseted Basque Waist Ballerina Gown','Prairie Tiered Cotton Smock Dress','Pleated Grecian Goddess Chiffon Gown','Halterneck Mermaid Fishtail Gown','Tulip Petal Wrap Midi Dress',
+  'Kimono Sleeve Silk Maxi Gown','Bell Sleeve Cottagecore Babydoll','Tiered Ruffle Flamenco Maxi Dress','Square Neck Halter Sundress','Shirred Bodice Linen Sun Dress',
+  'Bardot Flounce Off-Shoulder Gown','Trapeze Tent Linen Mini Dress','Corseted Tulle Ballerina Dress','Halter Bias Evening Slip Dress','Draped Sarong Knot Evening Gown',
+  'Bustier Midi Pencil Slit Dress','Tiered Summer Sun Dress','Tiered Silk Chiffon Slip Gown','Asymmetric Hem Tunic Dress','Tailored Blazer Wrap Mini Dress',
+  'Pleated Halter Column Gown','Victorian Lace High-Neck Tea Gown','Regency Muslin Day Dress','Gothic Brocade Corset Gown','Empire Babydoll Eyelet Gown'
+];
+
+const africanList = [
+  'Grand Agbada 3-Piece Robe','Buba & Iro Wrap Set','Classic Angelina Dashiki Tunic','Senegalese Grand Boubou Robe','Moroccan Silk Kaftan Gown',
+  'Ghanaian Kaba & Slot Gown','Original Indigo Shweshwe Dress','Isidwaba Pleated Leather Skirt','Maghrebi Hooded Djellaba','Ugandan Gomesi Robe',
+  'Ethiopian Habesha Kemis Gown','Kitenge Peplum Blouse','Swahili Kanzu Robe','Ankara Mermaid Tail Gown','Mozambican Capulana Wrap',
+  'Bamenda Toghu Royal Tunic','Gonja Dan Fiki Sleeveless Smock','Egyptian Cotton Jellabiya','Asante Kente Wrap Toga','Zulu Isicholo Beaded Apron',
+  'Malagasy Merina Lamba Gown','East African Kanga 2-Piece','Malian Glazed Bazin Riche Suit','Fulani Handspun Smock','Ndebele Graphic Ring Dress',
+  'Aso-Oke Ceremonial Ipele Set','Grand Moroccan Gandora Robe','Maasai Shuka Checked Wrap','Dashiki Tunic Shirt Dress','Kente Peplum Corset Top',
+  'Swahili Khanga Evening Robe','Yoruba Danshiki Tunic Shirt','Bamileke Feather Beaded Robe','Owerri George Beaded Wrapper','Tuareg Indigo Tagelmust Tunica',
+  'Xhosa Umbhaco Braided Skirt','Dinka Beaded Corset Bodice','Hausa Embroidered Babban Riga','Senegalese Royal Mbubb Gown','Shona Traditional Tunic Dress',
+  'Nigerian Senator Kaftan Tunic','Adire Indigo Shift Dress','Kikoy Striped Wrap Sarong','Berber Wool Hooded Cape','Ghanaian Batakari Fugu Smock',
+  'Kalabari Riverine Beaded Gown','Efik Onyonyo Victorian Gown','Edo Okuku Beaded Coral Bodice','Kikuyu Beaded Leather Apron','Kirdi Beaded Cache-Sexe Skirt'
+];
+
+const asianList = [
+  'Japanese Formal Kimono Robe','Summer Breathable Cotton Yukata','Korean Hanbok Jeogori Blouse','Korean Chima Wrap Skirt','Mandarin Collar Cheongsam Qipao',
+  'Vietnamese Silk Ao Dai Tunic','Indian Sari Blouse Choli','Punjabi Salwar Kameez Suit','Men’s Classic Kurta Pajama','Royal Embroidered Velvet Sherwani',
+  'Indonesian Encim Kebaya','Malay Songket Baju Kurung','Filipino Piña Barong Tagalog','Royal Chut Thai Siwalai Gown','Bridal Lehenga Circular Skirt',
+  'Draped Men’s Silk Border Dhoti','Arab Gulf Thobe Dishdasha','Flowing Butterfly Nida Abaya','Ceremonial Arab Bisht Cloak','Chinese Ming Dynasty Hanfu',
+  'Traditional Tangzhuang Tang Suit','Emirati Kandura Tarboosh','Mongolian Deel Sheepskin Robe','Kashmiri Embroidered Wool Pheran','Tibetan Chupa Wool Wrap Dress',
+  'Lao Handwoven Tin Sinh Skirt','Javanese Batik Tulis Sarong','Knee-Length Tailored Achkan Coat','Mughal Angrakha Cross-Tunic','Gathered Voile Churidar Pants',
+  'South Indian Check Cotton Lungi','Peranakan Nyonya Beaded Kebaya','Malay Baju Melayu Teluk Belanga','Modern Cheongsam Crop Top','Hanfu Ruqun Wrap Blouse & Skirt',
+  'Nepali Daura Suruwal Suit','Cambodian Sampeot Chon Kben','Songket Gold Brocade Formal Gown','Gulf Niqab Cape Wrap','Egyptian Galabeya Tunic Robe',
+  'Mughal Peshwas Flared Gown','Balinese Lace Kebaya','Omani Tasseled Dishdasha','Bhutanese Gho Robe','Bhutanese Kira Wrap Dress',
+  'Thai Pha Nung Pleated Wrap','Indonesian Pagi-Sore Sarong','Japanese Pleated Hakama Pants','Japanese Summer Jinbei Set','Japanese Silk Haori Jacket',
+  'Okinawan Ryukyu Bingata Robe','Kazakh Shapan Embroidered Coat','Uzbek Ikat Silk Chapan Robe','Turkmen Kurte Bridal Cape','Pashtun Khet Partug Frock',
+  'Iraqi Sheer Hashimi Gown','Palestinian Embroidered Thob','Yemeni Sanani Jambiya Robe','Bedouin Embroidered Thobe Gown','Kuwaiti Silk Dara’a Gown'
+];
+
+const europeanList = [
+  'Alpine Dirndl Bodice & Skirt','Scottish Tartan 8-Yard Kilt','Spanish Flamenco Bata de Cola','Breton Fisherman Vareuse Smock','Russian Folk Sarafan Pinafore',
+  'Bavarian Deerskin Lederhosen Shorts','Tudor 16th C. Lace-Up Kirtle','18th Century Reeded Stays','Greek Folk Fustanella Pleated Kilt','Polish Noble Velvet Kontusz',
+  'Romanian Folk IE Blouse','Victorian Basque Point Bodice','English Smock Frock Drabbet','Guernsey Island Fisher Jumper','Renaissance Peascod Doublet',
+  'Savile Row Tweed Hacking Jacket','Victorian Bombazine Mourning Dress','French Sailor Square-Collar Smock','French Riviera Striped Marinière','Romantic Era Velvet Opera Cloak',
+  'Norwegian Telemark Folk Bunad','Highland Arisaid Tartan Plaid','Edwardian Sidesaddle Riding Habit','Dutch Volendam Pleated Skirt','Flamenco Practice Ruffle Skirt',
+  'Renaissance Laced Corset Vest','Spanish Matador Chaquetilla Jacket','Morris Dance Tasseled Smock','Basque Country Peasant Skirt','Renaissance Boned Stiff Bodice',
+  'Polish Lady Kontusik Jacket','Bavarian Tracht Loden Jacket','Highland Tartan Treble Trews','Cossack Wool Circassian Kaftan','Welsh Traditional Flannel Gown',
+  'Corsican Shepherd Wool Smock','Sardinian Embroidered Folk Dress','Irish Step Dance Solo Dress','Regency Wool Tailored Pelisse','Edwardian Lawn Lace Tea Gown',
+  'Swedish Folkdräkt Embroidered Apron','Hungarian Kalocsa Floral Vest','Ukrainian Embroidered Vyshyvanka','Czech Folk Kordulka Bodice','Austrian Loden Wool Cape',
+  'Portuguese Viana do Castelo Dress','Swiss Alpine Tracht Corset','Finnish Folk Striped Wool Skirt','Danish Hedebo Embroidered Smock','Italian Tarantella Frill Dress'
+];
+
+const latinList = [
+  'Cuban 4-Pocket Irish Linen Guayabera','Mexican Oaxaca Handwoven Huipil','Panamanian Pollera de Gala Gown','Peruvian Alpaca Woven Poncho','Argentine Gaucho Bombacha Pants',
+  'Cuban Rumbera Ruffle Crop Top','Colombian Highlands Ruana Wrap','Mayan Enredo Wrap Tube Skirt','Guna Yala Mola Appliqué Blouse','Mexican Mariachi Charro Jacket',
+  'Chilean Huaso Chamanto Cloak','Bolivian Striped Aguayo Dress','Colombian Cumbia Ruffle Skirt','Tehuana Embroidered Velvet Dress','Andean Faja Belted Tunic',
+  'Boricua Guaracha Stage Dress','Brazilian Carmen Baiana Gown','Quechua Pollera Layered Skirt','Venezuelan Liqui-Liqui Suit','Pampa Leather Gaucho Vest',
+  'Mexican Striped Wool Jorongo','Gaucho Boleadora Leather Pants','Chola Paceña Pleated Skirt','Chilean Huaso Tailored Waistcoat','Mexican Sombrerero Pleated Shirt',
+  'Mayan Tzute Shoulder Wrap','Zapotec Striped Wool Tunic','Afro-Colombian Mapalé Dance Top','Mexican China Poblana Skirt','Otomi Embroidered Tenango Blouse',
+  'Rumbero Ruffle Sleeve Dance Shirt','Pampa Fringe Border Poncho','Amazonian Cashibo Painted Tunic','Tupi Feathered Ceremonial Cape','Tarahumara Pleated Calico Skirt',
+  'Wayuu Tunic Fringe Dress','Veracruz Son Jarocho White Lace Dress','Argentine Tango Slit Evening Dress','Salsa Tiered Frill Stage Dress','Mexican Folk Off-Shoulder Blouse'
+];
+
+const skirtsList = [
+  'Tailored A-Line Flared Skirt','High-Waist Office Pencil Skirt','360 Full Circular Twirl Skirt','Half-Circle Flowing Midi Skirt','Classic Tie-Waist Wrap Skirt',
+  'Sharp Pleated Tennis Mini Skirt','Boho 4-Tier Gathered Maxi Skirt','Trumpet Fluted Hem Skirt','8-Insert Flared Godet Skirt','Asymmetric High-Low Waterfall Skirt',
+  'Pleated Front Tulip Skirt','Pareo Beach Sarong Wrap Skirt','Structured 6-Gore Paneled Skirt','Y2K Front Slit Denim Mini Skirt','Permanent Accordion Pleat Skirt',
+  'Utility Cargo Pocket Midi Skirt','Paperbag Ruffle Waist Skirt','Tartan Schoolgirl Kilt Mini Skirt','Gothic Fishtail Train Skirt','Ballerina Multi-Tier Tulle Skirt',
+  'Alpine Dirndl Gathered Skirt','Asymmetrical Draped Sarong Skirt','Tiered Ruffle Flamenco Skirt','Pegged Slouchy Pencil Skirt','Slit Back Walking Pencil Skirt',
+  'Bubble Pouf Hemline Mini Skirt','Bias Cut Liquid Satin Midi Skirt','Tiered Peasant Prairie Skirt','Handkerchief Hem Asymmetric Skirt','Box Pleated School Uniform Skirt',
+  'Button-Front A-Line Denim Midi','Sarong Knot Draped Beach Skirt','Scalloped Hem Wool Mini Skirt','Draped Mermaid Slit Evening Skirt','Split Front Flared Dancing Maxi',
+  'Knife Pleated Tartan Wool Skirt','Wrap Skort with Contrast Tie','Flounce Hem High-Waist Midi Skirt','Tiered Bohemian Gauze Maxi Skirt','Origami Fold Architectural Skirt',
+  'Wrap Pencil Skirt with D-Ring','Fringe Hem Suede Leather Skirt','Pleated Vegan Leatherette Midi Skirt','Godet Lace Insert Evening Skirt','Skater Flared Circle Mini Skirt',
+  'Tiered Chiffon Cascade Maxi Skirt','Peplum Waist Pencil Skirt','Slit Thigh Goddess Wrap Maxi Skirt','Tiered Mesh Romantic Tutu Skirt','Ruched Drawstring Side Mini Skirt'
+];
+
+const topsList = [
+  'Sloper Fitting Tailored Bodice','Princess Seam Peplum Blouse','Classic Button-Down Oxford Shirt','Ballet Cross Wrap Bodice Top','90s High-Neck Halter Crop Top',
+  'Draped Silk Cowl Neck Blouse','Boning Cup Bustier Crop Top','Athletic Raglan Sleeve Tee','Romantic Bishop Sleeve Blouse','Off-the-Shoulder Bardot Top',
+  'Dolman Kimono Sleeve Blouse','Vintage Peter Pan Collar Blouse','Minimalist Sleeveless Silk Shell','Fine Ribbed Knit Turtleneck','Victorian High-Neck Lace Blouse',
+  'Cottagecore Milkmaid Peasant Top','Nautical Square Sailor Collar Top','70s Executive Pussybow Blouse','Underwire Bustier Camisole','Marcella Bib Tuxedo Evening Shirt',
+  'Camp Collar Printed Resort Shirt','Peasant Smocked Peplum Blouse','Surplice Drape Wrap Top','Keyhole Front Halter Blouse','Cold-Shoulder Flounce Top',
+  'Smocked Elastic Tube Bandeau','Asymmetrical Draped Jersey Top','Mock Neck Sleeveless Muscle Tee','Victorian Boned Corset Blouse','Bell Sleeve Bohemian Blouse',
+  'French Cuff Banker Stripe Shirt','Western Pearl Snap Denim Shirt','Cap Sleeve Sandwashed Silk Top','Tie-Front Linen Crop Blouse','Ruched Mesh Long Sleeve Top',
+  'Safari Dual-Pocket Utility Shirt','Bateau Neck Nautical Boatneck Tee','Structured Corset Basque Peplum','Tailored Halter Neck Waistcoat','Bolero Shrug Top with Ties',
+  'Mandarin Collar Breathable Linen Shirt','Scallop Edge Collar Blouse','Victorian Ruffle Jabot Shirt','Plunge Halter Neckline Bodysuit','Draped Kimono Tunic Top',
+  'One-Shoulder Grecian Bodice','Wrap Peplum Sash Blouse','Poet Sleeve Regency Blouse','Smocked Crop Top with Straps','Basque Point Waistline Bodice'
+];
+
+const trousersList = [
+  'Savile Row Tailored Straight Trousers','High-Rise Wide-Leg Palazzo Pants','Audrey Hepburn Cigarette Pants','70s High-Rise Flared Bell Bottoms','Cropped Pleated A-Line Culottes',
+  'Tailored City Bermuda Shorts','Belted Paperbag Waist Trousers','Double Forward Pleat Slacks','Multi-Pocket Tactical Cargo Pants','Tailored Knit Leisure Joggers',
+  'Draped Bohemian Harem Pants','Classic 5-Pocket Bootcut Jeans','Wide Flared Gaucho Crop Pants','High-Waist Sailor Front-Flap Pants','Workwear Utility Carpenter Jeans',
+  '50s Vintage Pedal Pusher Capris','Side-Slit Resort Palazzo Pants','Relaxed Linen Drawstring Chinos','Equestrian Tailored Riding Jodhpurs','Black-Tie Grosgrain Stripe Trousers',
+  'Drop-Crotch Carrot Chinos','Pleated Wide-Leg Wool Trousers','Flared Split-Hem Ribbed Leggings','Sailor Bell-Bottom Dungarees','Cargo Utility Pocket Shorts',
+  'High-Rise Raw Denim Skinny Jeans','Boyfriend Distressed Denim Jeans','Track Pants with Snap Sides','Stirrup Equestrian Stretch Leggings','Pleated Gurkha Double-Buckle Trousers',
+  'Bootleg Crepe Suiting Slacks','Palazzo Split Leg Skort','Painter Duck Canvas Chinos','High-Waisted 90s Mom Jeans','Thai Fisherman Wrap Pants',
+  'Flared Palazzo Evening Trousers','Tailored Cigarette Walking Shorts','Drawstring Harem Lounge Pants','Slim Ankle Wool Suiting Slacks','Sailor Front Flap Meltons',
+  'High-Rise Tailored Trouser Shorts','Double Pleat Cotton Chinos','Paperbag Waist Utility Shorts','Wide Leg Sailor Linen Pants','Flared Striped Track Pants',
+  'Utility Flight Suit Trousers','Relaxed Linen Slit Culottes','Pleated Bermuda Slacks','Slim Fit Stretch Chino Trousers','Drop-Crotch Relaxed Linen Pants'
+];
+
+const corsetryList = [
+  'Victorian Overbust Steel-Boned Corset','Underbust Waspie Waist Cincher','Underwire Cupped Bustier Bodice','Tailored Boiler Suit Jumpsuit','Tuxedo Evening Lapel Jumpsuit',
+  'Wide-Leg Wrap Surplice Jumpsuit','Summer Enzyme-Washed Linen Romper','Cropped Culotte Jumpsuit','Classic Denim Overalls Dungarees','Strapless Bustier Evening Jumpsuit',
+  'Flight Suit Zip Romper','One-Shoulder Drape Jumpsuit','Thong Stretch Knit Bodysuit','Bias Cut Silk Charmeuse Camisole','Triangle Scalloped Lace Bralette',
+  '18th Century Reeded Stays Corset','Vintage Silk Dressing Robe de Chambre','Silk Georgette French Knickers','Classic Maillot One-Piece Swimsuit','Halter Cutout Monokini Swimsuit',
+  'Renaissance Boned Corset Bodice','Elizabethan Pair of Stays','Plunge Neck Silk Teddy Romper','Underwire Lace Corselet','Waist Cincher Wide Belt',
+  'Halter Neckline Flared Jumpsuit','Satin Teddy Cami Romper','Cupped Corset Basque Gown','Halter Swim Romper with Skirt','Cutout Monokini with Ring',
+  'Silk Tap Pants with Lace','Victorian Boned Girdle','Bustier Bandage Bodycon Romper','Denim Utility Workwear Jumpsuit','Utility Boiler Jumpsuit with Belt',
+  'Strapless Linen Beach Romper','Halter Neckline Bustier Top','Corset Basque Point Top','Ribbed Modal Knit Bodysuit','High-Leg 80s Cutout Swimsuit',
+  'Lace Chemise Nightgown','Halter Neckline Bodysuit','Bustier Slip Undergarment','Victorian Lace Ruffle Bloomers','Silk Kimono Lounge Robe'
+];
+
+function populateRaw(list, cat, engine, baseMeas, fabric, notions) {
+  list.forEach((name, idx) => {
+    RAW_500.push({
+      id: `${cat}-${idx+1}`,
+      name,
+      cat,
+      engine,
+      meas: baseMeas,
+      fabric,
+      stretch: '0% – 5%',
+      notions
+    });
+  });
+}
+
+populateRaw(outerwearList, 'outerwear', 'shirt', ['bust','naturalWaist','acrossBack','sleeveLen','shirtLen'], 'Worsted wool, cashmere, gabardine', 'Horn buttons, canvas');
+populateRaw(dressesList, 'dresses', 'dress', ['bust','naturalWaist','hip','dressLen'], 'Silk faille, Crepe, Taffeta', '55cm invisible zipper');
+populateRaw(africanList, 'african', 'robe', ['bust','totalShoulderWidth','dressLen'], 'Brocade, African Wax, Damask', 'Embroidery metallic thread');
+populateRaw(asianList, 'asian', 'robe', ['bust','totalShoulderWidth','sleeveLen','dressLen'], 'Chirimen silk, Jacquard, Tencel', 'Pankou frog knots');
+populateRaw(europeanList, 'european', 'dress', ['bust','naturalWaist','skirtLen'], 'Wool broadcloth, Linen, Tartan', 'Silver pewter buttons, lacing');
+populateRaw(latinList, 'latin', 'shirt', ['bust','naturalWaist','shirtLen'], 'Irish Linen, Poplin, Alpaca', 'Alforza tucks, ties');
+populateRaw(skirtsList, 'skirts', 'skirt', ['naturalWaist','hip','skirtLen','hemCirc'], 'Crepe, Gabardine, Twill', 'Zipper & waistband interfacing');
+populateRaw(topsList, 'tops', 'shirt', ['bust','naturalWaist','shirtLen','sleeveLen'], 'Cotton poplin, Silk, Linen', 'Buttons & interfacing');
+populateRaw(trousersList, 'trousers', 'trouser', ['naturalWaist','hip','crotchDepth','inseam','outseam','legOpening'], 'Wool gabardine, Chino, Denim', 'Pant fly zip, waistband curtain');
+populateRaw(corsetryList, 'corsetry', 'corset', ['bust','underbust','naturalWaist','corsetLen'], 'English Coutil, Brocade, Raw silk', 'Spiral steel boning, busk');
+
+// Custom renames and user-created garments from localStorage
+function getStoredRenames() {
+  try {
+    const raw = localStorage.getItem('pattern-maker:renames-v3');
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) { return {}; }
+}
+const customRenames = getStoredRenames();
+
+function getStoredCustomGarments() {
+  try {
+    const raw = localStorage.getItem('pattern-maker:custom-garments-v2');
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) { return []; }
+}
+let customGarments = getStoredCustomGarments();
+
+function getStoredDeletedIds() {
+  try {
+    const raw = localStorage.getItem('pattern-maker:deleted-garments');
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) { return []; }
+}
+let deletedGarmentIds = new Set(getStoredDeletedIds());
+
+// Master Garment List (500 + Custom minus Deleted)
+let GARMENTS_500 = [...customGarments, ...RAW_500]
+  .filter(g => !deletedGarmentIds.has(g.id))
+  .map(g => ({
+    ...g,
+    name: customRenames[g.id] || g.name
+  }));
+
+/* =====================================================================
+   3. CLIENT PROFILE & DOSSIER CRM SYSTEM
+   ===================================================================== */
+const CLIENTS_STORAGE_KEY = 'pattern-maker:clients-v6';
+
+function loadClients() {
+  try {
+    const raw = localStorage.getItem(CLIENTS_STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return [{
+    id: 'default',
+    name: 'Default Client Profile',
+    notes: 'Standard fit measurements. Prefers natural breathable fabrics.',
+    measurements: Object.fromEntries(MEAS_49.map(m => [m.id, m.def])),
+    activeGarmentId: 'outerwear-1',
+    customMeasIds: [],
+    files: []
+  }];
+}
+
+let allClients = loadClients();
+let activeClientId = allClients[0].id;
+
+function getActiveClient() {
+  return allClients.find(c => c.id === activeClientId) || allClients[0];
+}
+
+function saveClients() {
+  try {
+    localStorage.setItem(CLIENTS_STORAGE_KEY, JSON.stringify(allClients));
+  } catch (err) {
+    alert('Browser storage quota reached! Remove large media files to save.');
+  }
+}
+
+/* =====================================================================
+   4. COLOR WHEEL & HARMONY STUDIO
+   ===================================================================== */
+const state = {
+  baseHue: 28,
+  harmony: 'analogous',
+  boltWidth: 140,
+  showAllMeas: false,
+  activeCatFilter: 'all'
+};
+
+function hslToHex(h, s, l) {
+  l /= 100;
+  const a = s * Math.min(l, 1 - l) / 100;
+  const f = n => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color).toString(16).padStart(2, '0');
+  };
+  return `#${f(0)}${f(8)}${f(4)}`;
+}
+
+function drawColorWheel() {
+  const canvas = $('wheelCanvas');
+  const ctx = canvas.getContext('2d');
+  const cx = canvas.width / 2, cy = canvas.height / 2, radius = cx - 4;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  for (let angle = 0; angle < 360; angle += 1) {
+    const start = (angle - 1) * Math.PI / 180;
+    const end = (angle + 1) * Math.PI / 180;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, radius, start, end);
+    ctx.closePath();
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+    grad.addColorStop(0, '#ffffff');
+    grad.addColorStop(1, `hsl(${angle}, 100%, 50%)`);
+    ctx.fillStyle = grad;
+    ctx.fill();
+  }
+
+  const rad = state.baseHue * Math.PI / 180;
+  const mx = cx + (radius * 0.72) * Math.cos(rad);
+  const my = cy + (radius * 0.72) * Math.sin(rad);
+  ctx.beginPath();
+  ctx.arc(mx, my, 7, 0, 2 * Math.PI);
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(mx, my, 6, 0, 2 * Math.PI);
+  ctx.strokeStyle = '#000';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+}
+
+function getPaletteColors() {
+  const h = state.baseHue;
+  let hues = [];
+  switch(state.harmony){
+    case 'complementary': hues = [h, (h + 180) % 360, (h + 180) % 360, h]; break;
+    case 'triadic': hues = [h, (h + 120) % 360, (h + 240) % 360, (h + 60) % 360]; break;
+    case 'split': hues = [h, (h + 150) % 360, (h + 210) % 360, (h + 180) % 360]; break;
+    case 'monochromatic': hues = [h, h, h, h]; break;
+    default: hues = [h, (h + 30) % 360, (h + 330) % 360, (h + 60) % 360]; break;
+  }
+  return {
+    primary: hslToHex(hues[0], 85, state.harmony === 'monochromatic' ? 45 : 52),
+    lining: hslToHex(hues[1], state.harmony === 'monochromatic' ? 40 : 60, state.harmony === 'monochromatic' ? 82 : 78),
+    trim: hslToHex(hues[2], 80, state.harmony === 'monochromatic' ? 25 : 42),
+    accent: hslToHex(hues[3], 95, 60)
+  };
+}
+
+function updateColorPalettes() {
+  drawColorWheel();
+  const pal = getPaletteColors();
+  const roles = [
+    {label:'Primary Body', hex: pal.primary},
+    {label:'Lining / Facing', hex: pal.lining},
+    {label:'Trims & Piping', hex: pal.trim},
+    {label:'Accent / Notions', hex: pal.accent}
+  ];
+
+  $('swatchesContainer').innerHTML = roles.map(r => `
+    <div class="swatch-box">
+      <div class="swatch-color" style="background:${r.hex};"></div>
+      <div class="swatch-meta">
+        <span class="swatch-label">${r.label}</span>
+        ${r.hex.toUpperCase()}
+      </div>
+    </div>
+  `).join('');
+
+  renderGarmentCroquis();
+}
+
+/* =====================================================================
+   5. VISUAL CROQUIS PREVIEW
+   ===================================================================== */
+function renderGarmentCroquis() {
+  const client = getActiveClient();
+  const g = GARMENTS_500.find(item => item.id === client.activeGarmentId) || GARMENTS_500[0];
+  const { primary, accent, lining } = getPaletteColors();
+  const svg = $('sketchSvg');
+  $('sketchLabel').textContent = g.name;
+
+  const mannequin = `
+    <ellipse cx="100" cy="30" rx="14" ry="18" fill="#fde68a" stroke="#d97706" stroke-width="1.2"/>
+    <path d="M93,48 L107,48 L105,62 L95,62 Z" fill="#fde68a"/>
+    <path d="M72,68 C80,62 120,62 128,68 L122,120 L78,120 Z" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+    <line x1="88" y1="210" x2="88" y2="305" stroke="#d97706" stroke-width="3" stroke-linecap="round"/>
+    <line x1="112" y1="210" x2="112" y2="305" stroke="#d97706" stroke-width="3" stroke-linecap="round"/>
+  `;
+
+  let garmentPath = '';
+
+  if (g.engine === 'skirt') {
+    garmentPath = `
+      <path d="M78,65 L122,65 L116,112 L84,112 Z" fill="#ffffff" stroke="#d97706" stroke-width="1" stroke-dasharray="2,2"/>
+      <path d="M84,112 L116,112 L138,225 C115,232 85,232 62,225 Z" fill="${primary}" stroke="${accent}" stroke-width="1.8"/>
+      <rect x="83" y="108" width="34" height="6" rx="2" fill="${accent}"/>
+      <path d="M96,114 Q94,170 88,227 M104,114 Q106,170 112,227" stroke="rgba(0,0,0,0.15)" stroke-width="1.2" fill="none"/>
+    `;
+  } else if (g.engine === 'trouser') {
+    garmentPath = `
+      <path d="M80,65 L120,65 L116,112 L84,112 Z" fill="#ffffff" stroke="#d97706" stroke-width="1" stroke-dasharray="2,2"/>
+      <path d="M84,112 L116,112 L120,150 L118,290 L102,290 L100,165 L98,290 L82,290 L80,150 Z" fill="${primary}" stroke="${accent}" stroke-width="1.8"/>
+      <rect x="83" y="108" width="34" height="6" rx="2" fill="${accent}"/>
+      <line x1="91" y1="130" x2="90" y2="288" stroke="rgba(0,0,0,0.15)" stroke-width="1"/>
+      <line x1="109" y1="130" x2="110" y2="288" stroke="rgba(0,0,0,0.15)" stroke-width="1"/>
+    `;
+  } else if (g.engine === 'bodice' || g.engine === 'corset') {
+    garmentPath = `
+      <path d="M74,68 L126,68 L118,126 L100,136 L82,126 Z" fill="${primary}" stroke="${accent}" stroke-width="1.8"/>
+      <path d="M92,68 L94,130 M108,68 L106,130 M100,68 L100,136" stroke="${accent}" stroke-width="1.2" stroke-dasharray="3,1"/>
+      <path d="M82,126 L118,126 L130,220 L70,220 Z" fill="#f8fafc" stroke="#d97706" stroke-width="1" stroke-dasharray="2,2"/>
+    `;
+  } else if (g.engine === 'robe') {
+    garmentPath = `
+      <path d="M50,75 L76,64 L124,64 L150,75 L158,160 L136,160 L134,285 C115,290 85,290 66,285 L64,160 L42,160 Z" fill="${primary}" stroke="${accent}" stroke-width="1.8"/>
+      <path d="M96,64 L104,64 L104,288 L96,288 Z" fill="${accent}"/>
+      <path d="M88,64 L100,90 L112,64" stroke="${lining}" stroke-width="2" fill="none"/>
+    `;
+  } else if (g.engine === 'dress') {
+    garmentPath = `
+      <path d="M76,65 L124,65 L116,110 L144,275 C115,282 85,282 56,275 L84,110 Z" fill="${primary}" stroke="${accent}" stroke-width="1.8"/>
+      <path d="M76,65 L55,115 L66,118 L80,80 Z" fill="${primary}" stroke="${accent}" stroke-width="1.2"/>
+      <path d="M124,65 L145,115 L134,118 L120,80 Z" fill="${primary}" stroke="${accent}" stroke-width="1.2"/>
+      <path d="M90,65 Q100,82 110,65" fill="${lining}" stroke="${accent}" stroke-width="1.2"/>
+      <line x1="84" y1="110" x2="116" y2="110" stroke="${accent}" stroke-width="2"/>
+    `;
+  } else {
+    // Shirt / Jacket / Outerwear
+    garmentPath = `
+      <path d="M74,65 L126,65 L124,155 L76,155 Z" fill="${primary}" stroke="${accent}" stroke-width="1.8"/>
+      <path d="M74,65 L52,145 L64,148 L80,95 Z" fill="${primary}" stroke="${accent}" stroke-width="1.2"/>
+      <path d="M126,65 L148,145 L136,148 L120,95 Z" fill="${primary}" stroke="${accent}" stroke-width="1.2"/>
+      <polygon points="85,65 100,78 100,65" fill="${accent}"/>
+      <polygon points="115,65 100,78 100,65" fill="${accent}"/>
+      <line x1="100" y1="78" x2="100" y2="155" stroke="${accent}" stroke-width="1.8"/>
+      <path d="M78,155 L122,155 L124,280 L76,280 Z" fill="#f8fafc" stroke="#d97706" stroke-width="1" stroke-dasharray="2,2"/>
+    `;
+  }
+
+  svg.innerHTML = mannequin + garmentPath;
+}
+
+/* =====================================================================
+   6. ON-PATTERN SCALE DRAWING WITH DIMENSIONS
+   ===================================================================== */
+function dimLine(x1, y1, x2, y2, label, offset = 6) {
+  const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+  const isHoriz = Math.abs(y2 - y1) < Math.abs(x2 - x1);
+  const ox = isHoriz ? 0 : offset;
+  const oy = isHoriz ? offset : 0;
+  return `
+    <g class="dim-callout">
+      <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--primary)" stroke-width="0.38" stroke-dasharray="1.5,1"/>
+      <circle cx="${x1}" cy="${y1}" r="0.75" fill="var(--primary)"/>
+      <circle cx="${x2}" cy="${y2}" r="0.75" fill="var(--primary)"/>
+      <rect x="${mx + ox - 9.5}" y="${my + oy - 2.8}" width="19" height="5.6" rx="1.5" fill="var(--surface)" stroke="var(--primary)" stroke-width="0.3"/>
+      <text x="${mx + ox}" y="${my + oy + 1}" font-size="2.6" fill="var(--ink)" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="600">${label}</text>
+    </g>
+  `;
+}
+
+function skirtPieces(m){
+  const sa = m.seam, wH = m.naturalWaist/4 + 1, hH = m.hip/4 + 2, L = m.skirtLen, hipD = 20;
+  const hemH = m.hemCirc ? Math.max(hH + 1, m.hemCirc/4) : hH + 6;
+  const pts = [[0,-sa],[wH+sa,-sa],[hH+sa,hipD],[hemH+sa,L+sa],[0,L+sa]];
+  const d = 'M' + pts.map(p => p.join(',')).join(' L') + ' Z';
+  const w = hemH + sa, h = L + 2*sa + 12;
+
+  const piece = (name) => {
+    const dims = `
+      ${dimLine(0, -sa - 4, wH + sa, -sa - 4, `${(wH).toFixed(1)} cm`)}
+      ${dimLine(hemH + sa + 4, -sa, hemH + sa + 4, L + sa, `L:${L} cm`)}
+      ${dimLine(0, L + sa + 4, hemH + sa, L + sa + 4, `Hem:${(hemH).toFixed(1)} cm`)}
+    `;
+    return {name, d, gl:[wH*0.4, L*0.3, L*0.7], w: w + 8, h, lx: w/2, ly: L + sa + 6, dims};
+  };
+  return [piece('Front (Cut 1 on fold)'), piece('Back (Cut 2)')];
+}
+
+function bodicePieces(m){
+  const sa = m.seam, B = m.bust, bl = m.bodiceLen;
+  const neckH = 8, shX = B/6 + 1, sideX = B/4 + 2, armD = bl*0.55, waistY = bl, top = -sa;
+  const sx = sideX + sa, wy = waistY + sa;
+  const front = `M0,10 Q0,${top} ${neckH},${top} L${shX},${top+2} Q${shX+4},${armD*0.5} ${sx},${armD} L${sx},${wy} L0,${wy} Z`;
+  const back  = `M0,2 Q0,${top} ${neckH+1},${top} L${shX+1},${top+1} Q${shX+5},${armD*0.5} ${sx+0.5},${armD} L${sx+0.5},${wy} L0,${wy} Z`;
+  const h = wy - top + 14;
+
+  const fDims = `
+    ${dimLine(0, top - 4, shX, top - 4, `Sh:${(shX).toFixed(1)}`)}
+    ${dimLine(sx + 4, armD, sx + 4, wy, `Side:${(wy-armD).toFixed(1)}`)}
+    ${dimLine(0, wy + 4, sx, wy + 4, `Waist:${(sx).toFixed(1)}`)}
+  `;
+  return [
+    {name:'Front Bodice (Cut 1 on fold)', d:front, gl:[sideX*0.5, armD+4, waistY-4], w:sx + 8, h, lx:sx/2, ly:wy+6, dims:fDims},
+    {name:'Back Bodice (Cut 2)', d:back, gl:[sideX*0.5, armD+4, waistY-4], w:sx+8.5, h, lx:(sx+0.5)/2, ly:wy+6, dims:fDims}
+  ];
+}
+
+function trouserPieces(m){
+  const sa = m.seam, wH = m.naturalWaist/4 + 1, hemH = m.legOpening/4, outseam = m.inseam + m.crotchDepth, hipD = 20;
+  const leg = (rise, hipH, name) => {
+    const innerX = hemH*0.5, cx = hipH*0.55;
+    const d = `M0,${-sa} L${wH+sa},${-sa} L${hipH+sa},${hipD} L${hemH+sa},${outseam+sa} L${innerX},${outseam+sa} Q${innerX},${rise} ${cx},${rise} Q${cx*0.5},${rise+2} 0,${rise} Z`;
+    const w = Math.max(wH, hipH, hemH) + sa;
+    const dims = `
+      ${dimLine(0, -sa - 4, wH + sa, -sa - 4, `W:${(wH).toFixed(1)}`)}
+      ${dimLine(w + 4, -sa, w + 4, outseam + sa, `Out:${outseam}`)}
+      ${dimLine(innerX, outseam + sa + 4, hemH + sa, outseam + sa + 4, `Hem:${(hemH).toFixed(1)}`)}
+      ${dimLine(-6, 0, -6, rise, `Rise:${rise}`)}
+    `;
+    return {name, d, gl:[hipH*0.3, 10, outseam-10], w: w + 12, h: outseam + 2*sa + 14, lx: w/2, ly: outseam + sa + 6, dims};
+  };
+  return [leg(m.crotchDepth, m.hip/4 + 2, 'Front Leg (Cut 2)'), leg(m.crotchDepth + 3, m.hip/4 + 3, 'Back Leg (Cut 2)')];
+}
+
+function corsetPieces(m){
+  const sa = m.seam, topH = m.underbust/4 + 1, waistH = m.naturalWaist/4 + 1, hipH = m.hip/4 + 2, L = m.corsetLen, wy = L*0.45;
+  const d = `M0,${-sa} L${topH+sa},${-sa} L${waistH+sa},${wy} L${hipH+sa},${L+sa} L0,${L+sa} Z`;
+  const w = hipH + sa + 8;
+  const dims = `
+    ${dimLine(0, -sa - 4, topH + sa, -sa - 4, `Top:${(topH).toFixed(1)}`)}
+    ${dimLine(w - 2, -sa, w - 2, L + sa, `L:${L}`)}
+    ${dimLine(0, L + sa + 4, hipH + sa, L + sa + 4, `Hip:${(hipH).toFixed(1)}`)}
+  `;
+  const piece = name => ({name, d, gl:[topH*0.5, 6, L-6], w, h: L + 2*sa + 14, lx: (hipH+sa)/2, ly: L + sa + 6, dims});
+  return [piece('Center Front Panel (Cut 2)'), piece('Back Lacing Panel (Cut 2)')];
+}
+
+function shirtPieces(m){
+  const sa = m.seam, B = m.bust, sideX = B/4 + 3, shX = B/6 + 1, neckH = 8, armD = 22, top = -sa;
+  const L = m.shirtLen + sa, hem = sideX + 5 + sa, sx = sideX + sa;
+  const front = `M0,10 Q0,${top} ${neckH},${top} L${shX},${top+2} Q${shX+4},${armD*0.5} ${sx},${armD} L${hem},${L} L0,${L} Z`;
+  const back  = `M0,2 Q0,${top} ${neckH+1},${top} L${shX+1},${top+1} Q${shX+5},${armD*0.5} ${sx+0.5},${armD} L${hem+0.5},${L} L0,${L} Z`;
+  const h = L - top + 14, w = hem + 8;
+  const bodyDims = `
+    ${dimLine(0, L + 4, hem, L + 4, `Hem:${(hem).toFixed(1)}`)}
+    ${dimLine(w, top, w, L, `L:${m.shirtLen}`)}
+  `;
+  const body = (d, name) => ({name, d, gl:[sideX*0.5, armD+4, L-8], w, h, lx: w/2, ly: L + 6, dims: bodyDims});
+  const cap = 6, W = B/2.5, C = m.cuffWidth, Ls = m.sleeveLen, x0 = (W - C)/2;
+  const sleeveDims = `
+    ${dimLine(0, -cap - 4, W, -cap - 4, `Bicep:${(W).toFixed(1)}`)}
+    ${dimLine(W + 4, 0, W + 4, Ls, `Sleeve L:${Ls}`)}
+    ${dimLine(x0, Ls + 4, (W+C)/2, Ls + 4, `Cuff:${(C).toFixed(1)}`)}
+  `;
+  const sleeve = {name:'Sleeve (Cut 2)', d:`M0,0 Q${W/2},${-cap} ${W},0 L${(W+C)/2},${Ls} L${x0},${Ls} Z`, gl:[W/2, 8, Ls-8], w: W + 10, h: Ls + cap + 14, lx: W/2, ly: Ls + 6, dims: sleeveDims};
+  return [body(front, 'Front (Cut 2)'), body(back, 'Back (Cut 1 on fold)'), sleeve];
+}
+
+function piecesForCurrent(){
+  const client = getActiveClient();
+  const m = client.measurements;
+  const g = GARMENTS_500.find(item => item.id === client.activeGarmentId) || GARMENTS_500[0];
+  if (g.engine === 'bodice') return bodicePieces(m);
+  if (g.engine === 'trouser') return trouserPieces(m);
+  if (g.engine === 'corset') return corsetPieces(m);
+  if (g.engine === 'shirt') return shirtPieces(m);
+  return skirtPieces(m);
+}
+
+function esc(v){ return String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+const $ = id => document.getElementById(id);
+
+function drawPieces(pieces){
+  let x = 0, maxH = 0, parts = '';
+  pieces.forEach(p => {
+    const ax = p.gl[0];
+    parts += `
+      <g transform="translate(${x - (p.x0 || 0)},${-(p.y0 || 0)})">
+        <path d="${p.d}" fill="var(--surface)" stroke="var(--ink)" stroke-width="0.5" stroke-linejoin="round"/>
+        <line x1="${ax}" y1="${p.gl[1]}" x2="${p.gl[3] ?? ax}" y2="${p.gl[2]}" stroke="var(--primary)" stroke-width="0.38" stroke-dasharray="2,1"/>
+        <path d="M${ax},${p.gl[1]} l-0.8,1.6 h1.6 z" fill="var(--primary)"/>
+        <path d="M${ax},${p.gl[2]} l-0.8,-1.6 h1.6 z" fill="var(--primary)"/>
+        <text x="${p.lx}" y="${p.ly}" font-size="3.2" fill="var(--ink)" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-weight="700">${esc(p.name)}</text>
+        <text x="${p.lx}" y="${p.ly + 3.8}" font-size="2.2" fill="var(--muted)" text-anchor="middle" font-family="JetBrains Mono, monospace">SA: ${getActiveClient().measurements.seam || 1.5} cm included</text>
+        ${p.dims || ''}
+      </g>`;
+    x += p.w + 10;
+    maxH = Math.max(maxH, p.h);
+  });
+  const svg = $('out');
+  svg.setAttribute('viewBox', `-6 -12 ${Math.max(x, 24)} ${maxH + 18}`);
+  svg.innerHTML = parts;
+}
+
+/* =====================================================================
+   7. UI RENDERING & LONG-PRESS INTERACTION ENGINE
+   ===================================================================== */
+let currentActionGarmentId = null;
+
+function renderCategoryPills() {
+  const scroller = $('catFilter');
+  const cats = Object.entries(activeCategories);
+  scroller.innerHTML = cats.map(([k, label]) => `
+    <button class="cat-pill ${k === state.activeCatFilter ? 'active' : ''}" data-cat="${k}">
+      ${esc(label)}
+      ${k.startsWith('cat_') ? `<span class="cat-del-btn" data-delcat="${k}" title="Delete Category">✕</span>` : ''}
+    </button>
+  `).join('') + `<button class="cat-add-btn" id="openAddCatBtn">+ New Category</button>`;
+
+  scroller.querySelectorAll('.cat-pill').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      if (e.target.dataset.delcat) return;
+      scroller.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      state.activeCatFilter = btn.dataset.cat;
+      renderGarmentList();
+    });
+  });
+
+  scroller.querySelectorAll('.cat-del-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const catKey = btn.dataset.delcat;
+      if (confirm(`Delete the "${activeCategories[catKey]}" category?`)) {
+        delete activeCategories[catKey];
+        try {
+          localStorage.setItem('pattern-maker:categories-v2', JSON.stringify(activeCategories));
+        } catch (err) {}
+        state.activeCatFilter = 'all';
+        renderCategoryPills();
+        renderGarmentList();
+      }
+    });
+  });
+
+  $('openAddCatBtn').addEventListener('click', () => {
+    $('newCatTitle').value = '';
+    $('newCatDialog').showModal();
+  });
+}
+
+function renderGarmentList() {
+  const query = $('garmentSearch').value.toLowerCase();
+  const activeCat = state.activeCatFilter;
+  const client = getActiveClient();
+
+  const filtered = GARMENTS_500.filter(g => {
+    const matchesCat = activeCat === 'all' || g.cat === activeCat;
+    const matchesSearch = g.name.toLowerCase().includes(query) || g.cat.toLowerCase().includes(query) || (g.fabric && g.fabric.toLowerCase().includes(query));
+    return matchesCat && matchesSearch;
+  });
+
+  $('libraryCount').textContent = `${GARMENTS_500.length} Designs`;
+  $('garmentList').innerHTML = filtered.map(g => `
+    <div class="garment-card ${g.id === client.activeGarmentId ? 'active' : ''}" data-id="${g.id}">
+      <strong>${esc(g.name)}</strong>
+      <span>${(activeCategories[g.cat] || g.cat).toUpperCase()}</span>
+    </div>
+  `).join('');
+
+  // Wire long-press, right-click, and tap selection
+  $('garmentList').querySelectorAll('.garment-card').forEach(card => {
+    const id = card.dataset.id;
+    setupLongPress(card, id);
+  });
+}
+
+/* Long-Press and Context Menu Handler */
+function setupLongPress(card, id) {
+  let pressTimer = null;
+  let didLongPress = false;
+  let startX = 0, startY = 0;
+
+  const start = (e) => {
+    didLongPress = false;
+    if (e.touches && e.touches[0]) {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }
+    card.classList.add('holding');
+    pressTimer = setTimeout(() => {
+      didLongPress = true;
+      card.classList.remove('holding');
+      if (navigator.vibrate) {
+        try { navigator.vibrate(40); } catch(err) {}
+      }
+      openGarmentActionDialog(id);
+    }, 500);
+  };
+
+  const cancel = () => {
+    card.classList.remove('holding');
+    if (pressTimer) {
+      clearTimeout(pressTimer);
+      pressTimer = null;
+    }
+  };
+
+  const move = (e) => {
+    if (e.touches && e.touches[0]) {
+      const dx = Math.abs(e.touches[0].clientX - startX);
+      const dy = Math.abs(e.touches[0].clientY - startY);
+      if (dx > 8 || dy > 8) cancel();
+    }
+  };
+
+  card.addEventListener('mousedown', start);
+  card.addEventListener('touchstart', start, { passive: true });
+  card.addEventListener('mouseup', cancel);
+  card.addEventListener('mouseleave', cancel);
+  card.addEventListener('touchend', cancel);
+  card.addEventListener('touchcancel', cancel);
+  card.addEventListener('touchmove', move, { passive: true });
+
+  card.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    cancel();
+    didLongPress = true;
+    openGarmentActionDialog(id);
+  });
+
+  card.addEventListener('click', (e) => {
+    if (didLongPress) {
+      e.preventDefault();
+      e.stopPropagation();
+      didLongPress = false;
+      return;
+    }
+    const client = getActiveClient();
+    client.activeGarmentId = id;
+    saveClients();
+    renderGarmentList();
+    renderMeasurementFields();
+    renderPattern();
+    renderGarmentCroquis();
+  });
+}
+
+function openGarmentActionDialog(id) {
+  const g = GARMENTS_500.find(x => x.id === id);
+  if (!g) return;
+  currentActionGarmentId = id;
+  $('actionGarmentTitle').textContent = g.name;
+  $('actionGarmentCat').textContent = (activeCategories[g.cat] || g.cat).toUpperCase();
+  $('garmentActionDialog').showModal();
+}
+
+$('actionEditBtn').addEventListener('click', () => {
+  $('garmentActionDialog').close();
+  if (currentActionGarmentId) {
+    const g = GARMENTS_500.find(x => x.id === currentActionGarmentId);
+    if (g) {
+      const client = getActiveClient();
+      client.activeGarmentId = currentActionGarmentId;
+      saveClients();
+      $('renameInput').value = g.name;
+      $('renameDialog').showModal();
+    }
+  }
+});
+
+$('actionDeleteBtn').addEventListener('click', () => {
+  $('garmentActionDialog').close();
+  if (currentActionGarmentId) {
+    deleteGarmentById(currentActionGarmentId);
+  }
+});
+
+function deleteGarmentById(id) {
+  const g = GARMENTS_500.find(x => x.id === id);
+  if (!g) return;
+  if (confirm(`Delete garment "${g.name}" from your atelier catalog?`)) {
+    deletedGarmentIds.add(id);
+    try {
+      localStorage.setItem('pattern-maker:deleted-garments', JSON.stringify([...deletedGarmentIds]));
+    } catch (e) {}
+
+    GARMENTS_500 = GARMENTS_500.filter(x => x.id !== id);
+    const client = getActiveClient();
+    if (client.activeGarmentId === id && GARMENTS_500.length > 0) {
+      client.activeGarmentId = GARMENTS_500[0].id;
+      saveClients();
+    }
+    renderGarmentList();
+    renderPattern();
+    renderGarmentCroquis();
+  }
+}
+
+function renderMeasurementFields() {
+  const client = getActiveClient();
+  const g = GARMENTS_500.find(item => item.id === client.activeGarmentId) || GARMENTS_500[0];
+  const requiredSet = new Set(g.meas || []);
+  requiredSet.add('seam');
+
+  const customSet = new Set(client.customMeasIds || []);
+
+  const visibleFields = state.showAllMeas
+    ? MEAS_49
+    : MEAS_49.filter(m => requiredSet.has(m.id) || customSet.has(m.id));
+
+  $('activeMeasBadge').textContent = `Showing ${visibleFields.length} of 49`;
+  $('measNotice').textContent = state.showAllMeas ? 'All 49 measurements unlocked' : `Active specs for ${g.name}`;
+
+  $('measContainer').innerHTML = visibleFields.map(m => {
+    const isRequired = requiredSet.has(m.id);
+    const isCustom = customSet.has(m.id);
+    return `
+      <div class="meas-field ${isRequired ? 'active' : ''} ${isCustom ? 'custom' : ''}">
+        <label title="${m.label}">
+          ${isRequired ? '✦ ' : (isCustom ? '★ ' : '')}${m.label}
+        </label>
+        ${isCustom ? `<button class="remove-meas" data-id="${m.id}" title="Remove custom measurement">×</button>` : ''}
+        <div class="input-wrap">
+          <input type="number" id="inp_${m.id}" data-id="${m.id}" value="${client.measurements[m.id] ?? m.def}" step="${m.step}" min="${m.min}">
+          <span class="unit">cm</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  $('measContainer').querySelectorAll('input').forEach(inp => {
+    inp.addEventListener('input', () => {
+      client.measurements[inp.dataset.id] = parseFloat(inp.value) || 0;
+      saveClients();
+      renderPattern();
+    });
+  });
+
+  $('measContainer').querySelectorAll('.remove-meas').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = btn.dataset.id;
+      client.customMeasIds = (client.customMeasIds || []).filter(x => x !== id);
+      saveClients();
+      renderMeasurementFields();
+    });
+  });
+}
+
+function renderPattern() {
+  const client = getActiveClient();
+  const currentGarment = GARMENTS_500.find(g => g.id === client.activeGarmentId) || GARMENTS_500[0];
+  $('metaGarment').textContent = currentGarment.name;
+
+  const pieces = piecesForCurrent();
+  $('metaPieces').textContent = `${pieces.length} Pattern Pieces`;
+  drawPieces(pieces);
+
+  const specs = [
+    ['Client', client.name],
+    ['Garment Style', currentGarment.name],
+    ['Category', activeCategories[currentGarment.cat] || currentGarment.cat.toUpperCase()],
+    ['Seam Allowance', `${client.measurements.seam || 1.5} cm`],
+    ['Recommended Fabric', currentGarment.fabric]
+  ];
+  $('dims').innerHTML = specs.map(([k, v]) => `<li><span>${esc(k)}:</span> ${esc(v)}</li>`).join('');
+
+  const instructions = [
+    'Preshrink fabric with iron or water wash before cutting.',
+    'Align grainline arrows exactly parallel to fabric selvedge edges.',
+    'All visible dimension ticks show finished seam lengths with allowance included.',
+    'Staystitch curved necklines and armholes at 1.0 cm before structural assembly.'
+  ];
+  $('steps').innerHTML = instructions.map(s => `<li>${s}</li>`).join('');
+
+  updateInspirationLinks(currentGarment);
+  updateFabricCalculator(currentGarment);
+}
+
+/* =====================================================================
+   8. COMPREHENSIVE AI & RESEARCH LINK ENGINE (WITH CLAUDE)
+   ==================================================================== */
+function updateInspirationLinks(garment) {
+  const gName = garment.name;
+  const fabric = garment.fabric || 'fine tailoring fabric';
+  const query = encodeURIComponent(`${gName} pattern drafting sewing tutorial`);
+  const pinQuery = encodeURIComponent(`${gName} sewing pattern outfit styling aesthetic`);
+  const ytQuery = encodeURIComponent(`how to sew ${gName} pattern drafting tutorial`);
+  const redditQuery = encodeURIComponent(`${gName} sewing pattern`);
+
+  // Row 1: Search & Video
+  $('hubGoogle').href = `https://www.google.com/search?q=${query}&tbm=isch`;
+  $('hubPinterest').href = `https://www.pinterest.com/search/pins/?q=${pinQuery}`;
+  $('hubYoutube').href = `https://www.youtube.com/results?search_query=${ytQuery}`;
+  $('hubReddit').href = `https://www.reddit.com/r/sewing/search/?q=${redditQuery}&restrict_sr=1`;
+
+  // Row 2: AI Fashion Image Generation
+  const promptText = `Haute couture runway fashion illustration of a ${gName}, tailored in ${fabric}, full body view and technical flat sketch, editorial lighting, hyper-detailed`;
+  const encPrompt = encodeURIComponent(promptText);
+
+  // CLAUDE (Anthropic) Link with dynamic prompt
+  $('hubClaude').href = `https://claude.ai/new?q=${encodeURIComponent('Create a couture fashion design illustration and detailed technical specification for: ' + gName + ' constructed in ' + fabric)}`;
+  
+  $('hubCopilot').href = `https://copilot.microsoft.com/?q=${encodeURIComponent('Create a realistic fashion design illustration of ' + gName + ' in ' + fabric)}`;
+  $('hubCanva').href = `https://www.canva.com/ai-image-generator/`;
+  $('hubFirefly').href = `https://firefly.adobe.com/generate/images?prompt=${encPrompt}`;
+  $('hubChatgpt').href = `https://chatgpt.com/?q=${encodeURIComponent('Generate a detailed fashion illustration and technical flats for: ' + gName + ' made from ' + fabric)}`;
+  $('hubGeminiAi').href = `https://gemini.google.com/app`;
+  $('hubIdeogram').href = `https://ideogram.ai/`;
+  $('hubKrea').href = `https://www.krea.ai/`;
+
+  // Row 3: AI Pattern Creators
+  $('hubPatterned').href = `https://www.patterned.ai/`;
+  $('hubLeonardo').href = `https://leonardo.ai/`;
+  $('hubMidjourney').href = `https://www.midjourney.com/`;
+  $('hubRecraft').href = `https://www.recraft.ai/`;
+
+  window.currentFashionPrompt = promptText;
+}
+
+$('copyPromptBtn').addEventListener('click', () => {
+  if (navigator.clipboard && window.currentFashionPrompt) {
+    navigator.clipboard.writeText(window.currentFashionPrompt).then(() => {
+      const btn = $('copyPromptBtn');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '✅ Copied to Clipboard!';
+      setTimeout(() => { btn.innerHTML = originalText; }, 2200);
+    });
+  }
+});
+
+function updateFabricCalculator(garment) {
+  $('fabricTitle').textContent = `Textiles for ${garment.name}`;
+  $('fabricNotes').textContent = `${garment.fabric}. Recommended stretch: ${garment.stretch || '0%'}.`;
+  $('fabricStretch').textContent = garment.stretch || '0% – 5%';
+  $('fabricNotions').textContent = garment.notions || 'Thread, needle';
+
+  const bolt = parseInt($('boltWidthSelect').value, 10);
+  const client = getActiveClient();
+  const m = client.measurements;
+  let baseLenCm = 70;
+
+  if (garment.engine === 'skirt') baseLenCm = (m.skirtLen || 60) + 15;
+  else if (garment.engine === 'shirt') baseLenCm = (m.shirtLen || 68) + (m.sleeveLen || 60) + 20;
+  else if (garment.engine === 'trouser') baseLenCm = (m.outseam || 104) + 25;
+  else if (garment.engine === 'corset') baseLenCm = (m.corsetLen || 28) * 2 + 15;
+  else baseLenCm = (m.dressLen || 105) + 30;
+
+  let multiplier = 1.0;
+  if (bolt <= 90) multiplier = 2.1;
+  else if (bolt <= 115) multiplier = 1.45;
+  else if (bolt >= 150) multiplier = 0.9;
+
+  const meters = (baseLenCm * multiplier / 100).toFixed(2);
+  const yards = (meters * 1.09361).toFixed(2);
+
+  $('yardageMeters').textContent = `${meters} m`;
+  $('yardageYards').textContent = `${yards} yd`;
+}
+
+/* =====================================================================
+   9. CLIENT DOSSIER & MEDIA IMPORT HANDLING
+   ===================================================================== */
+function syncClientUI() {
+  const client = getActiveClient();
+  $('currentClientLabel').textContent = client.name;
+  $('clientBarName').textContent = client.name;
+  $('clientBarFilesCount').textContent = `${(client.files || []).length} media attachments • Custom measurements`;
+  $('clientAvatarInitials').textContent = client.name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+
+  $('dossierClientName').textContent = `${client.name} — Dossier`;
+  $('editClientName').value = client.name;
+  $('editClientNotes').value = client.notes || '';
+  $('mediaBadge').textContent = `${(client.files || []).length} files`;
+
+  renderMediaGallery();
+}
+
+function renderMediaGallery() {
+  const client = getActiveClient();
+  const files = client.files || [];
+  const gallery = $('mediaGallery');
+
+  if (files.length === 0) {
+    gallery.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:20px;color:var(--muted);font-size:0.8rem;">No files or fitting photos imported yet for ${client.name}.</div>`;
+    return;
+  }
+
+  gallery.innerHTML = files.map((f, i) => {
+    let previewHtml = '';
+    if (f.type.startsWith('image/')) {
+      previewHtml = `<img src="${f.dataUrl}" alt="${esc(f.name)}" loading="lazy">`;
+    } else if (f.type.startsWith('video/')) {
+      previewHtml = `<video src="${f.dataUrl}" controls></video>`;
+    } else {
+      previewHtml = `<div class="file-icon">📄</div>`;
+    }
+
+    return `
+      <div class="media-card">
+        <button class="del-media" data-index="${i}" title="Delete file">✕</button>
+        ${previewHtml}
+        <div class="media-meta" title="${esc(f.name)}">${esc(f.name)}</div>
+      </div>
+    `;
+  }).join('');
+
+  gallery.querySelectorAll('.del-media').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const idx = parseInt(btn.dataset.index, 10);
+      client.files.splice(idx, 1);
+      saveClients();
+      syncClientUI();
+    });
+  });
+}
+
+function handleFiles(fileList) {
+  const client = getActiveClient();
+  client.files = client.files || [];
+
+  Array.from(fileList).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      client.files.push({
+        id: Date.now() + Math.random(),
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        dataUrl: e.target.result,
+        date: new Date().toLocaleDateString()
+      });
+      saveClients();
+      syncClientUI();
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+const dropZone = $('dropZone');
+dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = 'var(--secondary)'; });
+dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = 'var(--primary)'; });
+dropZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropZone.style.borderColor = 'var(--primary)';
+  if (e.dataTransfer.files?.length) handleFiles(e.dataTransfer.files);
+});
+$('fileInput').addEventListener('change', (e) => {
+  if (e.target.files?.length) handleFiles(e.target.files);
+});
+
+$('saveClientProfileBtn').addEventListener('click', () => {
+  const client = getActiveClient();
+  client.name = $('editClientName').value.trim() || client.name;
+  client.notes = $('editClientNotes').value.trim();
+  saveClients();
+  syncClientUI();
+  alert('Client dossier updated successfully!');
+});
+
+$('switchClientBtn').addEventListener('click', () => {
+  const dropdown = $('clientDropdown');
+  dropdown.innerHTML = allClients.map(c => `<option value="${c.id}" ${c.id === activeClientId ? 'selected':''}>${esc(c.name)}</option>`).join('');
+  $('clientDialog').showModal();
+});
+
+$('newClientForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const newName = $('newClientInputName').value.trim();
+  if (newName) {
+    const newClient = {
+      id: 'c_' + Date.now(),
+      name: newName,
+      notes: '',
+      measurements: Object.fromEntries(MEAS_49.map(m => [m.id, m.def])),
+      activeGarmentId: GARMENTS_500[0]?.id || 'outerwear-1',
+      customMeasIds: [],
+      files: []
+    };
+    allClients.unshift(newClient);
+    activeClientId = newClient.id;
+  } else {
+    activeClientId = $('clientDropdown').value;
+  }
+  saveClients();
+  syncClientUI();
+  renderMeasurementFields();
+  renderPattern();
+  renderGarmentCroquis();
+  $('newClientInputName').value = '';
+  $('clientDialog').close();
+});
+
+$('deleteClientBtn').addEventListener('click', () => {
+  if (allClients.length <= 1) {
+    alert('At least one client profile must exist.');
+    return;
+  }
+  const targetId = $('clientDropdown').value;
+  if (confirm('Delete this client profile and all its imported photos and files?')) {
+    allClients = allClients.filter(c => c.id !== targetId);
+    activeClientId = allClients[0].id;
+    saveClients();
+    syncClientUI();
+    renderMeasurementFields();
+    renderPattern();
+    renderGarmentCroquis();
+    $('clientDialog').close();
+  }
+});
+
+$('openClientDossierBtn').addEventListener('click', () => {
+  document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.hidden = true);
+  document.querySelector('.tab[data-tab="clientTab"]').classList.add('active');
+  $('clientTab').hidden = false;
+});
+
+/* =====================================================================
+   10. MEASUREMENT PICKER, RENAME, ADD GARMENT & CATEGORY HANDLERS
+   ===================================================================== */
+function openMeasPicker() {
+  const client = getActiveClient();
+  const g = GARMENTS_500.find(item => item.id === client.activeGarmentId) || GARMENTS_500[0];
+  const requiredSet = new Set(g.meas || []);
+  const customSet = new Set(client.customMeasIds || []);
+
+  const search = $('measPickerSearch').value.toLowerCase();
+  const list = $('measPickerList');
+
+  const available = MEAS_49.filter(m => {
+    const alreadyShown = requiredSet.has(m.id) || customSet.has(m.id);
+    const matches = m.label.toLowerCase().includes(search) || m.group.toLowerCase().includes(search);
+    return !alreadyShown && matches;
+  });
+
+  if (available.length === 0) {
+    list.innerHTML = `<div style="padding:12px;color:var(--muted);text-align:center;">All measurement points matching this search are already added.</div>`;
+    return;
+  }
+
+  list.innerHTML = available.map(m => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);">
+      <div>
+        <strong style="font-size:0.82rem;display:block;">${m.label}</strong>
+        <span style="font-size:0.7rem;color:var(--muted);">${m.group} • Default ${m.def} cm</span>
+      </div>
+      <button class="btn primary add-field-btn" data-id="${m.id}" style="padding:4px 10px;font-size:0.75rem;">+ Add to Garment</button>
+    </div>
+  `).join('');
+
+  list.querySelectorAll('.add-field-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      client.customMeasIds = client.customMeasIds || [];
+      client.customMeasIds.push(b.dataset.id);
+      saveClients();
+      renderMeasurementFields();
+      openMeasPicker();
+    });
+  });
+}
+
+$('addMeasBtn').addEventListener('click', () => {
+  $('measPickerSearch').value = '';
+  openMeasPicker();
+  $('measPickerDialog').showModal();
+});
+$('measPickerSearch').addEventListener('input', openMeasPicker);
+
+$('toggleAllMeas').addEventListener('click', () => {
+  state.showAllMeas = !state.showAllMeas;
+  $('toggleAllMeas').textContent = state.showAllMeas ? 'Show Required' : 'Show All 49';
+  renderMeasurementFields();
+});
+
+// Rename Garment Dialog
+$('renameGarmentBtn').addEventListener('click', () => {
+  const client = getActiveClient();
+  const g = GARMENTS_500.find(item => item.id === client.activeGarmentId) || GARMENTS_500[0];
+  $('renameInput').value = g.name;
+  $('renameDialog').showModal();
+});
+
+$('renameForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const newName = $('renameInput').value.trim();
+  if (newName) {
+    const client = getActiveClient();
+    const g = GARMENTS_500.find(item => item.id === client.activeGarmentId);
+    if (g) {
+      g.name = newName;
+      customRenames[g.id] = newName;
+      try {
+        localStorage.setItem('pattern-maker:renames-v3', JSON.stringify(customRenames));
+      } catch (err) {}
+      renderGarmentList();
+      renderPattern();
+      renderGarmentCroquis();
+    }
+  }
+  $('renameDialog').close();
+});
+
+// Delete Current Active Garment
+$('deleteCurrentGarmentBtn').addEventListener('click', () => {
+  const client = getActiveClient();
+  deleteGarmentById(client.activeGarmentId);
+});
+
+// Add New Garment to ANY Category Dialog
+$('openAddGarmentBtn').addEventListener('click', () => {
+  const sel = $('newGarmentCategory');
+  sel.innerHTML = Object.entries(activeCategories)
+    .filter(([k]) => k !== 'all')
+    .map(([k, label]) => `<option value="${k}">${esc(label)}</option>`).join('');
+  $('newGarmentName').value = '';
+  $('addGarmentDialog').showModal();
+});
+
+$('addGarmentForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const name = $('newGarmentName').value.trim();
+  const cat = $('newGarmentCategory').value;
+  const engine = $('newGarmentEngine').value;
+  const fabric = $('newGarmentFabric').value.trim() || 'Fine natural tailoring textile';
+  const notions = $('newGarmentNotions').value.trim() || 'Concealed zipper, matching thread';
+
+  if (name) {
+    const newId = 'custom_' + Date.now();
+    let baseMeas = ['bust','naturalWaist','hip'];
+    if (engine === 'trouser') baseMeas = ['naturalWaist','hip','crotchDepth','inseam','outseam'];
+    else if (engine === 'skirt') baseMeas = ['naturalWaist','hip','skirtLen','hemCirc'];
+    else if (engine === 'dress') baseMeas = ['bust','naturalWaist','hip','dressLen'];
+    else if (engine === 'corset') baseMeas = ['bust','underbust','naturalWaist','corsetLen'];
+    else baseMeas = ['bust','naturalWaist','shirtLen','sleeveLen'];
+
+    const newGarment = { id: newId, name, cat, engine, meas: baseMeas, fabric, stretch: '0% – 5%', notions };
+    customGarments.unshift(newGarment);
+    GARMENTS_500.unshift(newGarment);
+
+    try {
+      localStorage.setItem('pattern-maker:custom-garments-v2', JSON.stringify(customGarments));
+    } catch (err) {}
+
+    const client = getActiveClient();
+    client.activeGarmentId = newId;
+    saveClients();
+
+    state.activeCatFilter = cat;
+    renderCategoryPills();
+    renderGarmentList();
+    renderMeasurementFields();
+    renderPattern();
+    renderGarmentCroquis();
+  }
+  $('addGarmentDialog').close();
+});
+
+// Create Category Form
+$('newCatForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const catTitle = $('newCatTitle').value.trim();
+  if (catTitle) {
+    const catSlug = 'cat_' + Date.now();
+    activeCategories[catSlug] = catTitle;
+    try {
+      localStorage.setItem('pattern-maker:categories-v2', JSON.stringify(activeCategories));
+    } catch (err) {}
+    renderCategoryPills();
+    state.activeCatFilter = catSlug;
+    renderGarmentList();
+  }
+  $('newCatDialog').close();
+});
+
+/* =====================================================================
+   11. GEMINI AI ENGINE
+   ===================================================================== */
+const KEY_STORAGE = 'pattern-maker:gemini-key';
+const MODEL_STORAGE = 'pattern-maker:gemini-model';
+const getKey = () => localStorage.getItem(KEY_STORAGE) || '';
+const getModel = () => localStorage.getItem(MODEL_STORAGE) || 'gemini-2.5-flash';
+
+const TOOL = {
+  name: 'save_pattern',
+  description: 'Save flat drafted sewing pattern pieces in metric scale.',
+  input_schema: {
+    type: 'object',
+    properties: {
+      summary: { type: 'string' },
+      pieces: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            cut: { type: 'string' },
+            path: { type: 'string' },
+            grainline: { type: 'array', items: { type: 'number' } },
+            label: { type: 'array', items: { type: 'number' } }
+          },
+          required: ['name', 'cut', 'path', 'grainline', 'label']
+        }
+      },
+      finished: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: { label: { type: 'string' }, value: { type: 'string' } },
+          required: ['label', 'value']
+        }
+      },
+      steps: { type: 'array', items: { type: 'string' } }
+    },
+    required: ['summary', 'pieces', 'finished', 'steps']
+  }
+};
+
+function cleanGeminiSchema(schema) {
+  if (Array.isArray(schema)) return schema.map(cleanGeminiSchema);
+  if (schema && typeof schema === 'object') {
+    const out = {};
+    for (const [k, v] of Object.entries(schema)) {
+      if (k === 'minItems' || k === 'maxItems') continue;
+      if (k === 'type' && typeof v === 'string') out[k] = v.toUpperCase();
+      else out[k] = cleanGeminiSchema(v);
+    }
+    return out;
+  }
+  return schema;
+}
+
+async function callGemini(systemPrompt, userPrompt) {
+  const key = getKey();
+  if (!key) throw new Error('Please add your Gemini API key in AI Key Settings first.');
+  const model = getModel();
+
+  const body = {
+    systemInstruction: { parts: [{ text: systemPrompt }] },
+    contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+    tools: [{
+      functionDeclarations: [{
+        name: TOOL.name,
+        description: TOOL.description,
+        parameters: cleanGeminiSchema(TOOL.input_schema)
+      }]
+    }],
+    toolConfig: { functionCallingConfig: { mode: 'ANY', allowedFunctionNames: ['save_pattern'] } },
+    generationConfig: { maxOutputTokens: 6000 }
+  };
+
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(key)}`;
+  const res = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
+    body: JSON.stringify(body)
+  });
+
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error?.message || `Gemini request error (${res.status}).`);
+
+  const parts = data.candidates?.[0]?.content?.parts || [];
+  const fnCall = parts.find(p => p.functionCall);
+  if (fnCall) return fnCall.functionCall.args;
+
+  const text = parts.find(p => p.text)?.text || '';
+  const match = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+  if (match) return JSON.parse(match[1]);
+  throw new Error('Gemini did not return structured pattern pieces.');
+}
+
+/* =====================================================================
+   12. INITIALIZATION & LISTENERS
+   ===================================================================== */
+$('garmentSearch').addEventListener('input', renderGarmentList);
+
+const wheel = $('wheelCanvas');
+function pickWheel(e) {
+  const rect = wheel.getBoundingClientRect();
+  const x = e.clientX - rect.left - wheel.width / 2;
+  const y = e.clientY - rect.top - wheel.height / 2;
+  let angle = Math.round(Math.atan2(y, x) * 180 / Math.PI);
+  if (angle < 0) angle += 360;
+  state.baseHue = angle;
+  updateColorPalettes();
+}
+wheel.addEventListener('click', pickWheel);
+let isDraggingWheel = false;
+wheel.addEventListener('mousedown', () => isDraggingWheel = true);
+window.addEventListener('mouseup', () => isDraggingWheel = false);
+wheel.addEventListener('mousemove', e => { if (isDraggingWheel) pickWheel(e); });
+$('harmonyType').addEventListener('change', e => {
+  state.harmony = e.target.value;
+  updateColorPalettes();
+});
+
+$('boltWidthSelect').addEventListener('change', () => {
+  const client = getActiveClient();
+  const g = GARMENTS_500.find(item => item.id === client.activeGarmentId) || GARMENTS_500[0];
+  updateFabricCalculator(g);
+});
+
+document.querySelectorAll('.tabs .tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p => p.hidden = true);
+    t.classList.add('active');
+    $(t.dataset.tab).hidden = false;
+    if (t.dataset.tab === 'colorTab') updateColorPalettes();
+  });
+});
+
+$('keyBtn').addEventListener('click', () => {
+  $('keyInput').value = getKey();
+  $('modelSelect').value = getModel();
+  $('keyDialog').showModal();
+});
+$('keyForm').addEventListener('submit', e => {
+  e.preventDefault();
+  localStorage.setItem(KEY_STORAGE, $('keyInput').value.trim());
+  localStorage.setItem(MODEL_STORAGE, $('modelSelect').value);
+  $('keyDialog').close();
+  $('keyBtn').textContent = '🔑 Gemini Active';
+});
+$('keyClear').addEventListener('click', () => {
+  localStorage.removeItem(KEY_STORAGE);
+  $('keyDialog').close();
+  $('keyBtn').textContent = '🔑 AI Key';
+});
+
+$('newAiStyleBtn').addEventListener('click', () => {
+  const select = $('styleCategorySelect');
+  select.innerHTML = Object.entries(activeCategories)
+    .filter(([k]) => k !== 'all')
+    .map(([k, v]) => `<option value="${k}">${esc(v)}</option>`).join('');
+  $('styleDialog').showModal();
+});
+
+$('styleForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const name = $('styleName').value.trim();
+  const cat = $('styleCategorySelect').value;
+  const desc = $('styleDesc').value.trim();
+  $('styleDialog').close();
+
+  $('summary').textContent = 'Drafting custom pieces with Gemini...';
+  try {
+    const client = getActiveClient();
+    const measList = Object.entries(client.measurements)
+      .map(([k, v]) => `${k}: ${v} cm`).join(', ');
+
+    const system = 'You are an expert master tailor drafting SVG sewing pattern pieces in cm.';
+    const prompt = `Draft pattern pieces for: ${name}. Category: ${cat}. Details: ${desc}. Body Measurements: ${measList}. Include seam allowance.`;
+
+    const result = await callGemini(system, prompt);
+    if (result?.pieces) {
+      const aiPieces = result.pieces.map(p => {
+        const nums = (p.path.match(/-?\d+(\.\d+)?/g) || []).map(Number);
+        const xs = nums.filter((_, i) => i % 2 === 0), ys = nums.filter((_, i) => i % 2 === 1);
+        const x0 = Math.min(...xs), y0 = Math.min(...ys);
+        return {
+          name: p.name, cut: p.cut, d: p.path, x0, y0,
+          w: Math.max(...xs) - x0, h: Math.max(...ys) - y0 + 10,
+          gl: p.grainline, lx: p.label[0], ly: p.label[1]
+        };
+      });
+
+      const newId = 'ai_' + Date.now();
+      const newGarment = {
+        id: newId,
+        name: name,
+        cat: cat,
+        engine: 'shirt',
+        meas: ['bust','naturalWaist','hip','shirtLen'],
+        fabric: 'As specified in design prompt',
+        stretch: '0% – 5%',
+        notions: 'As specified in design'
+      };
+
+      customGarments.unshift(newGarment);
+      GARMENTS_500.unshift(newGarment);
+      try {
+        localStorage.setItem('pattern-maker:custom-garments-v2', JSON.stringify(customGarments));
+      } catch (err) {}
+
+      client.activeGarmentId = newId;
+      saveClients();
+      renderGarmentList();
+
+      drawPieces(aiPieces);
+      $('summary').textContent = result.summary || 'Drafted with Gemini.';
+      $('metaGarment').textContent = name;
+      $('metaPieces').textContent = `${aiPieces.length} AI Pieces`;
+    }
+  } catch (err) {
+    alert(err.message);
+    renderPattern();
+  }
+});
+
+$('printBtn').addEventListener('click', () => window.print());
+$('redraftCurrent').addEventListener('click', () => {
+  renderPattern();
+  renderGarmentCroquis();
+});
+document.querySelectorAll('dialog [data-close]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
+
+// Initial Boot
+if (getKey()) $('keyBtn').textContent = '🔑 Gemini Active';
+renderCategoryPills();
+syncClientUI();
+renderGarmentList();
+renderMeasurementFields();
+renderPattern();
+updateColorPalettes();
+renderGarmentCroquis();
+</script>
+</body>
+</html>
