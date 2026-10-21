@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pattern Maker Studio — 200 Global Designs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f7fc;
+  --surface:#ffffff;
+  --panel-bg:rgba(255,255,255,0.92);
+  --ink:#171a23;
+  --muted:#626d84;
+  --line:#e1e6f0;
+  --primary:#6344e7;
+  --primary-light:#eeebff;
+  --primary-glow:rgba(99,68,231,0.22);
+  --secondary:#ec4899;
+  --accent:#0ea5e9;
+  --font-serif:'Playfair Display',Georgia,serif;
+  --font-sans:'Plus Jakarta Sans',system-ui,sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --radius:14px;
+  --radius-sm:8px;
+  --shadow:0 1px 3px rgba(23,26,35,0.04),0 8px 24px -4px rgba(23,26,35,0.08);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e1117;
+    --surface:#171a24;
+    --panel-bg:rgba(23,26,36,0.92);
+    --ink:#f2f5fb;
+    --muted:#8b97af;
+    --line:#262c3e;
+    --primary:#8168ff;
+    --primary-light:rgba(129,104,255,0.16);
+    --primary-glow:rgba(129,104,255,0.3);
+    --shadow:0 2px 6px rgba(0,0,0,0.3),0 12px 30px -4px rgba(0,0,0,0.4);
+  }
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:var(--font-sans);
+  background:radial-gradient(circle at 10% 0%, color-mix(in srgb,var(--primary) 8%,var(--bg)), var(--bg) 40%),
+             radial-gradient(circle at 90% 100%, color-mix(in srgb,var(--secondary) 8%,var(--bg)), var(--bg) 40%);
+  background-attachment:fixed;color:var(--ink);line-height:1.5;
+}
+header{
+  padding:12px 24px;display:flex;justify-content:space-between;align-items:center;
+  gap:16px;border-bottom:1px solid var(--line);background:var(--panel-bg);
+  backdrop-filter:blur(14px);position:sticky;top:0;z-index:50;
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-icon{
+  width:42px;height:42px;border-radius:10px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  display:grid;place-items:center;color:#fff;font-weight:700;font-size:1.3rem;
+  box-shadow:0 4px 14px var(--primary-glow);
+}
+h1{margin:0;font-family:var(--font-serif);font-size:1.35rem;font-weight:600}
+header p{margin:0;color:var(--muted);font-size:0.78rem}
+
+main{
+  max-width:1600px;margin:0 auto;padding:16px 20px;
+  display:grid;gap:18px;grid-template-columns:1fr;
+}
+@media (min-width:1120px){main{grid-template-columns:420px 1fr;align-items:start}}
+
+.panel{
+  background:var(--panel-bg);border:1px solid var(--line);
+  border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);
+  backdrop-filter:blur(8px);
+}
+.panel-title{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;
+  font-weight:700;color:var(--muted);margin:0 0 10px;
+}
+.badge{
+  font-size:0.75rem;padding:3px 9px;border-radius:20px;
+  background:var(--primary-light);color:var(--primary);font-weight:600;
+}
+
+/* Garment Search & 200 Catalog */
+.search-box{position:relative;margin-bottom:8px}
+.search-box input{
+  width:100%;padding:8px 12px 8px 32px;border-radius:var(--radius-sm);
+  border:1px solid var(--line);background:var(--surface);font-family:inherit;
+  color:var(--ink);font-size:0.86rem;
+}
+.search-box svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);fill:var(--muted)}
+.cats-scroller{display:flex;gap:5px;overflow-x:auto;padding-bottom:6px;margin-bottom:8px;scrollbar-width:none}
+.cats-scroller::-webkit-scrollbar{display:none}
+.cat-pill{
+  border:1px solid var(--line);background:var(--surface);color:var(--muted);
+  border-radius:20px;padding:4px 10px;font-size:0.75rem;font-weight:600;
+  white-space:nowrap;cursor:pointer;transition:all .15s;
+}
+.cat-pill:hover{border-color:var(--primary);color:var(--primary)}
+.cat-pill.active{background:var(--primary);border-color:var(--primary);color:#fff;box-shadow:0 2px 8px var(--primary-glow)}
+.garment-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:6px;
+  max-height:240px;overflow-y:auto;padding:2px;margin-bottom:14px;
+}
+.garment-card{
+  padding:8px 9px;border-radius:var(--radius-sm);border:1px solid var(--line);
+  background:var(--surface);cursor:pointer;text-align:left;transition:all .15s;
+  display:flex;flex-direction:column;gap:2px;
+}
+.garment-card:hover{border-color:var(--primary);transform:translateY(-1px)}
+.garment-card.active{border-color:var(--primary);background:var(--primary-light);box-shadow:inset 0 0 0 1px var(--primary)}
+.garment-card strong{font-size:0.8rem;font-weight:600;color:var(--ink);line-height:1.2}
+.garment-card span{font-size:0.68rem;color:var(--muted)}
+
+/* 49 Progressive Measurements */
+.meas-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.meas-counter{font-size:0.75rem;color:var(--primary);font-weight:600}
+.meas-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:360px;overflow-y:auto;padding-right:2px}
+.meas-field{display:flex;flex-direction:column;gap:3px}
+.meas-field label{font-size:0.72rem;font-weight:500;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meas-field.active label{color:var(--primary);font-weight:700}
+.input-wrap{position:relative}
+.input-wrap input{
+  width:100%;font-family:var(--font-mono);font-size:0.88rem;padding:6px 24px 6px 7px;
+  border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--surface);
+  color:var(--ink);
+}
+.input-wrap input:focus{border-color:var(--primary);outline:none;box-shadow:0 0 0 3px var(--primary-glow)}
+.input-wrap .unit{
+  position:absolute;right:7px;top:50%;transform:translateY(-50%);
+  font-size:0.68rem;color:var(--muted);pointer-events:none;font-weight:600;
+}
+.toggle-btn{
+  background:transparent;border:none;color:var(--primary);cursor:pointer;
+  font-size:0.75rem;font-weight:600;padding:2px 0;
+}
+
+/* Tabs */
+.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin-bottom:12px;overflow-x:auto}
+.tab{
+  padding:8px 14px;background:none;border:none;border-bottom:2px solid transparent;
+  color:var(--muted);font-weight:600;font-size:0.85rem;cursor:pointer;white-space:nowrap;
+}
+.tab.active{color:var(--primary);border-bottom-color:var(--primary)}
+
+/* Dual View: Finished Garment Preview + Scale Pattern Canvas */
+.dual-viewport{
+  display:grid;grid-template-columns:1fr;gap:14px;
+}
+@media (min-width:880px){
+  .dual-viewport{grid-template-columns:260px 1fr;}
+}
+.sketch-card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:12px;display:flex;flex-direction:column;align-items:center;
+}
+.sketch-title{font-size:0.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+#sketchSvg{width:100%;height:340px;background:radial-gradient(circle, rgba(99,68,231,0.03) 0%, transparent 70%);border-radius:var(--radius-sm)}
+
+.canvas-wrap{position:relative;flex:1}
+#out{
+  width:100%;min-height:430px;background-color:var(--surface);
+  background-image:radial-gradient(var(--line) 1.2px, transparent 1.2px);
+  background-size:16px 16px;border-radius:var(--radius);border:1px solid var(--line);
+  box-shadow:inset 0 2px 8px rgba(0,0,0,0.02);display:block;
+}
+.canvas-meta{position:absolute;top:10px;left:10px;display:flex;gap:6px;flex-wrap:wrap;pointer-events:none}
+.tag-badge{
+  background:rgba(255,255,255,0.92);backdrop-filter:blur(4px);
+  padding:3px 8px;border-radius:6px;font-size:0.72rem;font-weight:600;
+  border:1px solid var(--line);color:var(--ink);
+}
+
+/* Inspiration Research Hub */
+.hub-bar{
+  display:flex;align-items:center;gap:8px;padding:10px 14px;
+  background:linear-gradient(135deg,rgba(99,68,231,0.05),rgba(236,72,153,0.05));
+  border:1px solid var(--line);border-radius:var(--radius);margin-bottom:12px;
+  flex-wrap:wrap;
+}
+.hub-title{font-size:0.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-right:4px}
+.hub-links{display:flex;gap:6px;flex-wrap:wrap}
+.hub-link{
+  display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;
+  font-size:0.75rem;font-weight:600;text-decoration:none;transition:all .15s;
+  border:1px solid var(--line);background:var(--surface);color:var(--ink);
+}
+.hub-link:hover{border-color:var(--primary);color:var(--primary);transform:translateY(-1px)}
+.hub-link.google{border-color:#4285f4;color:#4285f4;background:rgba(66,133,244,0.06)}
+.hub-link.pinterest{border-color:#e60023;color:#e60023;background:rgba(230,0,35,0.06)}
+.hub-link.youtube{border-color:#ff0000;color:#ff0000;background:rgba(255,0,0,0.06)}
+.hub-link.reddit{border-color:#ff4500;color:#ff4500;background:rgba(255,69,0,0.06)}
+
+/* Fabric & Yardage */
+.fabric-card{
+  background:linear-gradient(135deg,rgba(99,68,231,0.04),rgba(236,72,153,0.04));
+  border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:12px;
+}
+.fabric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin-top:10px}
+.fabric-metric{padding:8px 10px;background:var(--surface);border-radius:var(--radius-sm);border:1px solid var(--line)}
+.fabric-metric label{font-size:0.7rem;color:var(--muted);display:block}
+.fabric-metric strong{font-size:1.1rem;color:var(--primary);font-family:var(--font-mono)}
+
+/* Color Wheel Studio */
+.palette-studio{display:grid;grid-template-columns:1fr;gap:18px}
+@media(min-width:640px){.palette-studio{grid-template-columns:210px 1fr}}
+.wheel-wrap{display:flex;flex-direction:column;align-items:center;gap:6px}
+#wheelCanvas{border-radius:50%;cursor:crosshair;box-shadow:0 4px 14px rgba(0,0,0,0.08)}
+.swatches-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:8px}
+.swatch-box{
+  border-radius:var(--radius-sm);border:1px solid var(--line);overflow:hidden;
+  background:var(--surface);text-align:center;box-shadow:var(--shadow);
+}
+.swatch-color{height:55px;width:100%}
+.swatch-meta{padding:5px;font-size:0.72rem;font-weight:600;font-family:var(--font-mono)}
+.swatch-label{font-size:0.68rem;color:var(--muted);display:block}
+
+/* Specs & Instructions */
+#dims{list-style:none;padding:0;margin:12px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px}
+#dims li{padding:8px 10px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);font-size:0.8rem}
+#dims li span{color:var(--muted);display:block;font-size:0.7rem}
+#steps{padding-left:20px;font-size:0.86rem;line-height:1.55}
+
+/* Buttons */
+button.btn{
+  font-family:inherit;font-weight:600;font-size:0.82rem;padding:7px 12px;
+  border-radius:var(--radius-sm);cursor:pointer;transition:all .15s;
+  display:inline-flex;align-items:center;gap:5px;justify-content:center;
+}
+button.primary{
+  background:linear-gradient(135deg,var(--primary),#795af0);color:#fff;
+  border:none;box-shadow:0 3px 10px var(--primary-glow);
+}
+button.primary:hover{opacity:.93;transform:translateY(-1px)}
+button.secondary{background:linear-gradient(135deg,var(--secondary),#f43f5e);color:#fff;border:none}
+button.ghost{background:var(--surface);border:1px solid var(--line);color:var(--ink)}
+button.ghost:hover{border-color:var(--primary);color:var(--primary)}
+button.danger{color:#ef4444}
+.row-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px;flex-wrap:wrap}
+
+/* AI Assistant */
+#chatLog{display:flex;flex-direction:column;gap:8px;max-height:280px;overflow-y:auto;padding:6px;margin-bottom:10px}
+.bubble{padding:8px 12px;border-radius:10px;max-width:85%;font-size:0.86rem;line-height:1.4}
+.bubble.user{align-self:flex-end;background:var(--primary);color:#fff}
+.bubble.assistant{align-self:flex-start;background:var(--surface);border:1px solid var(--line)}
+#chatForm{display:flex;gap:8px}
+#chatForm input{flex:1;padding:8px 10px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);color:var(--ink)}
+
+dialog{
+  border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);
+  color:var(--ink);padding:20px;width:min(460px,94vw);box-shadow:0 16px 36px rgba(0,0,0,0.25);
+}
+dialog::backdrop{background:rgba(14,17,23,0.6);backdrop-filter:blur(5px)}
+dialog form{display:flex;flex-direction:column;gap:10px}
+select,input[type=text],input[type=password]{
+  padding:7px 10px;border-radius:var(--radius-sm);border:1px solid var(--line);
+  background:var(--surface);color:var(--ink);font-family:inherit;
+}
+
+@media print{
+  header,.controls,.tabs,.palette-studio,.fabric-card,#chatTab,.row-actions,.hub-bar,dialog{display:none!important}
+  body,main{background:#fff!important;padding:0;margin:0}
+  .panel{border:none;padding:0;box-shadow:none}
+  .dual-viewport{grid-template-columns:1fr}
+  .sketch-card{page-break-after:always}
+  #out{border:none;box-shadow:none;background:#fff;width:100%!important}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-icon">✦</div>
+    <div>
+      <h1>Pattern Maker Studio</h1>
+      <p>200 Global Garments • Visual Preview • On-Pattern Measurements • Inspiration Hub</p>
+    </div>
+  </div>
+  <button class="btn ghost" id="keyBtn">🔑 AI Key Settings</button>
+</header>
+
+<main>
+  <!-- LEFT: Catalog of 200 Garments + 49 Adaptive Measurements -->
+  <section class="panel controls">
+    <div class="panel-title">
+      <span>1. Garment Catalog</span>
+      <span class="badge" id="libraryCount">200 Designs</span>
+    </div>
+
+    <div class="search-box">
+      <svg width="14" height="14" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input type="text" id="garmentSearch" placeholder="Search 200 designs (e.g. Agbada, Qipao, Kimono, Tuxedo)...">
+    </div>
+
+    <div class="cats-scroller" id="catFilter">
+      <button class="cat-pill active" data-cat="all">All (200)</button>
+      <button class="cat-pill" data-cat="african">African (25)</button>
+      <button class="cat-pill" data-cat="asian">Asian (30)</button>
+      <button class="cat-pill" data-cat="european">European & Folk (25)</button>
+      <button class="cat-pill" data-cat="latin">Latin American (20)</button>
+      <button class="cat-pill" data-cat="dresses">Dresses & Gowns (25)</button>
+      <button class="cat-pill" data-cat="skirts">Skirts (20)</button>
+      <button class="cat-pill" data-cat="tops">Tops & Shirts (20)</button>
+      <button class="cat-pill" data-cat="trousers">Trousers (20)</button>
+      <button class="cat-pill" data-cat="outerwear">Outerwear (15)</button>
+    </div>
+
+    <div class="garment-grid" id="garmentList"></div>
+
+    <div class="panel-title" style="margin-top:12px;">
+      <span>2. Body Measurements (cm)</span>
+      <span class="badge" id="activeMeasBadge">Active: 4</span>
+    </div>
+
+    <div style="display:flex;gap:6px;margin-bottom:8px;">
+      <select id="setSelect" style="flex:1;"><option value="">Saved client profiles…</option></select>
+      <button class="btn ghost" id="saveSetBtn">Save As</button>
+    </div>
+
+    <div class="meas-header">
+      <span class="meas-counter" id="measNotice">Showing required measurements</span>
+      <button class="toggle-btn" id="toggleAllMeas">Show all 49 ▾</button>
+    </div>
+
+    <div class="meas-grid" id="measContainer"></div>
+
+    <button class="btn secondary" id="newAiStyleBtn" style="width:100%;margin-top:12px;">
+      ✨ Prompt Gemini to Draft Custom Style
+    </button>
+  </section>
+
+  <!-- RIGHT: Visual Croquis + Measured Pattern Canvas + Hub -->
+  <section class="panel">
+    <!-- Design Inspiration & Research Hub -->
+    <div class="hub-bar">
+      <span class="hub-title">Inspiration & Tutorial Hub:</span>
+      <div class="hub-links">
+        <a href="#" target="_blank" rel="noopener noreferrer" class="hub-link google" id="hubGoogle">🔍 Google Images & Pattern</a>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="hub-link pinterest" id="hubPinterest">📌 Pinterest Boards</a>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="hub-link youtube" id="hubYoutube">▶️ YouTube Sew-Along</a>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="hub-link reddit" id="hubReddit">🧵 Reddit r/sewing</a>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="patternTab">📐 Finished Garment & Pattern</button>
+      <button class="tab" data-tab="fabricTab">🧵 Fabric & Yardage</button>
+      <button class="tab" data-tab="colorTab">🎨 Color Wheel Studio</button>
+      <button class="tab" data-tab="chatTab">💬 Design Assistant</button>
+    </div>
+
+    <!-- TAB 1: Dual Preview (Illustration + Pattern with Dimensions) -->
+    <div class="tab-pane" id="patternTab">
+      <div class="dual-viewport">
+        <!-- Finished Garment Croquis / Illustration -->
+        <div class="sketch-card">
+          <span class="sketch-title" id="sketchLabel">Finished Garment</span>
+          <svg id="sketchSvg" viewBox="0 0 200 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Finished garment illustration"></svg>
+          <span style="font-size:0.7rem;color:var(--muted);margin-top:6px;text-align:center;">Colors reflect current palette</span>
+        </div>
+
+        <!-- Real Pattern Canvas with Dimension Callouts -->
+        <div class="canvas-wrap">
+          <div class="canvas-meta">
+            <span class="tag-badge" id="metaGarment">A-line Skirt</span>
+            <span class="tag-badge" id="metaPieces">2 Pieces</span>
+            <span class="tag-badge">Metric Scale: 1:1 cm</span>
+          </div>
+          <svg id="out" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Drafted pattern pieces with measurements"></svg>
+        </div>
+      </div>
+
+      <p id="summary" style="margin:10px 0 4px;font-style:italic;color:var(--muted);font-size:0.88rem;"></p>
+      <ul id="dims"></ul>
+      <h3 style="font-size:0.92rem;margin:14px 0 6px;">Sewing Instructions</h3>
+      <ol id="steps"></ol>
+    </div>
+
+    <!-- TAB 2: Fabric & Yardage -->
+    <div class="tab-pane" id="fabricTab" hidden>
+      <div class="fabric-card">
+        <h3 style="margin:0 0 6px;font-family:var(--font-serif);font-size:1.15rem;" id="fabricTitle">Recommended Textiles</h3>
+        <p id="fabricNotes" style="font-size:0.86rem;color:var(--muted);margin:0 0 10px;"></p>
+        
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
+          <label style="font-size:0.82rem;font-weight:600;">Fabric Bolt Width:
+            <select id="boltWidthSelect" style="margin-left:6px;">
+              <option value="115">115 cm (45 in) Standard</option>
+              <option value="140" selected>140 cm (55 in) Wide</option>
+              <option value="150">150 cm (60 in) Extra Wide</option>
+              <option value="90">90 cm (35 in) Narrow / Traditional</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="fabric-grid">
+          <div class="fabric-metric">
+            <label>Estimated Yardage (Meters)</label>
+            <strong id="yardageMeters">1.8 m</strong>
+          </div>
+          <div class="fabric-metric">
+            <label>Estimated Yardage (Yards)</label>
+            <strong id="yardageYards">2.0 yd</strong>
+          </div>
+          <div class="fabric-metric">
+            <label>Recommended Stretch</label>
+            <strong id="fabricStretch">0% – 5%</strong>
+          </div>
+          <div class="fabric-metric">
+            <label>Notions & Interfacing</label>
+            <strong id="fabricNotions">Waist interfacing, 20cm zip</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Interactive Color Wheel -->
+    <div class="tab-pane" id="colorTab" hidden>
+      <div class="palette-studio">
+        <div class="wheel-wrap">
+          <canvas id="wheelCanvas" width="200" height="200"></canvas>
+          <span style="font-size:0.75rem;color:var(--muted);">Click wheel to select base hue</span>
+        </div>
+        <div>
+          <label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:6px;">Color Harmony Mode:
+            <select id="harmonyType" style="width:100%;margin-bottom:10px;">
+              <option value="analogous" selected>Analogous (Soft, natural flow)</option>
+              <option value="complementary">Complementary (Striking contrast)</option>
+              <option value="triadic">Triadic (Vibrant & balanced)</option>
+              <option value="split">Split-Complementary (Sophisticated)</option>
+              <option value="monochromatic">Monochromatic (Tone-on-tone)</option>
+            </select>
+          </label>
+          <div class="swatches-grid" id="swatchesContainer"></div>
+          <p style="font-size:0.75rem;color:var(--muted);margin-top:12px;">
+            ✦ The primary and accent colors update the finished garment preview illustration in real-time.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: Gemini AI Design Assistant -->
+    <div class="tab-pane" id="chatTab" hidden>
+      <div id="chatLog"></div>
+      <form id="chatForm">
+        <input type="text" id="chatInput" placeholder="e.g. Add 6 cm flare to hem and convert waistband to elastic..." autocomplete="off">
+        <button type="submit" class="btn primary" id="chatSend">Send</button>
+      </form>
+    </div>
+
+    <div class="row-actions">
+      <button class="btn ghost" id="redraftCurrent">🔄 Redraft with Current Measurements</button>
+      <button class="btn primary" id="printBtn">🖨️ Print Scale Pattern</button>
+    </div>
+  </section>
+</main>
+
+<!-- Gemini Key Settings Modal -->
+<dialog id="keyDialog">
+  <form id="keyForm">
+    <h3>Gemini API Settings</h3>
+    <label style="font-size:0.82rem;">Google AI Studio API Key:
+      <input type="password" id="keyInput" placeholder="AIzaSy..." autocomplete="off" required style="width:100%;margin-top:4px;">
+    </label>
+    <label style="font-size:0.82rem;">Drafting Model:
+      <select id="modelSelect" style="width:100%;margin-top:4px;">
+        <option value="gemini-2.5-flash">gemini-2.5-flash (Recommended)</option>
+        <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+        <option value="gemini-2.0-flash">gemini-2.0-flash</option>
+        <option value="gemini-3.8-flash">gemini-3.8-flash</option>
+      </select>
+    </label>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:8px;">
+      <button type="button" class="btn ghost danger" id="keyClear">Clear Key</button>
+      <button type="button" class="btn ghost" data-close>Cancel</button>
+      <button type="submit" class="btn primary">Save Settings</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- New Style Dialog -->
+<dialog id="styleDialog">
+  <form id="styleForm">
+    <h3>Design Custom Garment with Gemini</h3>
+    <label style="font-size:0.82rem;">Style Name:
+      <input type="text" id="styleName" placeholder="e.g. Asymmetrical Bias Evening Gown" required style="width:100%;margin-top:4px;">
+    </label>
+    <label style="font-size:0.82rem;">Description & Style Details:
+      <textarea id="styleDesc" rows="4" placeholder="e.g. Bias-cut silk midi dress with cowl neckline, low back with cross straps, and a 5cm hem facing." required style="width:100%;margin-top:4px;font-family:inherit;padding:8px;border-radius:8px;border:1px solid var(--line);"></textarea>
+    </label>
+    <div style="display:flex;justify-content:flex-end;gap:8px;">
+      <button type="button" class="btn ghost" data-close>Cancel</button>
+      <button type="submit" class="btn primary" id="generateSubmit">Draft with AI</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Client Set Dialog -->
+<dialog id="setDialog">
+  <form id="setForm">
+    <h3>Save Measurement Profile</h3>
+    <label style="font-size:0.82rem;">Client / Fit Name:
+      <input type="text" id="setName" placeholder="e.g. Client Profile #1" required style="width:100%;margin-top:4px;">
+    </label>
+    <div style="display:flex;justify-content:flex-end;gap:8px;">
+      <button type="button" class="btn ghost" data-close>Cancel</button>
+      <button type="submit" class="btn primary">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+/* =====================================================================
+   1. 49 COMPREHENSIVE ANATOMICAL MEASUREMENTS
+   ===================================================================== */
+const MEAS_49 = [
+  // Head & Neck (1-3)
+  {id:'neckCirc', label:'Neck Circumference', def:36, step:0.5, min:25},
+  {id:'neckBase', label:'Neck Base Girth', def:39, step:0.5, min:28},
+  {id:'napeToFrontNeck', label:'Nape to Front Neck', def:18, step:0.5, min:10},
+  // Bust & Chest (4-9)
+  {id:'highBust', label:'High Bust', def:85, step:0.5, min:40},
+  {id:'bust', label:'Full Bust', def:90, step:0.5, min:40},
+  {id:'underbust', label:'Underbust', def:76, step:0.5, min:40},
+  {id:'bustSpan', label:'Bust Apex to Apex', def:19, step:0.5, min:12},
+  {id:'shoulderToApex', label:'Shoulder to Apex', def:25, step:0.5, min:15},
+  {id:'acrossFrontChest', label:'Across Front Chest', def:34, step:0.5, min:20},
+  // Waist & Torso (10-17)
+  {id:'naturalWaist', label:'Natural Waist', def:70, step:0.5, min:40},
+  {id:'highWaist', label:'High Waist', def:73, step:0.5, min:40},
+  {id:'lowWaist', label:'Low Waist', def:78, step:0.5, min:40},
+  {id:'frontWaistLength', label:'Front Waist Length', def:43, step:0.5, min:25},
+  {id:'backWaistLength', label:'Back Waist Length', def:41, step:0.5, min:25},
+  {id:'bodiceLen', label:'Center Front Bodice Length', def:38, step:0.5, min:20},
+  {id:'sideSeamWaist', label:'Underarm to Waist', def:20, step:0.5, min:10},
+  {id:'fullTorsoGirth', label:'Full Torso Girth', def:148, step:1, min:100},
+  // Hips & Pelvis (18-22)
+  {id:'highHip', label:'High Hip (Abdomen)', def:88, step:0.5, min:50},
+  {id:'hip', label:'Full Hip / Seat', def:98, step:0.5, min:50},
+  {id:'hipDepth', label:'Waist to Hip Depth', def:20, step:0.5, min:10},
+  {id:'crotchDepth', label:'Crotch Depth (Rise)', def:27, step:0.5, min:15},
+  {id:'totalCrotchLen', label:'Total Crotch Length', def:68, step:0.5, min:40},
+  // Shoulders & Arms (23-32)
+  {id:'acrossBack', label:'Across Back Blades', def:36, step:0.5, min:20},
+  {id:'shoulderSlope', label:'Shoulder Length', def:12.5, step:0.5, min:7},
+  {id:'totalShoulderWidth', label:'Total Shoulder Width', def:40, step:0.5, min:25},
+  {id:'armholeCirc', label:'Armhole Circumference', def:42, step:0.5, min:25},
+  {id:'bicepCirc', label:'Bicep Circumference', def:28, step:0.5, min:18},
+  {id:'elbowCirc', label:'Elbow Circumference', def:25, step:0.5, min:15},
+  {id:'forearmCirc', label:'Forearm Circumference', def:23, step:0.5, min:14},
+  {id:'wristCirc', label:'Wrist Circumference', def:16, step:0.5, min:10},
+  {id:'sleeveLen', label:'Full Sleeve Length', def:60, step:0.5, min:20},
+  {id:'shortSleeveLen', label:'Short Sleeve Length', def:22, step:0.5, min:10},
+  // Legs & Lower Body (33-41)
+  {id:'thighCirc', label:'Full Thigh', def:56, step:0.5, min:30},
+  {id:'midThighCirc', label:'Mid-Thigh', def:50, step:0.5, min:25},
+  {id:'kneeCirc', label:'Knee Circumference', def:37, step:0.5, min:20},
+  {id:'calfCirc', label:'Calf Circumference', def:35, step:0.5, min:20},
+  {id:'ankleCirc', label:'Ankle Circumference', def:23, step:0.5, min:15},
+  {id:'outseam', label:'Outseam (Waist-Floor)', def:104, step:0.5, min:60},
+  {id:'inseam', label:'Inseam (Crotch-Floor)', def:77, step:0.5, min:50},
+  {id:'waistToKnee', label:'Waist to Knee', def:58, step:0.5, min:35},
+  {id:'kneeToFloor', label:'Knee to Floor', def:46, step:0.5, min:25},
+  // Garment Finished & Allowances (42-49)
+  {id:'skirtLen', label:'Skirt Finished Length', def:60, step:0.5, min:15},
+  {id:'hemCirc', label:'Hem Circumference', def:130, step:1, min:50},
+  {id:'shirtLen', label:'Top / Shirt Length', def:68, step:0.5, min:25},
+  {id:'corsetLen', label:'Corset Finished Length', def:28, step:0.5, min:12},
+  {id:'dressLen', label:'Dress Total Length', def:105, step:1, min:50},
+  {id:'legOpening', label:'Leg Opening (Hem)', def:48, step:1, min:20},
+  {id:'cuffWidth', label:'Cuff Width (Flat)', def:22, step:0.5, min:10},
+  {id:'seam', label:'Seam Allowance (All)', def:1.5, step:0.1, min:0.5}
+];
+
+/* =====================================================================
+   2. 200 GLOBAL GARMENT DEFINITIONS
+   ===================================================================== */
+const RAW_200 = [
+  // African (25)
+  ['agbada','Grand Agbada Robe','african','robe',['bust','totalShoulderWidth','dressLen'],'Brocade, Aso-Oke, Damask','0%','Embroidery thread'],
+  ['buba-iro','Buba & Iro Wrap Set','african','shirt',['bust','naturalWaist','hip','skirtLen'],'Ankara African Wax, Voile Lace','0%','Waist tie ribbon'],
+  ['dashiki','Classic Angelina Dashiki','african','shirt',['bust','hip','totalShoulderWidth','shirtLen'],'100% African Wax Cotton','0%','Placket interfacing'],
+  ['boubou','Senegalese Grand Boubou','african','robe',['bust','hip','totalShoulderWidth','dressLen'],'Bazin Riche, Silk Brocade','0%','Metallic thread'],
+  ['kaftan-african','Moroccan Silk Kaftan','african','robe',['bust','naturalWaist','hip','dressLen'],'Silk Crepe, Brocade','0%','Sfifa braid, Aakad buttons'],
+  ['kaba-slot','Kaba & Slot Ghanaian Gown','african','dress',['bust','naturalWaist','hip','dressLen'],'Kente, Hollandaise Wax','0%','Bodice zip, lining'],
+  ['shweshwe','Shweshwe Flared Gown','african','dress',['bust','naturalWaist','skirtLen','dressLen'],'Original Indigo Shweshwe cotton','0%','Back zipper'],
+  ['isidwaba','Isidwaba Pleated Leather Skirt','african','skirt',['naturalWaist','hip','skirtLen'],'Tanned hide, Heavy suede twill','0%','Waist ties'],
+  ['djellaba','Maghrebi Hooded Djellaba','african','robe',['bust','totalShoulderWidth','sleeveLen','dressLen'],'Wool, Linen, Cotton','0%','Randa embroidery trim'],
+  ['gomesi','Ugandan Gomesi Robe','african','dress',['bust','totalShoulderWidth','naturalWaist','dressLen'],'Silk, Satin, Linen','0%','Obswalo sash'],
+  ['habesha-kemis','Ethiopian Habesha Kemis','african','dress',['bust','naturalWaist','sleeveLen','dressLen'],'Handwoven Shemma Cotton','0%','Tibeb woven border'],
+  ['kitenge-peplum','Kitenge Peplum Blouse','african','bodice',['bust','naturalWaist','bodiceLen'],'Kitenge Wax Cotton','0%','Separating zip'],
+  ['kanzu','Swahili Kanzu Robe','african','robe',['bust','neckCirc','dressLen'],'White linen, polished cotton','0%','Neck tassel embroidery'],
+  ['ankara-mermaid','Ankara Mermaid Gown','african','dress',['bust','naturalWaist','hip','waistToKnee','dressLen'],'Cotton Wax Print','0%','Horsehair braid, zip'],
+  ['capulana-wrap','Mozambican Capulana Wrap','african','skirt',['naturalWaist','hip','skirtLen'],'Printed African cotton','0%','None'],
+  ['toghu-tunic','Bamenda Toghu Royal Tunic','african','shirt',['bust','totalShoulderWidth','shirtLen'],'Heavy black velvet','0%','Chainstitch embroidery'],
+  ['dan-fiki','Dan Fiki Sleeveless Smock','african','shirt',['bust','shirtLen'],'Handwoven Gonja cotton strips','0%','Contrast neck binding'],
+  ['jellabiya','Egyptian Cotton Jellabiya','african','robe',['bust','sleeveLen','dressLen'],'Fine Giza cotton','0%','Front placket buttons'],
+  ['kente-toga','Asante Kente Wrap Toga','african','robe',['totalShoulderWidth','dressLen'],'Silk/cotton woven Kente strips','0%','None'],
+  ['zulu-apron','Zulu Beaded Apron','african','skirt',['naturalWaist','skirtLen'],'Felted wool, leather base','0%','Beading backing'],
+  ['merina-lamba','Malagasy Lamba Wrap Gown','african','dress',['bust','dressLen'],'Raw Malagasy silk (Landibe)','0%','Fringed trim'],
+  ['kanga-suit','East African Kanga 2-Piece','african','skirt',['bust','naturalWaist','skirtLen'],'Cotton Kanga with Jina sayings','0%','Elastic waistband'],
+  ['bazin-suit','Malian Bazin 3-Piece Suit','african','shirt',['bust','naturalWaist','hip','skirtLen'],'Glazed Bazin Riche','0%','Embroidery stabilizer'],
+  ['fulani-smock','Fulani Embroidered Tunic','african','shirt',['bust','totalShoulderWidth','shirtLen'],'Hand-spun organic cotton','0%','Yarn embroidery'],
+  ['ndebele-gown','Ndebele Graphic Ring Dress','african','dress',['bust','naturalWaist','dressLen'],'Stiffened cotton canvas','0%','Neck ring stabilizer'],
+
+  // Asian (30)
+  ['kimono','Japanese Kimono Robe','asian','robe',['bust','totalShoulderWidth','sleeveLen','dressLen'],'Silk Chirimen, Tsumugi Silk','0%','Eri collar canvas, Obi'],
+  ['yukata','Summer Cotton Yukata','asian','robe',['bust','totalShoulderWidth','dressLen'],'100% Breathable cotton','0%','Koshihimo ties'],
+  ['hanbok','Korean Hanbok (Jeogori & Chima)','asian','dress',['bust','naturalWaist','dressLen'],'Silk Gyeon, Ramie, Organza','0%','Otgoreum ribbon ties'],
+  ['qipao','Mandarin Collar Cheongsam/Qipao','asian','dress',['bust','naturalWaist','hip','neckCirc','dressLen'],'Silk Brocade, Jacquard','0%','Pankou frog knots, zip'],
+  ['ao-dai','Vietnamese Ao Dai Tunic','asian','dress',['bust','naturalWaist','hip','neckCirc','dressLen'],'Silk Chiffon, Brocade','0%','Snap placket, side zip'],
+  ['sari-blouse','Indian Sari Blouse (Choli)','asian','bodice',['bust','underbust','shoulderToApex','bodiceLen'],'Raw Silk, Brocade, Velvet','0%','Back dori tie, bra cups'],
+  ['salwar-kameez','Salwar Kameez Suit','asian','shirt',['bust','naturalWaist','hip','crotchDepth','inseam'],'Cotton Mulmul, Silk Chanderi','0%','Drawstring cord, zip'],
+  ['kurta','Men’s Classic Kurta Pajama','asian','shirt',['bust','naturalWaist','hip','shirtLen','sleeveLen'],'Linen, Voile, Tussar Silk','0%','Placket horn buttons'],
+  ['sherwani','Royal Embroidered Sherwani','asian','shirt',['bust','naturalWaist','acrossBack','sleeveLen','shirtLen'],'Velvet, Heavy Silk Brocade','0%','Metallic buttons, canvas'],
+  ['kebaya','Indonesian Encim Kebaya','asian','shirt',['bust','naturalWaist','sleeveLen','shirtLen'],'Swiss Voile with Kerancang lace','0%','Kerrosang brooch set'],
+  ['baju-kurung','Malay Baju Kurung Gown','asian','dress',['bust','hip','sleeveLen','dressLen'],'Songket, Silk, Crepe','0%','Neck button hook'],
+  ['barong','Filipino Barong Tagalog','asian','shirt',['bust','naturalWaist','sleeveLen','shirtLen'],'Piña (Pineapple) cloth, Jusi','0%','Mother of pearl buttons'],
+  ['chut-thai','Royal Chut Thai Siwalai Gown','asian','dress',['bust','naturalWaist','hip','dressLen'],'Thai Silk, Golden Brocade','0%','Sabai shoulder sash'],
+  ['lehenga','Bridal Lehenga Circular Skirt','asian','skirt',['naturalWaist','hip','skirtLen'],'Velvet, Raw Silk, Can-can','0%','Heavy dori cord, latkans'],
+  ['dhoti','Draped Traditional Dhoti Pants','asian','trouser',['naturalWaist','crotchDepth','outseam'],'Mercerized Cotton, Silk border','0%','Gold zari border'],
+  ['thobe','Arab Gulf Thobe / Dishdasha','asian','robe',['bust','neckCirc','sleeveLen','dressLen'],'Japanese Toyobo Cotton Poly','0%','Snap buttons, tassels'],
+  ['abaya','Flowing Butterfly Abaya','asian','robe',['bust','totalShoulderWidth','dressLen'],'Nida, Nidha silk crepe','0%','Concealed snap buttons'],
+  ['bisht','Ceremonial Arab Bisht Cloak','asian','robe',['totalShoulderWidth','dressLen'],'Sheer Wool with Zari gold border','0%','Zari metallic thread'],
+  ['hanfu','Chinese Ming Dynasty Hanfu','asian','dress',['bust','totalShoulderWidth','dressLen'],'Crepe de chine, Tulle silk','0%','Waist tie cords'],
+  ['tang-suit','Traditional Tangzhuang Jacket','asian','shirt',['bust','acrossBack','sleeveLen','shirtLen'],'Silk Jacquard Damask','0%','Frog button toggles'],
+  ['kandura','Emirati Kandura with Tarboosh','asian','robe',['bust','neckCirc','sleeveLen','dressLen'],'Spun polyester, micro-twill','0%','Braided neck tassel'],
+  ['mongolian-deel','Mongolian Deel Robe','asian','robe',['bust','totalShoulderWidth','dressLen'],'Heavy brocade, sheepskin lining','0%','Silver buttons, sash'],
+  ['pheran','Kashmiri Embroidered Pheran','asian','shirt',['bust','acrossBack','sleeveLen','shirtLen'],'Cashmere wool, Melton','0%','Tilla needlework braid'],
+  ['chupa','Tibetan Chupa Wrap Dress','asian','dress',['bust','naturalWaist','dressLen'],'Tibetan Wool (Pulu), Silk','0%','Pangden woven apron'],
+  ['sinh','Lao Traditional Sinh Skirt','asian','skirt',['naturalWaist','hip','skirtLen'],'Handwoven Silk with Tin Sinh hem','0%','Silver belt hooks'],
+  ['sarong-batik','Javanese Batik Sarong','asian','skirt',['naturalWaist','hip','skirtLen'],'Wax-resist Batik Tulis cotton','0%','None'],
+  ['achkan','Knee-Length Achkan Coat','asian','shirt',['bust','naturalWaist','shirtLen'],'Wool crepe, Jamawar','0%','Full lining, hook/eye'],
+  ['angrakha','Mughal Angrakha Cross-Tunic','asian','shirt',['bust','naturalWaist','shirtLen'],'Mulmul cotton, Muslin','0%','Tie cords, bells'],
+  ['churidar','Gathered Churidar Leggings','asian','trouser',['naturalWaist','crotchDepth','inseam'],'Stretch cotton voile on bias','10%','Drawstring waist'],
+  ['lungi','South Indian Lungi Wrap','asian','skirt',['naturalWaist','skirtLen'],'Handloom check cotton','0%','Woven border'],
+
+  // European & Folk (25)
+  ['dirndl','Alpine Dirndl Bodice & Skirt','european','dress',['bust','underbust','naturalWaist','skirtLen'],'Bavarian Linen, Floral Cotton','0%','Silver hooks, Schürze apron'],
+  ['kilt','Scottish Tartan 8-Yard Kilt','european','skirt',['naturalWaist','hip','skirtLen'],'16oz Worsted Strome Tartan Wool','0%','Leather straps, buckles'],
+  ['flamenco','Spanish Flamenco Bata de Cola','european','dress',['bust','naturalWaist','hip','dressLen'],'Poplin, Heavy Crepe, Organza','0%','Volante tier ruffles, zip'],
+  ['breton-smock','Breton Fisherman Vareuse Smock','european','shirt',['bust','acrossBack','shirtLen'],'Heavy Cotton Canvas (Vareuse)','0%','Inside collar button'],
+  ['sarafan','Russian Folk Sarafan Pinafore','european','dress',['bust','highBust','dressLen'],'Brocade, Heavy Linen, Wool','0%','Galoon metallic braid'],
+  ['lederhosen','Bavarian Leather Tracht Shorts','european','trouser',['naturalWaist','hip','crotchDepth','thighCirc'],'Deerskin suede, Heavy split leather','0%','Bone buttons, suspenders'],
+  ['kirtle','Tudor 16th C. Lace-Up Kirtle','european','dress',['bust','naturalWaist','skirtLen','dressLen'],'Wool broadcloth, Linen lining','0%','Spiral lacing, eyelets'],
+  ['stays-18th','18th Century Reeded Stays','european','corset',['bust','underbust','naturalWaist','corsetLen'],'English Coutil, Linen Canvas','0%','Reed or synthetic whalebone'],
+  ['fustanella','Greek Folk Fustanella Pleated Kilt','european','skirt',['naturalWaist','skirtLen'],'Bleached heavy cotton linen','0%','400 knife pleats, waist tie'],
+  ['kontusz','Polish Noble Kontusz Robe','european','robe',['bust','totalShoulderWidth','dressLen'],'Wool, Velvet, Fur lining','0%','Pas kontuszowy sash'],
+  ['romanian-ie','Romanian Folk IE Blouse','european','shirt',['bust','neckCirc','sleeveLen','shirtLen'],'Handmade linen gauze','0%','Cross-stitch embroidery thread'],
+  ['basque-bodice','Victorian Basque Point Bodice','european','bodice',['bust','naturalWaist','bodiceLen'],'Duchess Silk Satin, Taffeta','0%','Steel spring boning'],
+  ['smock-frock','English Agricultural Smock Frock','european','shirt',['bust','totalShoulderWidth','shirtLen'],'Unglazed heavy linen drabbet','0%','Honeycombing smocking'],
+  ['guernsey','Guernsey Island Fisher Knit Jumper','european','shirt',['bust','sleeveLen','shirtLen'],'Oiled 5-ply worsted wool yarn','15%','Garter stitch ribs'],
+  ['doublet','Renaissance Peascod Doublet','european','bodice',['bust','naturalWaist','bodiceLen'],'Velvet, Silk Damask, Horsehair','0%','Bombast padding, eyelets'],
+  ['tweed-jacket','Savile Row Tweed Hacking Jacket','european','shirt',['bust','naturalWaist','acrossBack','sleeveLen','shirtLen'],'Harris Tweed Wool, Satin lining','0%','Leather buttons, canvas'],
+  ['mourning-dress','Victorian Bombazine Mourning Dress','european','dress',['bust','naturalWaist','dressLen'],'Black silk crape, Bombazine','0%','Black jet buttons, stays'],
+  ['sailor-suit','Kiel French Sailor Suit','european','shirt',['bust','neckCirc','sleeveLen','shirtLen'],'Navy wool serge, cotton poplin','0%','Navy collar striping'],
+  ['matelot','French Riviera Striped Marinière','european','shirt',['bust','sleeveLen','shirtLen'],'220gsm combed cotton jersey','20%','Twin needle stretch thread'],
+  ['chopin-cape','Romantic Era Opera Cloak','european','robe',['totalShoulderWidth','dressLen'],'Black Cashmere, Silk Velvet','0%','Silk cord frog closures'],
+  ['bunad','Norwegian Telemark Folk Bunad','european','dress',['bust','naturalWaist','skirtLen'],'Norwegian Wadmal wool','0%','Sølje silver jewelry clasps'],
+  ['highland-arisaid','Highland Arisaid Tartan Plaid','european','dress',['naturalWaist','dressLen'],'Lightweight Saxony Tartan Wool','0%','Silver annular bodkin brooch'],
+  ['riding-habit','Edwardian Sidesaddle Riding Habit','european','dress',['bust','naturalWaist','hip','dressLen'],'Heavy cavalry twill wool','0%','Horn buttons, weighted hem'],
+  ['holland-skirt','Dutch Volendam Pleated Skirt','european','skirt',['naturalWaist','skirtLen'],'Black striped wool, Kraplap bib','0%','Waist tape ties'],
+  ['flamenco-skirt','Flamenco Practice Ruffle Skirt','european','skirt',['naturalWaist','hip','skirtLen'],'Knit crepe, heavy spandex lycra','15%','Tier ruffles, elastic'],
+
+  // Latin American (20)
+  ['guayabera','Cuban 4-Pocket Guayabera','latin','shirt',['bust','naturalWaist','shirtLen'],'100% Crisp Irish Linen','0%','Alforza pin-tucks, 28 buttons'],
+  ['huipil','Mexican Oaxaca Handwoven Huipil','latin','shirt',['bust','totalShoulderWidth','shirtLen'],'Backstrap woven cotton gauze','0%','Floral satin stitch yarn'],
+  ['pollera','Panamanian Pollera de Gala Gown','latin','dress',['bust','naturalWaist','skirtLen','dressLen'],'Fine batiste, French Valenciennes lace','0%','Gold tembleques, silk pompom'],
+  ['poncho-andean','Peruvian Alpaca Woven Poncho','latin','robe',['totalShoulderWidth','shirtLen'],'100% Baby Alpaca Wool','0%','Fringe border'],
+  ['bombachas','Argentine Gaucho Bombacha Pants','latin','trouser',['naturalWaist','hip','crotchDepth','inseam','ankleCirc'],'Heavy cotton drill, canvas','0%','Pleats, ankle button tabs'],
+  ['rumbera','Cuban Rumbera Ruffle Crop Top','latin','bodice',['bust','underbust','shoulderSlope'],'Organza, Satin, Tulle ruffles','0%','Ruffle fishing line hemming'],
+  ['ruana','Colombian Highlands Ruana Wrap','latin','robe',['totalShoulderWidth','dressLen'],'Raw virgin sheep wool','0%','Overcast border'],
+  ['enredo','Mayan Enredo Wrap Tube Skirt','latin','skirt',['naturalWaist','hip','skirtLen'],'Ikat jaspe backstrap cotton','0%','Faja embroidered belt'],
+  ['mola-blouse','Guna Yala Mola Appliqué Blouse','latin','shirt',['bust','shirtLen'],'Cotton poplin, reverse appliqué','0%','Puff sleeve elastic'],
+  ['charro-jacket','Mexican Mariachi Charro Jacket','latin','shirt',['bust','acrossBack','sleeveLen','bodiceLen'],'Wool felt, Black velvet','0%','Grecas silver embroidery'],
+  ['chamanto','Chilean Huaso Chamanto Cloak','latin','robe',['totalShoulderWidth','shirtLen'],'Double-sided silk and wool weave','0%','Reversible border'],
+  ['aguayo-dress','Bolivian Aguayo Ethnic Dress','latin','dress',['bust','naturalWaist','dressLen'],'Traditional striped Aguayo wool','0%','Side zipper'],
+  ['cumbia-skirt','Colombian Cumbia Ruffle Skirt','latin','skirt',['naturalWaist','hip','skirtLen'],'Vibrant floral cotton poplin','0%','Three oversized ruffles'],
+  ['tehuana','Tehuana Embroidered Velvet Dress','latin','dress',['bust','naturalWaist','skirtLen','dressLen'],'Black silk velvet, golden lace','0%','Resplandor headpiece trim'],
+  ['faja-belted-dress','Andean Faja Belted Tunic','latin','dress',['bust','dressLen'],'Handspun llama wool','0%','Tightly woven faja sash'],
+  ['guaracha-dress','Boricua Guaracha Stage Dress','latin','dress',['bust','naturalWaist','skirtLen','dressLen'],'Satin, Nylon netting ruffles','0%','Horsehair braid hem'],
+  ['baiana','Brazilian Carmen Baiana Ruffle Gown','latin','dress',['bust','naturalWaist','skirtLen','dressLen'],'White broderie anglaise lace','0%','Starched petticoat lace'],
+  ['quechua-skirt','Quechua Pollera Layered Skirt','latin','skirt',['naturalWaist','skirtLen'],'Bayeta wool, velvet ribbons','0%','Embroidered ribbon trim'],
+  ['llanero-suit','Venezuelan Liqui-Liqui Suit','latin','shirt',['bust','neckCirc','sleeveLen','shirtLen'],'White linen or gabardine','0%','Mao collar, metallic studs'],
+  ['pampa-vest','Pampa Leather Gaucho Vest','latin','bodice',['bust','naturalWaist','bodiceLen'],'Raw cowhide, suede','0%','Rawhide rawhide braiding'],
+
+  // Dresses & Gowns (25)
+  ['sheath','Audrey Hepburn Sheath Dress','dresses','dress',['bust','naturalWaist','hip','dressLen'],'Wool crepe, Ponte de Roma','3%','55cm invisible zip, slit tape'],
+  ['shift-60s','60s Mod Colorblock Shift Dress','dresses','dress',['bust','hip','dressLen'],'Double knit wool, heavy linen','0%','Concealed back zip'],
+  ['wrap-dvf','Iconic Silk Jersey Wrap Dress','dresses','dress',['bust','naturalWaist','hip','dressLen','sleeveLen'],'100% Silk jersey, Viscose elastane','25%','Waist tie sash, clear elastic'],
+  ['empire-gown','Regency Empire Line Gown','dresses','dress',['bust','underbust','dressLen'],'Embroidered voile, Silk organza','0%','Underbust satin ribbon'],
+  ['slip-bias','90s Minimalist Bias Slip Dress','dresses','dress',['bust','naturalWaist','hip','dressLen'],'Silk charmeuse, Rayon satin','0%','Bias spaghetti straps'],
+  ['fit-flare','50s New Look Fit & Flare Gown','dresses','dress',['bust','naturalWaist','dressLen','skirtLen'],'Cotton sateen, Duchess satin','0%','Tulle crinoline, back zip'],
+  ['shirtwaist','Pleated Belted Shirtwaist Dress','dresses','dress',['bust','naturalWaist','hip','sleeveLen','dressLen'],'Cotton poplin, Oxford shirting','0%','12 shell buttons, belt buckle'],
+  ['boho-maxi','Tiered Prairie Bohemian Maxi','dresses','dress',['bust','naturalWaist','dressLen'],'Rayon challis, Cotton gauze','0%','Elastic shirring thread'],
+  ['mermaid-gown','Red Carpet Mermaid Tail Gown','dresses','dress',['bust','naturalWaist','hip','waistToKnee','dressLen'],'Heavy stretch crepe, Duchesse','4%','Invisible zip, horsehair braid'],
+  ['princess-ballgown','Haute Couture Princess Ballgown','dresses','dress',['bust','naturalWaist','shoulderToApex','dressLen'],'Silk mikado, French tulle layers','0%','Steel boning, hoop skirt'],
+  ['halter-maxi','Grecian Halter Neck Evening Gown','dresses','dress',['bust','underbust','dressLen'],'Pleated silk chiffon, Lamé','0%','Neck ring fastener'],
+  ['bodycon','Sculptural Bandage Bodycon Dress','dresses','dress',['bust','naturalWaist','hip','dressLen'],'Heavy rayon/nylon/spandex knit','40%','Heavy metal exposed zipper'],
+  ['smock-dress','Oversized Gathering Smock Dress','dresses','dress',['bust','sleeveLen','dressLen'],'Washed European linen, seersucker','0%','Bias tape neckline'],
+  ['flapper','1920s Great Gatsby Drop-Waist Dress','dresses','dress',['bust','lowWaist','dressLen'],'Silk georgette, Beaded mesh fringe','0%','Tiered sequin fringe'],
+  ['caftan-maxi','Silk Chiffon Resort Caftan Maxi','dresses','dress',['bust','totalShoulderWidth','dressLen'],'Printed silk habotai, crepe','0%','Neck cord tassels'],
+  ['column-gown','Statuesque Roman Column Dress','dresses','dress',['bust','hip','dressLen'],'Matte jersey, Heavy hammered satin','10%','Shoulder drapery brooch'],
+  ['balloon-dress','80s Pouf Balloon Hem Cocktail Dress','dresses','dress',['bust','naturalWaist','dressLen'],'Silk taffeta, organza petticoat','0%','Elasticized hem cord'],
+  ['babydoll','Empire Babydoll Tiered Mini','dresses','dress',['bust','underbust','dressLen'],'Eyelet lace, Swiss dot cotton','0%','Back keyhole button'],
+  ['one-shoulder','Goddess One-Shoulder Asymmetric Dress','dresses','dress',['bust','naturalWaist','hip','dressLen'],'Slinky bamboo jersey, silk satin','10%','Side concealed zipper'],
+  ['godet-gown','Vintage 30s Bias Godet Evening Gown','dresses','dress',['bust','naturalWaist','hip','dressLen'],'Liquid silk crepe de chine','0%','Bias facing, hook/eye'],
+  ['pinafore','Tailored Denim Apron Pinafore','dresses','dress',['naturalWaist','hip','skirtLen'],'11oz cotton denim, corduroy','0%','Dungaree overall buckles'],
+  ['blazer-dress','Double-Breasted Tuxedo Blazer Dress','dresses','dress',['bust','naturalWaist','hip','acrossBack','dressLen'],'Worsted wool suiting, Satin lapels','0%','Shoulder pads, 6 horn buttons'],
+  ['tea-dress','1940s Vintage Floral Tea Dress','dresses','dress',['bust','naturalWaist','dressLen','shortSleeveLen'],'Rayon crepe, silk viscose','0%','Gathered shoulder tabs, zip'],
+  ['cutout-gown','Contemporary Cutout Waist Gown','dresses','dress',['bust','underbust','naturalWaist','hip','dressLen'],'Bonded Italian crepe','5%','Concealed side snaps'],
+  ['tent-dress','Cristóbal Balenciaga Trapeze Tent Dress','dresses','dress',['bust','dressLen'],'Stiff silk gazar, heavy linen','0%','Horsehair hem stabilizer'],
+
+  // Skirts (20)
+  ['a-line','Tailored A-Line Skirt','skirts','skirt',['naturalWaist','hip','skirtLen','hemCirc'],'Wool crepe, linen twill, sateen','0%','20cm zipper, waist interfacing'],
+  ['pencil-skirt','Office High-Waist Pencil Skirt','skirts','skirt',['naturalWaist','hip','skirtLen'],'Bi-stretch wool, ponte roma','5%','Back walking vent tape, zip'],
+  ['full-circle','Full 360° Circular Twirl Skirt','skirts','skirt',['naturalWaist','skirtLen'],'Cotton lawn, silk taffeta, wool flannel','0%','Interfaced waistband, zip'],
+  ['half-circle','Half-Circle Flowing Midi Skirt','skirts','skirt',['naturalWaist','skirtLen'],'Tencel twill, crepe de chine','0%','Hook and bar, zip'],
+  ['wrap-skirt','Classic Tie-Waist Wrap Skirt','skirts','skirt',['naturalWaist','hip','skirtLen'],'Linen blend, cupro, silk twill','0%','Waistband tie sash'],
+  ['pleated-tennis','Sharp Pleated Tennis Mini Skirt','skirts','skirt',['naturalWaist','highHip','skirtLen'],'Polyester gabardine, suiting twill','0%','Side zipper, edge stabilizer'],
+  ['tiered-maxi','Boho 4-Tier Gathered Maxi Skirt','skirts','skirt',['naturalWaist','hip','skirtLen'],'Double gauze, rayon challis','0%','4cm soft waist elastic'],
+  ['trumpet-skirt','Trumpet Fluted Hem Skirt','skirts','skirt',['naturalWaist','hip','waistToKnee','skirtLen'],'Duchess satin, wool crepe','3%','Horsehair braid for hem'],
+  ['godet-skirt','8-Insert Flared Godet Skirt','skirts','skirt',['naturalWaist','hip','skirtLen'],'Suiting wool, silk faille','0%','Hem seam tape, zipper'],
+  ['high-low','Asymmetric High-Low Waterfall Skirt','skirts','skirt',['naturalWaist','hip','skirtLen'],'Silk georgette, chiffon over satin','0%','Rolled hem foot thread'],
+  ['tulip-skirt','Pleated Front Tulip Skirt','skirts','skirt',['naturalWaist','hip','skirtLen'],'Cotton sateen, linen blend','2%','Waistband fusible, zip'],
+  ['sarong-beach','Pareo Beach Sarong Wrap Skirt','skirts','skirt',['naturalWaist','hip','skirtLen'],'Rayon batik, silk habotai','0%','None'],
+  ['six-gore','Structured 6-Gore Paneled Skirt','skirts','skirt',['naturalWaist','hip','skirtLen'],'Cotton corduroy, worsted wool','0%','Waist stay tape, zip'],
+  ['mini-slit','Y2K Front Slit Denim Mini Skirt','skirts','skirt',['lowWaist','hip','skirtLen'],'12oz rigid denim, faux leather','2%','Jeans tack button, fly zip'],
+  ['accordion','Permanent Accordion Pleat Skirt','skirts','skirt',['naturalWaist','skirtLen'],'Pre-pleated poly crepe, metallic foil','0%','Grosgrain waist ribbon'],
+  ['cargo-skirt','Utility Cargo Midi Skirt','skirts','skirt',['naturalWaist','hip','skirtLen'],'Cotton ripstop, washed canvas','0%','Bellows pocket snaps, cord'],
+  ['paperbag-skirt','Paperbag Ruffle Waist Skirt','skirts','skirt',['naturalWaist','hip','skirtLen'],'Washed tencel, lightweight twill','0%','3cm elastic, fabric belt'],
+  ['kilt-mini','Pleated Tartan Schoolgirl Mini','skirts','skirt',['naturalWaist','hip','skirtLen'],'Worsted wool tartan, poly viscose','0%','Double kilt pin, side buckles'],
+  ['fishtail-skirt','Gothic Fishtail Train Skirt','skirts','skirt',['naturalWaist','hip','skirtLen'],'Black stretch velvet, damask','5%','Heavy concealed zipper'],
+  ['tiered-tulle','Ballerina Multi-Tier Tulle Skirt','skirts','skirt',['naturalWaist','skirtLen'],'Fine bridal tulle, satin lining','0%','Satin elastic waistband'],
+
+  // Tops & Shirts (20)
+  ['bodice-basic','Tailored Fitting Sloper Bodice','tops','bodice',['bust','naturalWaist','bodiceLen','acrossBack'],'Unbleached cotton calico muslin','0%','Tracing wheel markings'],
+  ['peplum-blouse','Princess Seam Peplum Blouse','tops','bodice',['bust','naturalWaist','bodiceLen','shoulderSlope'],'Jacquard brocade, heavy cotton sateen','0%','Separating metal zipper'],
+  ['oxford-shirt','Classic Button-Down Oxford Shirt','tops','shirt',['bust','naturalWaist','shirtLen','sleeveLen','cuffWidth','neckCirc'],'Oxford cotton, crisp poplin','0%','Collar interfacing, 10 buttons'],
+  ['wrap-top','Ballet Cross Wrap Bodice Top','tops','bodice',['bust','underbust','naturalWaist','bodiceLen'],'Modal jersey, silk elastane','15%','Clear neck elastic, wrap ties'],
+  ['halter-crop','90s High-Neck Halter Crop Top','tops','bodice',['bust','underbust','naturalWaist'],'Cotton rib knit, bamboo jersey','25%','Neck hook/eye, elastic band'],
+  ['cowl-blouse','Draped Silk Cowl Neck Blouse','tops','bodice',['bust','naturalWaist','frontWaistLength'],'Bias 19mm silk charmeuse, cupro','0%','Fabric draped weight'],
+  ['corset-crop','Boning Cup Bustier Crop Top','tops','corset',['bust','underbust','naturalWaist','corsetLen'],'Heavy cotton drill, raw silk','0%','Rigilene boning, separating zip'],
+  ['raglan-tee','Athletic Raglan Sleeve Tee','tops','shirt',['bust','shirtLen','sleeveLen','wristCirc'],'Organic cotton jersey, rib knit','30%','Twin needle, wooly stretch nylon'],
+  ['bishop-blouse','Romantic Bishop Sleeve Blouse','tops','shirt',['bust','shirtLen','sleeveLen','cuffWidth'],'Swiss dot lawn, silk georgette','0%','Loop buttons, cuff fusible'],
+  ['bardot-top','Off-the-Shoulder Bardot Top','tops','bodice',['bust','totalShoulderWidth','shirtLen'],'Cotton broderie anglaise, poplin','0%','2cm shoulder elastic'],
+  ['kimono-blouse','Dolman Kimono Sleeve Blouse','tops','shirt',['bust','shirtLen','armholeCirc'],'Viscose twill, printed silk','0%','Bias neckline facing'],
+  ['peter-pan','Vintage Peter Pan Collar Blouse','tops','shirt',['bust','naturalWaist','neckCirc','shortSleeveLen'],'Cotton lawn, chambray','0%','Collar interfacing, 6 buttons'],
+  ['sleeveless-shell','Minimalist Sleeveless Silk Shell','tops','bodice',['bust','naturalWaist','shirtLen'],'Sandwashed silk crepe, linen','0%','Bias bound armholes'],
+  ['turtleneck','Fine Ribbed Knit Turtleneck','tops','shirt',['bust','naturalWaist','neckCirc','sleeveLen'],'Merino wool knit, modal lycra','40%','Stretch ballpoint needle'],
+  ['victorian-high','Victorian High-Neck Lace Blouse','tops','shirt',['bust','neckCirc','sleeveLen','shirtLen'],'Alençon lace, silk organza','0%','Rouleau loops, pearl buttons'],
+  ['milkmaid','Cottagecore Milkmaid Peasant Top','tops','bodice',['bust','underbust','naturalWaist','shortSleeveLen'],'Linen cotton blend, gingham','0%','Elasticized puff sleeves'],
+  ['sailor-blouse','Nautical Square Sailor Collar Top','tops','shirt',['bust','totalShoulderWidth','shirtLen'],'Heavy cotton drill, piqué','0%','Contrast grosgrain ribbon'],
+  ['pussybow','70s Executive Pussybow Blouse','tops','shirt',['bust','shirtLen','sleeveLen','cuffWidth'],'Silk crepe de chine, georgette','0%','Interfaced tie collar'],
+  ['corset-cami','Underwire Bustier Camisole','tops','corset',['bust','underbust','naturalWaist','corsetLen'],'Silk satin, powermesh','10%','Underwire casing, strap adjusters'],
+  ['tuxedo-shirt','Marcella Bib Tuxedo Evening Shirt','tops','shirt',['bust','neckCirc','sleeveLen','cuffWidth','shirtLen'],'Egyptian cotton, Marcella piqué bib','0%','Stud buttons, French cuffs'],
+
+  // Trousers (20)
+  ['trouser-straight','Savile Row Tailored Straight Trousers','trousers','trouser',['naturalWaist','hip','crotchDepth','inseam','outseam','legOpening'],'Worsted wool gabardine, cotton chino','0%','Pants fly zip, waistband curtain'],
+  ['palazzo','High-Rise Wide-Leg Palazzo Pants','trousers','trouser',['naturalWaist','hip','crotchDepth','outseam','legOpening'],'Viscose twill, silk crepe, tencel','0%','Invisible zipper, pocket bag linen'],
+  ['cigarette','Audrey Hepburn Cigarette Pants','trousers','trouser',['naturalWaist','hip','crotchDepth','inseam','ankleCirc'],'Stretch cotton sateen, bi-stretch wool','5%','Concealed side zipper'],
+  ['bell-bottoms','70s High-Rise Flared Bell Bottoms','trousers','trouser',['naturalWaist','hip','crotchDepth','waistToKnee','inseam','legOpening'],'12oz indigo denim, wide wale corduroy','2%','Heavy brass zip, rivets'],
+  ['culottes-pants','Cropped Pleated A-Line Culottes','trousers','trouser',['naturalWaist','hip','crotchDepth','waistToKnee','legOpening'],'Irish linen, tencel lyocell','0%','Front fly zip, waistband fusible'],
+  ['bermuda','Tailored City Bermuda Shorts','trousers','trouser',['naturalWaist','hip','crotchDepth','thighCirc'],'Cotton stretch twill, seersucker','3%','Hook and bar, fly zipper'],
+  ['paperbag-trouser','Belted Paperbag Waist Trousers','trousers','trouser',['naturalWaist','hip','crotchDepth','outseam'],'Lightweight tencel, cotton linen','0%','4cm elastic, self-fabric sash'],
+  ['pleated-slacks','Double Forward Pleat Slacks','trousers','trouser',['naturalWaist','hip','crotchDepth','inseam','legOpening'],'Tropical wool suiting, flannel','0%','Corozo buttons, pocket stays'],
+  ['cargo-pants','Multi-Pocket Tactical Cargo Pants','trousers','trouser',['lowWaist','hip','crotchDepth','inseam','legOpening'],'Mil-spec cotton ripstop, duck canvas','0%','Velcro patches, heavy zipper'],
+  ['joggers-tailored','Tailored Knit Leisure Joggers','trousers','trouser',['naturalWaist','hip','crotchDepth','inseam','ankleCirc'],'400gsm French terry, scuba knit','20%','Cotton drawstring, eyelets'],
+  ['harem-pants','Draped Bohemian Harem Pants','trousers','trouser',['naturalWaist','hip','outseam','ankleCirc'],'Rayon modal jersey, silk georgette','10%','Smocked waist elastic'],
+  ['bootcut-jeans','Classic 5-Pocket Bootcut Jeans','trousers','trouser',['naturalWaist','hip','crotchDepth','inseam','legOpening'],'13.5oz ring-spun cotton denim','1%','Jeans tack button, copper rivets'],
+  ['gaucho-pants','Wide Flared Gaucho Crop Pants','trousers','trouser',['naturalWaist','hip','crotchDepth','waistToKnee','legOpening'],'Heavy wool flannel, brushed twill','0%','Waistband fusible, zip'],
+  ['sailor-pants','High-Waist Sailor Front-Flap Pants','trousers','trouser',['naturalWaist','hip','crotchDepth','outseam','legOpening'],'Wool melton, cotton drill','0%','10 anchor buttons, waist lace'],
+  ['carpenter','Workwear Utility Carpenter Jeans','trousers','trouser',['naturalWaist','hip','crotchDepth','inseam','legOpening'],'12oz cotton canvas duck','0%','Hammer loop, triple-stitching'],
+  ['capri-pants','50s Vintage Pedal Pusher Capris','trousers','trouser',['naturalWaist','hip','crotchDepth','waistToKnee','calfCirc'],'Gingham stretch cotton, sateen','5%','Side hem slits, zipper'],
+  ['split-palazzo','Side-Slit Resort Palazzo Pants','trousers','trouser',['naturalWaist','hip','crotchDepth','outseam','legOpening'],'Printed silk chiffon, rayon crepe','0%','Concealed shorts lining, zip'],
+  ['drawstring-chino','Relaxed Linen Drawstring Chinos','trousers','trouser',['naturalWaist','hip','crotchDepth','inseam','legOpening'],'Washed European linen twill','0%','Cotton twill tape drawstring'],
+  ['jodhpurs','Classic Equestrian Riding Jodhpurs','trousers','trouser',['naturalWaist','hip','crotchDepth','thighCirc','kneeCirc','ankleCirc'],'Cavalry twill, stretch whipcord','10%','Suede knee patches, stirrup elastic'],
+  ['tuxedo-trouser','Black-Tie Grosgrain Stripe Trousers','trousers','trouser',['naturalWaist','hip','crotchDepth','inseam','legOpening'],'Barathea wool suiting','0%','Silk grosgrain side braiding']
+];
+
+// Convert to full 200 garment objects
+const GARMENTS_200 = RAW_200.map(([id, name, cat, engine, meas, fabric, stretch, notions]) => ({
+  id, name, cat, engine, meas, fabric, stretch, notions
+}));
+
+/* State Initialization */
+const state = {
+  garmentId: 'a-line',
+  showAllMeas: false,
+  baseHue: 265,
+  harmony: 'analogous',
+  boltWidth: 140,
+  activeTab: 'patternTab',
+  ...Object.fromEntries(MEAS_49.map(m => [m.id, m.def]))
+};
+
+/* =====================================================================
+   3. COLOR WHEEL & HARMONY ENGINE
+   ===================================================================== */
+function hslToHex(h, s, l) {
+  l /= 100;
+  const a = s * Math.min(l, 1 - l) / 100;
+  const f = n => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color).toString(16).padStart(2, '0');
+  };
+  return `#${f(0)}${f(8)}${f(4)}`;
+}
+
+function drawColorWheel() {
+  const canvas = $('wheelCanvas');
+  const ctx = canvas.getContext('2d');
+  const cx = canvas.width / 2, cy = canvas.height / 2, radius = cx - 4;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  for (let angle = 0; angle < 360; angle += 1) {
+    const start = (angle - 1) * Math.PI / 180;
+    const end = (angle + 1) * Math.PI / 180;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, radius, start, end);
+    ctx.closePath();
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+    grad.addColorStop(0, '#ffffff');
+    grad.addColorStop(1, `hsl(${angle}, 100%, 50%)`);
+    ctx.fillStyle = grad;
+    ctx.fill();
+  }
+
+  // Draw indicator marker
+  const rad = state.baseHue * Math.PI / 180;
+  const mx = cx + (radius * 0.72) * Math.cos(rad);
+  const my = cy + (radius * 0.72) * Math.sin(rad);
+  ctx.beginPath();
+  ctx.arc(mx, my, 7, 0, 2 * Math.PI);
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(mx, my, 6, 0, 2 * Math.PI);
+  ctx.strokeStyle = '#000';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+}
+
+function getPaletteColors() {
+  const h = state.baseHue;
+  let hues = [];
+  switch(state.harmony){
+    case 'complementary': hues = [h, (h + 180) % 360, (h + 180) % 360, h]; break;
+    case 'triadic': hues = [h, (h + 120) % 360, (h + 240) % 360, (h + 60) % 360]; break;
+    case 'split': hues = [h, (h + 150) % 360, (h + 210) % 360, (h + 180) % 360]; break;
+    case 'monochromatic': hues = [h, h, h, h]; break;
+    default: hues = [h, (h + 30) % 360, (h + 330) % 360, (h + 60) % 360]; break;
+  }
+  return {
+    primary: hslToHex(hues[0], 75, state.harmony === 'monochromatic' ? 45 : 50),
+    lining: hslToHex(hues[1], state.harmony === 'monochromatic' ? 40 : 60, state.harmony === 'monochromatic' ? 82 : 78),
+    trim: hslToHex(hues[2], 80, state.harmony === 'monochromatic' ? 25 : 40),
+    accent: hslToHex(hues[3], 90, 60)
+  };
+}
+
+function updateColorPalettes() {
+  drawColorWheel();
+  const pal = getPaletteColors();
+  const roles = [
+    {label:'Primary Body', hex: pal.primary},
+    {label:'Lining / Facing', hex: pal.lining},
+    {label:'Trims & Piping', hex: pal.trim},
+    {label:'Accent / Notions', hex: pal.accent}
+  ];
+
+  $('swatchesContainer').innerHTML = roles.map(r => `
+    <div class="swatch-box">
+      <div class="swatch-color" style="background:${r.hex};"></div>
+      <div class="swatch-meta">
+        <span class="swatch-label">${r.label}</span>
+        ${r.hex.toUpperCase()}
+      </div>
+    </div>
+  `).join('');
+
+  renderGarmentCroquis();
+}
+
+/* =====================================================================
+   4. FINISHED GARMENT ILLUSTRATION / CROQUIS PREVIEW
+   ===================================================================== */
+function renderGarmentCroquis() {
+  const g = GARMENTS_200.find(item => item.id === state.garmentId) || GARMENTS_200[0];
+  const { primary, accent, lining } = getPaletteColors();
+  const svg = $('sketchSvg');
+  $('sketchLabel').textContent = g.name;
+
+  // Base mannequin silhouette (head, neck, shoulders, legs)
+  const mannequin = `
+    <!-- Mannequin Form -->
+    <ellipse cx="100" cy="30" rx="14" ry="18" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.2"/>
+    <path d="M93,48 L107,48 L105,62 L95,62 Z" fill="#e2e8f0"/>
+    <path d="M72,68 C80,62 120,62 128,68 L122,120 L78,120 Z" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+    <line x1="88" y1="210" x2="88" y2="305" stroke="#cbd5e1" stroke-width="3" stroke-linecap="round"/>
+    <line x1="112" y1="210" x2="112" y2="305" stroke="#cbd5e1" stroke-width="3" stroke-linecap="round"/>
+  `;
+
+  let garmentPath = '';
+
+  if (g.engine === 'skirt') {
+    garmentPath = `
+      <!-- Top Bodice Form -->
+      <path d="M78,65 L122,65 L116,112 L84,112 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="2,2"/>
+      <!-- Skirt -->
+      <path d="M84,112 L116,112 L138,225 C115,232 85,232 62,225 Z" fill="${primary}" stroke="${accent}" stroke-width="1.8"/>
+      <!-- Waistband -->
+      <rect x="83" y="108" width="34" height="6" rx="2" fill="${accent}"/>
+      <!-- Drape folds -->
+      <path d="M96,114 Q94,170 88,227 M104,114 Q106,170 112,227" stroke="rgba(0,0,0,0.15)" stroke-width="1.2" fill="none"/>
+    `;
+  } else if (g.engine === 'trouser') {
+    garmentPath = `
+      <!-- Top Bodice Form -->
+      <path d="M80,65 L120,65 L116,112 L84,112 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="2,2"/>
+      <!-- Trousers -->
+      <path d="M84,112 L116,112 L120,150 L118,290 L102,290 L100,165 L98,290 L82,290 L80,150 Z" fill="${primary}" stroke="${accent}" stroke-width="1.8"/>
+      <rect x="83" y="108" width="34" height="6" rx="2" fill="${accent}"/>
+      <!-- Crease lines -->
+      <line x1="91" y1="130" x2="90" y2="288" stroke="rgba(0,0,0,0.15)" stroke-width="1"/>
+      <line x1="109" y1="130" x2="110" y2="288" stroke="rgba(0,0,0,0.15)" stroke-width="1"/>
+    `;
+  } else if (g.engine === 'bodice' || g.engine === 'corset') {
+    garmentPath = `
+      <!-- Bodice / Corset -->
+      <path d="M74,68 L126,68 L118,126 L100,136 L82,126 Z" fill="${primary}" stroke="${accent}" stroke-width="1.8"/>
+      <!-- Boning / Seam Lines -->
+      <path d="M92,68 L94,130 M108,68 L106,130 M100,68 L100,136" stroke="${accent}" stroke-width="1.2" stroke-dasharray="3,1"/>
+      <!-- Bottom preview -->
+      <path d="M82,126 L118,126 L130,220 L70,220 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="2,2"/>
+    `;
+  } else if (g.engine === 'robe') {
+    garmentPath = `
+      <!-- Flowing Robe / Kaftan / Agbada -->
+      <path d="M50,75 L76,64 L124,64 L150,75 L158,160 L136,160 L134,285 C115,290 85,290 66,285 L64,160 L42,160 Z" fill="${primary}" stroke="${accent}" stroke-width="1.8"/>
+      <!-- Center Placket / Collar -->
+      <path d="M96,64 L104,64 L104,288 L96,288 Z" fill="${accent}"/>
+      <path d="M88,64 L100,90 L112,64" stroke="${lining}" stroke-width="2" fill="none"/>
+    `;
+  } else if (g.engine === 'dress') {
+    garmentPath = `
+      <!-- Full Dress -->
+      <path d="M76,65 L124,65 L116,110 L144,275 C115,282 85,282 56,275 L84,110 Z" fill="${primary}" stroke="${accent}" stroke-width="1.8"/>
+      <!-- Sleeves -->
+      <path d="M76,65 L55,115 L66,118 L80,80 Z" fill="${primary}" stroke="${accent}" stroke-width="1.2"/>
+      <path d="M124,65 L145,115 L134,118 L120,80 Z" fill="${primary}" stroke="${accent}" stroke-width="1.2"/>
+      <path d="M90,65 Q100,82 110,65" fill="${lining}" stroke="${accent}" stroke-width="1.2"/>
+      <line x1="84" y1="110" x2="116" y2="110" stroke="${accent}" stroke-width="2"/>
+    `;
+  } else {
+    // Shirt / Jacket
+    garmentPath = `
+      <!-- Shirt / Jacket -->
+      <path d="M74,65 L126,65 L124,155 L76,155 Z" fill="${primary}" stroke="${accent}" stroke-width="1.8"/>
+      <!-- Sleeves -->
+      <path d="M74,65 L52,145 L64,148 L80,95 Z" fill="${primary}" stroke="${accent}" stroke-width="1.2"/>
+      <path d="M126,65 L148,145 L136,148 L120,95 Z" fill="${primary}" stroke="${accent}" stroke-width="1.2"/>
+      <!-- Collar -->
+      <polygon points="85,65 100,78 100,65" fill="${accent}"/>
+      <polygon points="115,65 100,78 100,65" fill="${accent}"/>
+      <!-- Button Placket -->
+      <line x1="100" y1="78" x2="100" y2="155" stroke="${accent}" stroke-width="1.8"/>
+      <!-- Lower Preview -->
+      <path d="M78,155 L122,155 L124,280 L76,280 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="2,2"/>
+    `;
+  }
+
+  svg.innerHTML = mannequin + garmentPath;
+}
+
+/* =====================================================================
+   5. INSPIRATION & TUTORIAL LINKS HUB
+   ===================================================================== */
+function updateInspirationLinks(garment) {
+  const query = encodeURIComponent(`${garment.name} pattern drafting sewing tutorial`);
+  const pinQuery = encodeURIComponent(`${garment.name} sewing pattern outfit styling`);
+  const ytQuery = encodeURIComponent(`how to sew ${garment.name} pattern drafting tutorial`);
+  const redditQuery = encodeURIComponent(`${garment.name} sewing pattern`);
+
+  $('hubGoogle').href = `https://www.google.com/search?q=${query}&tbm=isch`;
+  $('hubPinterest').href = `https://www.pinterest.com/search/pins/?q=${pinQuery}`;
+  $('hubYoutube').href = `https://www.youtube.com/results?search_query=${ytQuery}`;
+  $('hubReddit').href = `https://www.reddit.com/r/sewing/search/?q=${redditQuery}&restrict_sr=1`;
+}
+
+/* =====================================================================
+   6. FABRIC & YARDAGE CALCULATOR
+   ===================================================================== */
+function updateFabricCalculator(garment) {
+  $('fabricTitle').textContent = `Textiles for ${garment.name}`;
+  $('fabricNotes').textContent = `${garment.fabric}. Recommended stretch: ${garment.stretch || '0%'}.`;
+  $('fabricStretch').textContent = garment.stretch || '0% – 5%';
+  $('fabricNotions').textContent = garment.notions || 'Thread, needle';
+
+  const bolt = parseInt($('boltWidthSelect').value, 10);
+  let baseLenCm = 70;
+
+  if (garment.engine === 'skirt') baseLenCm = state.skirtLen + 15;
+  else if (garment.engine === 'shirt') baseLenCm = state.shirtLen + state.sleeveLen + 20;
+  else if (garment.engine === 'trouser') baseLenCm = state.outseam + 25;
+  else if (garment.engine === 'corset') baseLenCm = state.corsetLen * 2 + 15;
+  else if (garment.engine === 'robe' || garment.cat === 'african' || garment.cat === 'asian') baseLenCm = state.dressLen * 2 + 20;
+  else baseLenCm = state.dressLen + 30;
+
+  let multiplier = 1.0;
+  if (bolt <= 90) multiplier = 2.1;
+  else if (bolt <= 115) multiplier = 1.45;
+  else if (bolt >= 150) multiplier = 0.9;
+
+  const meters = (baseLenCm * multiplier / 100).toFixed(2);
+  const yards = (meters * 1.09361).toFixed(2);
+
+  $('yardageMeters').textContent = `${meters} m`;
+  $('yardageYards').textContent = `${yards} yd`;
+}
+
+/* =====================================================================
+   7. PARAMETRIC SVG DRAFTING WITH ON-PATTERN MEASUREMENTS
+   ===================================================================== */
+function dimLine(x1, y1, x2, y2, label, offset = 6) {
+  const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+  const isHoriz = Math.abs(y2 - y1) < Math.abs(x2 - x1);
+  const ox = isHoriz ? 0 : offset;
+  const oy = isHoriz ? offset : 0;
+  return `
+    <g class="dim-callout">
+      <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--primary)" stroke-width="0.35" stroke-dasharray="1.5,1"/>
+      <circle cx="${x1}" cy="${y1}" r="0.7" fill="var(--primary)"/>
+      <circle cx="${x2}" cy="${y2}" r="0.7" fill="var(--primary)"/>
+      <rect x="${mx + ox - 9}" y="${my + oy - 2.8}" width="18" height="5.6" rx="1.5" fill="var(--surface)" stroke="var(--primary)" stroke-width="0.3"/>
+      <text x="${mx + ox}" y="${my + oy + 1}" font-size="2.6" fill="var(--ink)" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="600">${label}</text>
+    </g>
+  `;
+}
+
+function skirtPieces(){
+  const sa = state.seam, wH = state.naturalWaist/4 + 1, hH = state.hip/4 + 2, L = state.skirtLen, hipD = 20;
+  const hemH = state.garmentId === 'a-line' ? Math.max(hH + 1, state.hemCirc/4) : hH - 0.5;
+  const pts = [[0,-sa],[wH+sa,-sa],[hH+sa,hipD],[hemH+sa,L+sa],[0,L+sa]];
+  const d = 'M' + pts.map(p => p.join(',')).join(' L') + ' Z';
+  const w = hemH + sa, h = L + 2*sa + 12;
+
+  const piece = (name) => {
+    const dims = `
+      ${dimLine(0, -sa - 4, wH + sa, -sa - 4, `${(wH).toFixed(1)} cm`)}
+      ${dimLine(hemH + sa + 4, -sa, hemH + sa + 4, L + sa, `L:${L} cm`)}
+      ${dimLine(0, L + sa + 4, hemH + sa, L + sa + 4, `Hem:${(hemH).toFixed(1)} cm`)}
+    `;
+    return {name, d, gl:[wH*0.4, L*0.3, L*0.7], w: w + 8, h, lx: w/2, ly: L + sa + 6, dims};
+  };
+  return [piece('Front (Cut 1 on fold)'), piece('Back (Cut 2)')];
+}
+
+function bodicePieces(){
+  const sa = state.seam, B = state.bust, bl = state.bodiceLen;
+  const neckH = 8, shX = B/6 + 1, sideX = B/4 + 2, armD = bl*0.55, waistY = bl, top = -sa;
+  const sx = sideX + sa, wy = waistY + sa;
+  const front = `M0,10 Q0,${top} ${neckH},${top} L${shX},${top+2} Q${shX+4},${armD*0.5} ${sx},${armD} L${sx},${wy} L0,${wy} Z`;
+  const back  = `M0,2 Q0,${top} ${neckH+1},${top} L${shX+1},${top+1} Q${shX+5},${armD*0.5} ${sx+0.5},${armD} L${sx+0.5},${wy} L0,${wy} Z`;
+  const h = wy - top + 14;
+
+  const fDims = `
+    ${dimLine(0, top - 4, shX, top - 4, `Sh:${(shX).toFixed(1)}`)}
+    ${dimLine(sx + 4, armD, sx + 4, wy, `Side:${(wy-armD).toFixed(1)}`)}
+    ${dimLine(0, wy + 4, sx, wy + 4, `Waist:${(sx).toFixed(1)}`)}
+  `;
+  return [
+    {name:'Front Bodice (Cut 1 on fold)', d:front, gl:[sideX*0.5, armD+4, waistY-4], w:sx + 8, h, lx:sx/2, ly:wy+6, dims:fDims},
+    {name:'Back Bodice (Cut 2)', d:back, gl:[sideX*0.5, armD+4, waistY-4], w:sx+8.5, h, lx:(sx+0.5)/2, ly:wy+6, dims:fDims}
+  ];
+}
+
+function trouserPieces(){
+  const sa = state.seam, wH = state.naturalWaist/4 + 1, hemH = state.legOpening/4, outseam = state.inseam + state.crotchDepth, hipD = 20;
+  const leg = (rise, hipH, name) => {
+    const innerX = hemH*0.5, cx = hipH*0.55;
+    const d = `M0,${-sa} L${wH+sa},${-sa} L${hipH+sa},${hipD} L${hemH+sa},${outseam+sa} L${innerX},${outseam+sa} Q${innerX},${rise} ${cx},${rise} Q${cx*0.5},${rise+2} 0,${rise} Z`;
+    const w = Math.max(wH, hipH, hemH) + sa;
+    const dims = `
+      ${dimLine(0, -sa - 4, wH + sa, -sa - 4, `W:${(wH).toFixed(1)}`)}
+      ${dimLine(w + 4, -sa, w + 4, outseam + sa, `Out:${outseam}`)}
+      ${dimLine(innerX, outseam + sa + 4, hemH + sa, outseam + sa + 4, `Hem:${(hemH).toFixed(1)}`)}
+      ${dimLine(-6, 0, -6, rise, `Rise:${rise}`)}
+    `;
+    return {name, d, gl:[hipH*0.3, 10, outseam-10], w: w + 12, h: outseam + 2*sa + 14, lx: w/2, ly: outseam + sa + 6, dims};
+  };
+  return [leg(state.crotchDepth, state.hip/4 + 2, 'Front Leg (Cut 2)'), leg(state.crotchDepth + 3, state.hip/4 + 3, 'Back Leg (Cut 2)')];
+}
+
+function corsetPieces(){
+  const sa = state.seam, topH = state.underbust/4 + 1, waistH = state.naturalWaist/4 + 1, hipH = state.hip/4 + 2, L = state.corsetLen, wy = L*0.45;
+  const d = `M0,${-sa} L${topH+sa},${-sa} L${waistH+sa},${wy} L${hipH+sa},${L+sa} L0,${L+sa} Z`;
+  const w = hipH + sa + 8;
+  const dims = `
+    ${dimLine(0, -sa - 4, topH + sa, -sa - 4, `Top:${(topH).toFixed(1)}`)}
+    ${dimLine(w - 2, -sa, w - 2, L + sa, `L:${L}`)}
+    ${dimLine(0, L + sa + 4, hipH + sa, L + sa + 4, `Hip:${(hipH).toFixed(1)}`)}
+  `;
+  const piece = name => ({name, d, gl:[topH*0.5, 6, L-6], w, h: L + 2*sa + 14, lx: (hipH+sa)/2, ly: L + sa + 6, dims});
+  return [piece('Center Front Panel (Cut 2)'), piece('Back Lacing Panel (Cut 2)')];
+}
+
+function shirtPieces(){
+  const sa = state.seam, B = state.bust, sideX = B/4 + 3, shX = B/6 + 1, neckH = 8, armD = 22, top = -sa;
+  const L = state.shirtLen + sa, hem = sideX + 5 + sa, sx = sideX + sa;
+  const front = `M0,10 Q0,${top} ${neckH},${top} L${shX},${top+2} Q${shX+4},${armD*0.5} ${sx},${armD} L${hem},${L} L0,${L} Z`;
+  const back  = `M0,2 Q0,${top} ${neckH+1},${top} L${shX+1},${top+1} Q${shX+5},${armD*0.5} ${sx+0.5},${armD} L${hem+0.5},${L} L0,${L} Z`;
+  const h = L - top + 14, w = hem + 8;
+  const bodyDims = `
+    ${dimLine(0, L + 4, hem, L + 4, `Hem:${(hem).toFixed(1)}`)}
+    ${dimLine(w, top, w, L, `L:${state.shirtLen}`)}
+  `;
+  const body = (d, name) => ({name, d, gl:[sideX*0.5, armD+4, L-8], w, h, lx: w/2, ly: L + 6, dims: bodyDims});
+  const cap = 6, W = B/2.5, C = state.cuffWidth, Ls = state.sleeveLen, x0 = (W - C)/2;
+  const sleeveDims = `
+    ${dimLine(0, -cap - 4, W, -cap - 4, `Bicep:${(W).toFixed(1)}`)}
+    ${dimLine(W + 4, 0, W + 4, Ls, `Sleeve L:${Ls}`)}
+    ${dimLine(x0, Ls + 4, (W+C)/2, Ls + 4, `Cuff:${(C).toFixed(1)}`)}
+  `;
+  const sleeve = {name:'Sleeve (Cut 2)', d:`M0,0 Q${W/2},${-cap} ${W},0 L${(W+C)/2},${Ls} L${x0},${Ls} Z`, gl:[W/2, 8, Ls-8], w: W + 10, h: Ls + cap + 14, lx: W/2, ly: Ls + 6, dims: sleeveDims};
+  return [body(front, 'Front Shirt (Cut 2)'), body(back, 'Back Shirt (Cut 1 on fold)'), sleeve];
+}
+
+function piecesForCurrent(){
+  const g = GARMENTS_200.find(item => item.id === state.garmentId) || GARMENTS_200[0];
+  if (g.engine === 'bodice') return bodicePieces();
+  if (g.engine === 'trouser') return trouserPieces();
+  if (g.engine === 'corset') return corsetPieces();
+  if (g.engine === 'shirt') return shirtPieces();
+  return skirtPieces();
+}
+
+function esc(v){ return String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+const $ = id => document.getElementById(id);
+
+function drawPieces(pieces){
+  let x = 0, maxH = 0, parts = '';
+  pieces.forEach(p => {
+    const ax = p.gl[0];
+    parts += `
+      <g transform="translate(${x - (p.x0 || 0)},${-(p.y0 || 0)})">
+        <path d="${p.d}" fill="var(--surface)" stroke="var(--ink)" stroke-width="0.5" stroke-linejoin="round"/>
+        <!-- Grainline -->
+        <line x1="${ax}" y1="${p.gl[1]}" x2="${p.gl[3] ?? ax}" y2="${p.gl[2]}" stroke="var(--primary)" stroke-width="0.35" stroke-dasharray="2,1"/>
+        <path d="M${ax},${p.gl[1]} l-0.8,1.6 h1.6 z" fill="var(--primary)"/>
+        <path d="M${ax},${p.gl[2]} l-0.8,-1.6 h1.6 z" fill="var(--primary)"/>
+        <!-- Label -->
+        <text x="${p.lx}" y="${p.ly}" font-size="3.2" fill="var(--ink)" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-weight="700">${esc(p.name)}</text>
+        <text x="${p.lx}" y="${p.ly + 3.8}" font-size="2.2" fill="var(--muted)" text-anchor="middle" font-family="JetBrains Mono, monospace">SA: ${state.seam} cm included</text>
+        <!-- On-Pattern Dimension Callouts -->
+        ${p.dims || ''}
+      </g>`;
+    x += p.w + 10;
+    maxH = Math.max(maxH, p.h);
+  });
+  const svg = $('out');
+  svg.setAttribute('viewBox', `-6 -12 ${Math.max(x, 24)} ${maxH + 18}`);
+  svg.innerHTML = parts;
+}
+
+/* =====================================================================
+   8. UI RENDERING & DYNAMIC MEASUREMENT FILTERING
+   ===================================================================== */
+function renderGarmentList() {
+  const query = $('garmentSearch').value.toLowerCase();
+  const activeCat = document.querySelector('.cat-pill.active').dataset.cat;
+  
+  const filtered = GARMENTS_200.filter(g => {
+    const matchesCat = activeCat === 'all' || g.cat === activeCat;
+    const matchesSearch = g.name.toLowerCase().includes(query) || g.cat.toLowerCase().includes(query) || g.fabric.toLowerCase().includes(query);
+    return matchesCat && matchesSearch;
+  });
+
+  $('garmentList').innerHTML = filtered.map(g => `
+    <div class="garment-card ${g.id === state.garmentId ? 'active' : ''}" data-id="${g.id}">
+      <strong>${g.name}</strong>
+      <span>${g.cat.toUpperCase()}</span>
+    </div>
+  `).join('');
+
+  $('garmentList').querySelectorAll('.garment-card').forEach(card => {
+    card.addEventListener('click', () => {
+      state.garmentId = card.dataset.id;
+      renderGarmentList();
+      renderMeasurementFields();
+      renderPattern();
+      renderGarmentCroquis();
+    });
+  });
+}
+
+function renderMeasurementFields() {
+  const g = GARMENTS_200.find(item => item.id === state.garmentId) || GARMENTS_200[0];
+  const requiredSet = new Set(g.meas || []);
+  requiredSet.add('seam');
+
+  const visibleFields = state.showAllMeas ? MEAS_49 : MEAS_49.filter(m => requiredSet.has(m.id));
+
+  $('activeMeasBadge').textContent = `Showing ${visibleFields.length} of 49`;
+  $('measNotice').textContent = state.showAllMeas ? 'All 49 measurements unlocked' : `Active specs for ${g.name}`;
+
+  $('measContainer').innerHTML = visibleFields.map(m => {
+    const isRequired = requiredSet.has(m.id);
+    return `
+      <div class="meas-field ${isRequired ? 'active' : ''}">
+        <label title="${m.label}">${isRequired ? '✦ ' : ''}${m.label}</label>
+        <div class="input-wrap">
+          <input type="number" id="${m.id}" value="${state[m.id]}" step="${m.step}" min="${m.min}">
+          <span class="unit">cm</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  $('measContainer').querySelectorAll('input').forEach(inp => {
+    inp.addEventListener('input', () => {
+      state[inp.id] = parseFloat(inp.value) || 0;
+      renderPattern();
+    });
+  });
+}
+
+function renderPattern() {
+  const currentGarment = GARMENTS_200.find(g => g.id === state.garmentId) || GARMENTS_200[0];
+  $('metaGarment').textContent = currentGarment.name;
+  
+  const pieces = piecesForCurrent();
+  $('metaPieces').textContent = `${pieces.length} Pattern Pieces`;
+  drawPieces(pieces);
+
+  // Specifications
+  const specs = [
+    ['Garment Style', currentGarment.name],
+    ['Category', currentGarment.cat.toUpperCase()],
+    ['Seam Allowance', `${state.seam} cm`],
+    ['Recommended Fabric', currentGarment.fabric]
+  ];
+  $('dims').innerHTML = specs.map(([k, v]) => `<li><span>${esc(k)}:</span> ${esc(v)}</li>`).join('');
+
+  // Instructions
+  const instructions = [
+    'Preshrink fabric with iron or water wash before cutting.',
+    'Align grainline arrows exactly parallel to fabric selvedge edges.',
+    'All visible dimension ticks show finished seam lengths with allowance included.',
+    'Staystitch curved necklines and armholes at 1.0 cm before structural assembly.'
+  ];
+  $('steps').innerHTML = instructions.map(s => `<li>${s}</li>`).join('');
+
+  updateInspirationLinks(currentGarment);
+  updateFabricCalculator(currentGarment);
+}
+
+/* =====================================================================
+   9. GEMINI AI CLIENT ENGINE
+   ===================================================================== */
+const KEY_STORAGE = 'pattern-maker:gemini-key';
+const MODEL_STORAGE = 'pattern-maker:gemini-model';
+const getKey = () => localStorage.getItem(KEY_STORAGE) || '';
+const getModel = () => localStorage.getItem(MODEL_STORAGE) || 'gemini-2.5-flash';
+
+const TOOL = {
+  name: 'save_pattern',
+  description: 'Save flat drafted sewing pattern pieces in metric scale.',
+  input_schema: {
+    type: 'object',
+    properties: {
+      summary: { type: 'string' },
+      pieces: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            cut: { type: 'string' },
+            path: { type: 'string' },
+            grainline: { type: 'array', items: { type: 'number' } },
+            label: { type: 'array', items: { type: 'number' } }
+          },
+          required: ['name', 'cut', 'path', 'grainline', 'label']
+        }
+      },
+      finished: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: { label: { type: 'string' }, value: { type: 'string' } },
+          required: ['label', 'value']
+        }
+      },
+      steps: { type: 'array', items: { type: 'string' } }
+    },
+    required: ['summary', 'pieces', 'finished', 'steps']
+  }
+};
+
+function cleanGeminiSchema(schema) {
+  if (Array.isArray(schema)) return schema.map(cleanGeminiSchema);
+  if (schema && typeof schema === 'object') {
+    const out = {};
+    for (const [k, v] of Object.entries(schema)) {
+      if (k === 'minItems' || k === 'maxItems') continue;
+      if (k === 'type' && typeof v === 'string') out[k] = v.toUpperCase();
+      else out[k] = cleanGeminiSchema(v);
+    }
+    return out;
+  }
+  return schema;
+}
+
+async function callGemini(systemPrompt, userPrompt) {
+  const key = getKey();
+  if (!key) throw new Error('Please add your Gemini API key in AI Key Settings first.');
+  const model = getModel();
+
+  const body = {
+    systemInstruction: { parts: [{ text: systemPrompt }] },
+    contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+    tools: [{
+      functionDeclarations: [{
+        name: TOOL.name,
+        description: TOOL.description,
+        parameters: cleanGeminiSchema(TOOL.input_schema)
+      }]
+    }],
+    toolConfig: { functionCallingConfig: { mode: 'ANY', allowedFunctionNames: ['save_pattern'] } },
+    generationConfig: { maxOutputTokens: 6000 }
+  };
+
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(key)}`;
+  const res = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
+    body: JSON.stringify(body)
+  });
+
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error?.message || `Gemini request error (${res.status}).`);
+
+  const parts = data.candidates?.[0]?.content?.parts || [];
+  const fnCall = parts.find(p => p.functionCall);
+  if (fnCall) return fnCall.functionCall.args;
+
+  const text = parts.find(p => p.text)?.text || '';
+  const match = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+  if (match) return JSON.parse(match[1]);
+  throw new Error('Gemini did not return structured pattern pieces.');
+}
+
+/* =====================================================================
+   10. EVENT LISTENERS & BOOTSTRAP
+   ===================================================================== */
+$('garmentSearch').addEventListener('input', renderGarmentList);
+document.querySelectorAll('#catFilter .cat-pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#catFilter .cat-pill').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    renderGarmentList();
+  });
+});
+
+$('toggleAllMeas').addEventListener('click', () => {
+  state.showAllMeas = !state.showAllMeas;
+  $('toggleAllMeas').textContent = state.showAllMeas ? 'Show required only ▴' : 'Show all 49 ▾';
+  renderMeasurementFields();
+});
+
+// Color wheel interactions
+const wheel = $('wheelCanvas');
+function pickWheel(e) {
+  const rect = wheel.getBoundingClientRect();
+  const x = e.clientX - rect.left - wheel.width / 2;
+  const y = e.clientY - rect.top - wheel.height / 2;
+  let angle = Math.round(Math.atan2(y, x) * 180 / Math.PI);
+  if (angle < 0) angle += 360;
+  state.baseHue = angle;
+  updateColorPalettes();
+}
+wheel.addEventListener('click', pickWheel);
+let isDraggingWheel = false;
+wheel.addEventListener('mousedown', () => isDraggingWheel = true);
+window.addEventListener('mouseup', () => isDraggingWheel = false);
+wheel.addEventListener('mousemove', e => { if (isDraggingWheel) pickWheel(e); });
+$('harmonyType').addEventListener('change', e => {
+  state.harmony = e.target.value;
+  updateColorPalettes();
+});
+
+$('boltWidthSelect').addEventListener('change', () => {
+  const g = GARMENTS_200.find(item => item.id === state.garmentId) || GARMENTS_200[0];
+  updateFabricCalculator(g);
+});
+
+// Tabs
+document.querySelectorAll('.tabs .tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p => p.hidden = true);
+    t.classList.add('active');
+    $(t.dataset.tab).hidden = false;
+    if (t.dataset.tab === 'colorTab') updateColorPalettes();
+  });
+});
+
+// Key Dialog
+$('keyBtn').addEventListener('click', () => {
+  $('keyInput').value = getKey();
+  $('modelSelect').value = getModel();
+  $('keyDialog').showModal();
+});
+$('keyForm').addEventListener('submit', e => {
+  e.preventDefault();
+  localStorage.setItem(KEY_STORAGE, $('keyInput').value.trim());
+  localStorage.setItem(MODEL_STORAGE, $('modelSelect').value);
+  $('keyDialog').close();
+  $('keyBtn').textContent = '🔑 Gemini Active';
+});
+$('keyClear').addEventListener('click', () => {
+  localStorage.removeItem(KEY_STORAGE);
+  $('keyDialog').close();
+  $('keyBtn').textContent = '🔑 AI Key Settings';
+});
+
+// AI Custom Style Prompt
+$('newAiStyleBtn').addEventListener('click', () => $('styleDialog').showModal());
+$('styleForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const name = $('styleName').value.trim();
+  const desc = $('styleDesc').value.trim();
+  $('styleDialog').close();
+
+  $('summary').textContent = 'Drafting custom pieces with Gemini...';
+  try {
+    const measList = Object.entries(state)
+      .filter(([k]) => MEAS_49.some(m => m.id === k))
+      .map(([k, v]) => `${k}: ${v} cm`).join(', ');
+
+    const system = 'You are an expert master tailor drafting SVG sewing pattern pieces in cm.';
+    const prompt = `Draft pattern pieces for: ${name}. Details: ${desc}. Body Measurements: ${measList}. Include seam allowance.`;
+
+    const result = await callGemini(system, prompt);
+    if (result?.pieces) {
+      const aiPieces = result.pieces.map(p => {
+        const nums = (p.path.match(/-?\d+(\.\d+)?/g) || []).map(Number);
+        const xs = nums.filter((_, i) => i % 2 === 0), ys = nums.filter((_, i) => i % 2 === 1);
+        const x0 = Math.min(...xs), y0 = Math.min(...ys);
+        return {
+          name: p.name, cut: p.cut, d: p.path, x0, y0,
+          w: Math.max(...xs) - x0, h: Math.max(...ys) - y0 + 10,
+          gl: p.grainline, lx: p.label[0], ly: p.label[1]
+        };
+      });
+      drawPieces(aiPieces);
+      $('summary').textContent = result.summary || 'Drafted with Gemini.';
+      $('metaGarment').textContent = name;
+      $('metaPieces').textContent = `${aiPieces.length} AI Pieces`;
+    }
+  } catch (err) {
+    alert(err.message);
+    renderPattern();
+  }
+});
+
+// Print scale pattern
+$('printBtn').addEventListener('click', () => window.print());
+$('redraftCurrent').addEventListener('click', () => {
+  renderPattern();
+  renderGarmentCroquis();
+});
+document.querySelectorAll('dialog [data-close]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
+
+// Initial Boot
+if (getKey()) $('keyBtn').textContent = '🔑 Gemini Active';
+renderGarmentList();
+renderMeasurementFields();
+renderPattern();
+updateColorPalettes();
+renderGarmentCroquis();
+</script>
+</body>
+</html>
